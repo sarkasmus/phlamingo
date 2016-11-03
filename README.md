@@ -1,2 +1,2 @@
-# phlamingo
+# Phlamingo
 New modern PHP Framework
