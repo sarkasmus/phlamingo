@@ -11,14 +11,16 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Core\MVC;
+    namespace Phlamingo\HTTP;
+
+    use Phlamingo\Core\Object;
 
 
     /**
      * A HTTP Response object - fully programmable extension
      * for control HTTP protocol
      */
-    class Response
+    class Response extends Object
     {
         /**
          * List of all http status codes and their status texts
@@ -135,6 +137,8 @@
          */
         public function __construct(string $content, string $version = "1.1", int $statusCode = 200, string $charset = "UTF-8", array $headers = [])
         {
+            parent::__construct();
+
             $this->Content = $content;
             $this->Version = $version;
             $this->StatusCode = $statusCode;

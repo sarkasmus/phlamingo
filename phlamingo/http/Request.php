@@ -11,14 +11,16 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Core\MVC;
+    namespace Phlamingo\HTTP;
+
+    use Phlamingo\Core\Object;
 
 
     /**
      * HTTP Request - fully programable extension
      * for control HTTP protocol
      */
-    class Request
+    class Request extends Object
     {
         /**
          * Request Uniform Resource Identifier
@@ -112,6 +114,8 @@
          */
         public function __construct(string $uri, string $method, string $version, array $params, array $headers, array $cookies, array $files, string $content)
         {
+            parent::__construct();
+
             $this->URI = $uri;
             $this->Method = $method;
             $this->Version = $version;
@@ -121,13 +125,13 @@
             $this->Files = $files;
             $this->Content = $content;
 
-            $this->Setup();
+            $this->SetupHeaders();
         }
 
         /**
          * Setups data from headers
          */
-        public function Setup()
+        public function SetupHeaders()
         {
             $this->Languages = $this->ParseAccept(isset($this->Headers["Accept-Languages"]) ? $this->Headers["Accept-Languages"] : "undefined", "language");
             $this->Charsets = $this->ParseAccept(isset($this->Headers["Accept-Charset"]) ? $this->Headers["Accept-Charset"] : "undefined", "charset");
@@ -139,6 +143,8 @@
         /**
          * Parses accept entries to associative array
          *
+         * @param string $accept Accept data
+         * @param string $name Accept name
          * @return array Arrays of header datas
          */
         protected function ParseAccept(string $accept, string $name) : array
