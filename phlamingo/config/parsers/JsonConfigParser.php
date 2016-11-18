@@ -13,7 +13,7 @@
 
     namespace Phlamingo\Config\Parsers;
 
-    use Phlamingo\Config\Exceptions\ConfigExceptions;
+    use Phlamingo\Config\Exceptions\ConfigException;
 
 
     /**
@@ -38,7 +38,7 @@
          *
          * @param string $path Path to file
          * @return array Array
-         * @throws ConfigExceptions When file doesn't exists
+         * @throws ConfigException When file doesn't exists
          */
         public function ParseFile(string $path) : array
         {
@@ -49,7 +49,7 @@
             }
             else
             {
-                throw new ConfigExceptions("File {$path} doesn't exist");
+                throw new ConfigException("File {$path} doesn't exist");
             }
         }
 

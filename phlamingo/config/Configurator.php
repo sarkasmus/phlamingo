@@ -14,7 +14,7 @@
     namespace Phlamingo\Config;
 
     // Exceptions
-    use Phlamingo\Config\Exceptions\ConfigExceptions;
+    use Phlamingo\Config\Exceptions\ConfigException;
 
     use Phlamingo\Core\Object;
 
@@ -35,7 +35,7 @@
          * @param string $name Name of the entry
          * @param string|mixed $value Value
          * @param string|mixed $defaultValue Default value
-         * @throws ConfigExceptions When ConfigValue with name $name already exists
+         * @throws ConfigException When ConfigValue with name $name already exists
          */
         public function AddConfigValue(string $name, $value, $defaultValue)
         {
@@ -45,7 +45,7 @@
             }
             else
             {
-                throw new ConfigExceptions("Config value {$name} cannot be added because it already exists");
+                throw new ConfigException("Config value {$name} cannot be added because it already exists");
             }
         }
 
@@ -55,7 +55,7 @@
          * @param string $name Name of the entry
          * @param string|mixed $value Value
          * @param int $priority Priority
-         * @throws ConfigExceptions If entry is not defined
+         * @throws ConfigException If entry is not defined
          */
         public function SetConfigValue(string $name, $value, int $priority)
         {
@@ -65,7 +65,7 @@
             }
             else
             {
-                throw new ConfigExceptions("ConfigValue with name {$name} which your are trying to write to is not defined");
+                throw new ConfigException("ConfigValue with name {$name} which your are trying to write to is not defined");
             }
         }
 
@@ -74,7 +74,7 @@
          *
          * @param string $name Name of the entry
          * @return string|mixed Value of entry
-         * @throws ConfigExceptions When entry doesn't exist
+         * @throws ConfigException When entry doesn't exist
          */
         public function GetConfigValue(string $name)
         {
@@ -84,7 +84,7 @@
             }
             else
             {
-                throw new ConfigExceptions("ConfigValue with name {$name} is not defined");
+                throw new ConfigException("ConfigValue with name {$name} is not defined");
             }
         }
 
@@ -104,7 +104,7 @@
          * Clears config entry with name $name
          *
          * @param string $name Name of entry
-         * @throws ConfigExceptions When entry is not defined
+         * @throws ConfigException When entry is not defined
          */
         public function ClearValue(string $name)
         {
@@ -115,7 +115,7 @@
             }
             else
             {
-                throw new ConfigExceptions("ConfigValue with name {$name} is not defined");
+                throw new ConfigException("ConfigValue with name {$name} is not defined");
             }
         }
 
@@ -123,7 +123,7 @@
          * Resets priority of entry with name $name
          *
          * @param string $name Name of entry
-         * @throws ConfigExceptions When entry is not defined
+         * @throws ConfigException When entry is not defined
          */
         public function ResetPriorityOfValue(string $name)
         {
@@ -133,7 +133,7 @@
             }
             else
             {
-                throw new ConfigExceptions("ConfigValue with name {$name} is not defined");
+                throw new ConfigException("ConfigValue with name {$name} is not defined");
             }
         }
 
@@ -192,7 +192,7 @@
          * Returns current entry value
          *
          * @return string|mixed Value of current entry
-         * @throws ConfigExceptions When current is not loaded by Pull()
+         * @throws ConfigException When current is not loaded by Pull()
          */
         public function Current()
         {
@@ -202,7 +202,7 @@
             }
             else
             {
-                throw new ConfigExceptions("Can't return current because current is not loaded by Pull() yet");
+                throw new ConfigException("Can't return current because current is not loaded by Pull() yet");
             }
         }
 

@@ -17,4 +17,4 @@
     /**
      * {Description}
      */
-    class ConfigExceptions extends \Exception { }
+    class ConfigException extends \Exception { }
