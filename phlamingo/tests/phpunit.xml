@@ -1,0 +1,10 @@
+<phpunit bootstrap="bootstrap.php">
+    <testsuite name="HTTPTestSuite">
+        <directory>tests/http</directory>
+    </testsuite>
+    <php>
+        <server name="REQUEST_URI" value="/phlamingo" />
+        <server name="REQUEST_METHOD" value="GET" />
+        <server name="SERVER_PROTOCOL" value="HTTP/1.1" />
+    </php>
+</phpunit>
