@@ -13,11 +13,10 @@
 
     namespace Phlamingo\Core;
 
-    use Phlamingo\Config\Config;
+    use Phlamingo\Config\Configurator;
     use Phlamingo\Core\MVC\BaseController;
     use Phlamingo\Core\MVC\Router;
     use Phlamingo\Di\Container;
-    use Phlamingo\HTTP\Request;
 
 
     /**
@@ -50,10 +49,10 @@
         /**
          * Implements configuration logic
          *
-         * @param Config $config Config class
-         * @return Config Set config class
+         * @param Configurator $config Config class
+         * @return Configurator Set config class
          */
-        public abstract function Config(Config $config) : Config;
+        public abstract function Config(Configurator $config) : Configurator;
 
         /**
          * Sets up a router
@@ -78,10 +77,10 @@
         /**
          * Called before Config(), implements default configuration of application
          *
-         * @return Config Configuration class
+         * @return Configurator Configuration class
          */
-        public final function AbstractConfig() : Config
+        public final function AbstractConfig() : Configurator
         {
-            return new Config();
+            return new Configurator();
         }
     }

@@ -14,7 +14,7 @@
     use Phlamingo\Core\MVC\BaseController;
     use Phlamingo\HTTP\Request;
     use Phlamingo\Core\MVC\Router;
-    use Phlamingo\Config\Config;
+    use Phlamingo\Config\Configurator;
     use Phlamingo\Di\Container;
 
     /**
@@ -42,10 +42,10 @@
         /**
          * Here write your config code before app will start
          *
-         * @param Config $config Config class
-         * @return Config Set config class
+         * @param Configurator $config Config class
+         * @return Configurator Set config class
          */
-        public function Config(Config $config) : Config
+        public function Config(Configurator $config) : Configurator
         {
             // Here setup your app:
 
