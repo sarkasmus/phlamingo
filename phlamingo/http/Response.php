@@ -95,7 +95,7 @@
          * Version of HTTP protocol
          * @var string $Version
          */
-        public $Version;
+        protected $Version;
 
         /**
          * Code status of response
@@ -146,7 +146,7 @@
             $this->Charset = $charset;
             $this->Headers = $headers;
 
-            if ($version == "1.1" or $version == "1.0")
+            if ($version == "1.1" or $version == "1.0" or $version == "2")
             {
                 $this->Version = $version;
             }
@@ -204,6 +204,34 @@
         public function getStatusCode()
         {
             return $this->StatusCode;
+        }
+
+        /**
+         * Setter for $Version
+         *
+         * @param string $version Version
+         * @throws HttpException When version is incorrect
+         */
+        public function setVersion(string $version)
+        {
+            if ($version == "1.1" or $version == "1.0" or $version == "2")
+            {
+                $this->Version = $version;
+            }
+            else
+            {
+                throw new HttpException();
+            }
+        }
+
+        /**
+         * Getter for $Version
+         *
+         * @return string Version
+         */
+        public function getVersion()
+        {
+            return $this->Version;
         }
 
         /**
