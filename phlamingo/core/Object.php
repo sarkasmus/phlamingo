@@ -89,7 +89,7 @@
                 $docReader = new Reader($reflection->getName(), $propertyName, "property");
                 $service = $docReader->getParameter("Service");
 
-                if (!empty($service))
+                if (!empty($service) and $service != self::class)
                 {
                     $this->$propertyName = $this->Container->Get($service);
                 }
