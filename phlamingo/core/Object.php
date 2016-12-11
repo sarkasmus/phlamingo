@@ -51,7 +51,7 @@
          */
         public $Container;
 
-        private static $Enviroment;
+        private static $Enviroment = true;
 
         /**
          * Constructor
@@ -62,7 +62,7 @@
          */
         public function __construct()
         {
-            if (Object::$Enviroment)
+            if (Object::$Enviroment === true)
             {
                 $this->ThisSetup();
             }
