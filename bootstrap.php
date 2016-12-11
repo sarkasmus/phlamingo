@@ -1,4 +1,5 @@
 <?php
+
     /**
      * @author Michal Doubek <michal@doubkovi.cz>
      * @license LGPL 3
@@ -12,6 +13,10 @@
 
     $loader = require __DIR__ . "/vendor/autoload.php";
     require __DIR__ . "/Application.php";
+
+    define("PHLAMINGO", __DIR__ . "/phlamingo");
+    define("TEMP", PHLAMINGO . "/temp");
+    define("DOMAIN", $_SERVER['HTTP_HOST']);
 
     // Create instance of Application
     $application = new Application();
@@ -28,5 +33,4 @@
     $router = $application->SetupRouter($router);
 
     // Run application
-
     $application->CallMain($router);
