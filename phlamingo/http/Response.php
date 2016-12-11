@@ -206,6 +206,11 @@
             return $this->StatusCode;
         }
 
+        public function getStatus()
+        {
+            return $this->Status;
+        }
+
         /**
          * Setter for $Version
          *
