@@ -36,7 +36,8 @@
 
 
             // Runs controller
-            $controller->run($controllerAction, ...$params);
+            $response = $controller->run($controllerAction, ...$params);
+            $response->Send();
         }
 
         /**
