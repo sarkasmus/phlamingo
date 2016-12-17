@@ -38,9 +38,9 @@
                 "1.1",
                 array ("Id" => 54),
                 array(
-                    "Accept-Languages: cs, en;q=0.8, sk",
-                    "Accept-Charset: UTF-8",
-                    "Accept-Encoding: compress, qzip;q=0.5",
+                    "Accept-Languages" => "cs,en;q=0.8,sk",
+                    "Accept-Charset" => "UTF-8",
+                    "Accept-Encoding" => "compress,qzip;q=0.5",
                 ),
                 array(),
                 array(),
@@ -114,20 +114,6 @@
                     ["name" => "3"]
                 ),
                 $this->Request->ParseAccept("1, 2;q=0.8, 3", "name")
-            );
-        }
-
-        /**
-         * Tests ParseHeaders helper
-         */
-        public function testParseHeaders()
-        {
-            $this->assertEquals(array(
-                    "Content-Type" => "text/html",
-                    "Accept-Language" => "en"
-                ),
-                // will test removing white chars too
-                $this->Request->ParseHeaders(array("Content-Type: text/html", "Accept-Language: en  "))
             );
         }
     }
