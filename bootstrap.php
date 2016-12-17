@@ -22,7 +22,7 @@
     $application = new Application();
 
     // Setup DI
-    $application->SetupDI(new \Phlamingo\Di\Container());
+    $application->SetupDI(\Phlamingo\Di\ContainerSingleton::GetContainer());
 
     // Configurate application
     $config = $application->AbstractConfig();

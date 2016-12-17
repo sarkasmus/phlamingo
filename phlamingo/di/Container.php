@@ -13,7 +13,7 @@
 
     namespace Phlamingo\Di;
 
-    use Phlamingo\Core\Object;
+    use Phlamingo\Di\Exceptions\DIContainerException;
 
 
     /**
@@ -22,14 +22,30 @@
     class Container
     {
         /**
+         * List of service factories -> callables (FactoryAbstract, callback)
+         * @var array $services
+         */
+        private $Services = [];
+
+        public $Singletons = [];
+
+        /**
          * Returns a service
          *
          * @param string $service Name of service
          * @return mixed Service
+         * @throws DIContainerException
          */
         public function Get(string $service)
         {
-            return StaticContainer::$service();
+            if (isset($this->Services[$service]))
+            {
+                return $this->Services[$service]($this);
+            }
+            else
+            {
+                throw new DIContainerException("$service");
+            }
         }
 
         /**
@@ -37,10 +53,21 @@
          *
          * @param string $name Service name
          * @param callable $factory Service factory
+         * @throws DIContainerException
          */
         public function AddService(string $name, callable $factory)
         {
-            StaticContainer::AddService($name, $factory);
+            if (isset($this->Services[$name]))
+            {
+                throw new DIContainerException("sadsaddsasda");
+            }
+
+            if (!is_callable($factory))
+            {
+                throw new DIContainerException("sdadasdsadsa");
+            }
+
+            $this->Services[$name] = $factory;
         }
 
         /**
@@ -48,9 +75,24 @@
          *
          * @param string $service Affected service
          * @param string $alias Alias
+         * @throws DIContainerException
          */
         public function AddAlias(string $service, string $alias)
         {
-            StaticContainer::AddAlias($service, $alias);
+            if (!isset($this->Services[$alias]))
+            {
+                if (isset($this->Services[$service]))
+                {
+                    $this->Services[$alias] = $this->Services[$service];
+                }
+                else
+                {
+                    throw new DIContainerException("");
+                }
+            }
+            else
+            {
+                throw new DIContainerException("");
+            }
         }
     }

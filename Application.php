@@ -55,7 +55,7 @@
 
         public function SetupDI(Container $container)
         {
-            $container->AddService("request", function(){
+            $container->AddService("Request", function(){
                 return new Request(
                     $_SERVER['REQUEST_URI'],
                     $_SERVER['REQUEST_METHOD'],
@@ -68,10 +68,31 @@
                 );
             });
 
-            $container->AddService("session", function (){
-                return new class(){
-                    public $foo = "bar";
-                };
+            $container->AddService("Session", function(Container $container){
+                $request = $container->Get("Request");
+                if (isset($container->Singletons["Session"]))
+                {
+                    return $container->Singletons["Session"];
+                }
+                elseif (isset($request->Cookies["SessID"]))
+                {
+                    $container->Singletons["Session"] = new Phlamingo\HTTP\Sessions\Session($request->Cookies["SessID"]);
+                    return $container->Singletons["Session"];
+                }
+                else
+                {
+                    $container->Singletons["Session"] = new Phlamingo\HTTP\Sessions\Session();
+                    setcookie(
+                        "SessID",
+                        $container->Singletons["Session"]->SessionID,
+                        time() + 8600 * 14,
+                        "/",
+                        DOMAIN,
+                        false,
+                        true
+                    );
+                    return $container->Singletons["Session"];
+                }
             });
         }
 
@@ -85,8 +106,8 @@
         {
             // Here setup your router:
             $router->SetHomepage(["controller" => new App\Main\Controllers\HomeController(), "action" => "DefaultAction"]);
-            /*$router->AddRoute("controller/show/", ["controller" => "Controller", "action" => "ShowAction"]);
-            $router->AddRoute("controller/user/{1-100}", ["controller" => "Controller", "action" => "UserAction"]);
+            $router->AddRoute("/session/{string}", ["controller" => new \App\Main\Controllers\HomeController(), "action" => "SetSessionAction"]);
+            /*$router->AddRoute("controller/user/{1-100}", ["controller" => "Controller", "action" => "UserAction"]);
             $router->AddRoute("controller/user/{int:admin}", ["controller" => "Controller", "action" => "UserAction"]);
             $router->AddRoute("article/{en|fr|de}", ["controller" => "Article", "action" => "Read"]);*/
 

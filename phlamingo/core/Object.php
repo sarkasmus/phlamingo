@@ -18,6 +18,7 @@
 
     use DocBlockReader\Reader;
     use Phlamingo\Di\Container;
+    use Phlamingo\Di\ContainerSingleton;
 
 
     /**
@@ -38,12 +39,6 @@
          * @var array $methods
          */
         protected $methods = [];
-
-        /**
-         * Session service
-         * @Service session
-         */
-        public $Session;
 
         /**
          * Dependency injection container
@@ -80,7 +75,7 @@
             $this->Reflection = $reflection = new \ReflectionClass($this);
 
             // Setup di
-            $this->Container = new Container();
+            $this->Container = ContainerSingleton::GetContainer();
 
             $properties = $reflection->getProperties();
             foreach ($properties as $property)

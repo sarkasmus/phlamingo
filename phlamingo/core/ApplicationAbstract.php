@@ -17,6 +17,7 @@
     use Phlamingo\Core\MVC\BaseController;
     use Phlamingo\Core\MVC\Router;
     use Phlamingo\Di\Container;
+    use Phlamingo\Di\ContainerSingleton;
 
 
     /**
@@ -40,8 +41,8 @@
          */
         public final function CallMain(Router $router)
         {
-            $container = new Container();
-            $request = $container->Get("request");
+            $container = ContainerSingleton::GetContainer();
+            $request = $container->Get("Request");
             $event = $router->Route($request);
             $this->Main($event['controller'], $event['action'], ...$event['params']);
         }
