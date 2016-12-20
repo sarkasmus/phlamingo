@@ -18,6 +18,7 @@
 
     use DocBlockReader\Reader;
     use Phlamingo\Di\Container;
+    use Phlamingo\Di\ContainerSingleton;
 
 
     /**
@@ -40,16 +41,12 @@
         protected $methods = [];
 
         /**
-         * Session service
-         * @Service session
-         */
-        public $Session;
-
-        /**
          * Dependency injection container
          * @var Container $Container
          */
         public $Container;
+
+        private static $Enviroment = true;
 
         /**
          * Constructor
@@ -60,7 +57,10 @@
          */
         public function __construct()
         {
-            $this->ThisSetup();
+            if (Object::$Enviroment === true)
+            {
+                $this->ThisSetup();
+            }
         }
 
         /**
@@ -69,13 +69,13 @@
          * Initiates reflection and container and sets
          * dependencies of class
          */
-        protected final function ThisSetup()
+        protected function ThisSetup()
         {
             // Setup reflection
             $this->Reflection = $reflection = new \ReflectionClass($this);
 
             // Setup di
-            $this->Container = new Container();
+            $this->Container = ContainerSingleton::GetContainer();
 
             $properties = $reflection->getProperties();
             foreach ($properties as $property)
@@ -84,7 +84,7 @@
                 $docReader = new Reader($reflection->getName(), $propertyName, "property");
                 $service = $docReader->getParameter("Service");
 
-                if (!empty($service))
+                if (!empty($service) and $service != self::class)
                 {
                     $this->$propertyName = $this->Container->Get($service);
                 }
@@ -100,20 +100,27 @@
          */
         public function __get(string $name)
         {
-            if ($this->Reflection->hasProperty($name))
+            if (isset($this->Reflection))
             {
-                if ($this->Reflection->hasMethod("get" . ucfirst($name)))
+                if ($this->Reflection->hasProperty($name))
                 {
-                    return $this->Reflection->getMethod("get" . ucfirst($name))->invoke($this);
+                    if ($this->Reflection->hasMethod("get" . ucfirst($name)))
+                    {
+                        return $this->Reflection->getMethod("get" . ucfirst($name))->invoke($this);
+                    }
+                    else
+                    {
+                        throw new MemberAccessException("Property {$name} has not defined getter in class {" . get_class($this) . "}");
+                    }
                 }
                 else
                 {
-                    throw new MemberAccessException("Property {$name} has not defined getter in class {" . get_class($this) . "}");
+                    throw new MemberAccessException("Property {$name} does not exist in class {" . get_class($this) . "}");
                 }
             }
             else
             {
-                throw new MemberAccessException("Property {$name} does not exist in class {" . get_class($this) . "}");
+                throw new MemberAccessException("Reflection is not defined in instance of {" . get_class($this) . "} and properties can't be used");
             }
         }
 
@@ -133,20 +140,27 @@
             }
 
             // Implements setters
-            if ($this->Reflection->hasProperty($name))
+            if (isset($this->Reflection))
             {
-                if ($this->Reflection->hasMethod("set" . ucfirst($name)))
+                if ($this->Reflection->hasProperty($name))
                 {
-                    $this->Reflection->getMethod("set" . ucfirst($name))->invoke($this, $value);
+                    if ($this->Reflection->hasMethod("set" . ucfirst($name)))
+                    {
+                        $this->Reflection->getMethod("set" . ucfirst($name))->invoke($this, $value);
+                    }
+                    else
+                    {
+                        throw new MemberAccessException("Property {$name} has not defined setter in class {" . get_class($this) . "}");
+                    }
                 }
                 else
                 {
-                    throw new MemberAccessException("Property {$name} has not defined setter in class {" . get_class($this) . "}");
+                    throw new MemberAccessException("Property {$name} does not exist in class {" . get_class($this) . "}");
                 }
             }
             else
             {
-                throw new MemberAccessException("Property {$name} does not exist in class {" . get_class($this) . "}");
+                throw new MemberAccessException("Reflection is not defined in instance of {" . get_class($this) . "} and properties can't be used");
             }
         }
 
@@ -180,12 +194,15 @@
             {
                 return $this->methods[$name](...$arguments);
             }
-            elseif (substr($name, 0, 2) === "on" and $this->Reflection->hasProperty(substr($name, 2) . "Event"))
+            elseif (isset($this->Reflection))
             {
-                $event = substr($name, 2) . "Event";
-                foreach ($this->$event as $event)
+                if (substr($name, 0, 2) === "on" and $this->Reflection->hasProperty(substr($name, 2) . "Event"))
                 {
-                    $event();
+                    $event = substr($name, 2) . "Event";
+                    foreach ($this->$event as $event)
+                    {
+                        $event();
+                    }
                 }
             }
             else
@@ -194,5 +211,10 @@
             }
 
             return null;
+        }
+
+        public static function SetEnviroment(bool $callSetup = true)
+        {
+            self::$Enviroment = $callSetup;
         }
     }

@@ -133,10 +133,10 @@
          */
         public function SetupHeaders()
         {
-            $this->Languages = $this->ParseAccept(isset($this->Headers["Accept-Languages"]) ? $this->Headers["Accept-Languages"] : "undefined", "language");
-            $this->Charsets = $this->ParseAccept(isset($this->Headers["Accept-Charset"]) ? $this->Headers["Accept-Charset"] : "undefined", "charset");
-            $this->Encodings = $this->ParseAccept(isset($this->Headers["Accept-Encoding"]) ? $this->Headers["Accept-Encoding"] : "undefined", "encoding");
-            $this->ContentTypes = $this->ParseAccept(isset($this->Headers["Accept"]) ? $this->Headers["Accept"] : "undefined", "mime-type");
+            $this->Languages = self::ParseAccept(isset($this->Headers["Accept-Languages"]) ? $this->Headers["Accept-Languages"] : "undefined", "language");
+            $this->Charsets = self::ParseAccept(isset($this->Headers["Accept-Charset"]) ? $this->Headers["Accept-Charset"] : "undefined", "charset");
+            $this->Encodings = self::ParseAccept(isset($this->Headers["Accept-Encoding"]) ? $this->Headers["Accept-Encoding"] : "undefined", "encoding");
+            $this->ContentTypes = self::ParseAccept(isset($this->Headers["Accept"]) ? $this->Headers["Accept"] : "undefined", "mime-type");
             $this->Client = isset($this->Headers["User-Agent"]) ? $this->Headers["User-Agent"] : "undefined";
         }
 
@@ -147,7 +147,7 @@
          * @param string $name Accept name
          * @return array Arrays of header datas
          */
-        protected function ParseAccept(string $accept, string $name) : array
+        public static function ParseAccept(string $accept, string $name) : array
         {
             $accept = explode(",", $accept);
             $parsedAccept = [];

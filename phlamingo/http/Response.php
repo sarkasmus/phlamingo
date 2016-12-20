@@ -14,6 +14,7 @@
     namespace Phlamingo\HTTP;
 
     use Phlamingo\Core\Object;
+    use Phlamingo\HTTP\Exceptions\HttpException;
 
 
     /**
@@ -26,7 +27,7 @@
          * List of all http status codes and their status texts
          * @var array $statusList
          */
-        public $statusList = [
+        public $StatusList = [
             100 => 'Continue',
             101 => 'Switching Protocols',
             102 => 'Processing',            // RFC2518
@@ -94,7 +95,7 @@
          * Version of HTTP protocol
          * @var string $Version
          */
-        public $Version;
+        protected $Version;
 
         /**
          * Code status of response
@@ -134,19 +135,36 @@
          * @param integer   $statusCode    Code status of response             [optional  =  200          ]
          * @param string    $charset       Charset which is used in response   [optional  =  "UTF-8"      ]
          * @param array     $headers       All other headers in response       [optional  =  empty array  ]
+         *
+         * @throws HttpException When http status code doesn't exists (is not defined in http protocol)
          */
         public function __construct(string $content, string $version = "1.1", int $statusCode = 200, string $charset = "UTF-8", array $headers = [])
         {
             parent::__construct();
 
             $this->Content = $content;
-            $this->Version = $version;
-            $this->StatusCode = $statusCode;
             $this->Charset = $charset;
             $this->Headers = $headers;
 
+            if ($version == "1.1" or $version == "1.0" or $version == "2")
+            {
+                $this->Version = $version;
+            }
+            else
+            {
+                throw new HttpException();
+            }
+
             // Convert number code to text
-            $this->Status = strtr($statusCode, $this->statusList);
+            if (key_exists($statusCode, $this->StatusList))
+            {
+                $this->Status = strtr($statusCode, $this->StatusList);
+                $this->StatusCode = $statusCode;
+            }
+            else
+            {
+                throw new HttpException();
+            }
         }
 
         /**
@@ -163,11 +181,62 @@
          * Sets new status code
          *
          * @param integer $code Status code
+         * @throws HttpException When http status code doesn't exists (is not defined in http protocol)
          */
-        public function SetStatusCode(int $code)
+        public function setStatusCode(int $code)
         {
-            $this->StatusCode = $code;
-            $this->Status = strtr($code, $this->statusList);
+            if (key_exists($code, $this->StatusList))
+            {
+                $this->StatusCode = $code;
+                $this->Status = strtr($code, $this->StatusList);
+            }
+            else
+            {
+                throw new HttpException();
+            }
+        }
+
+        /**
+         * Getter for $StatusCode
+         *
+         * @return int StatusCode value
+         */
+        public function getStatusCode()
+        {
+            return $this->StatusCode;
+        }
+
+        public function getStatus()
+        {
+            return $this->Status;
+        }
+
+        /**
+         * Setter for $Version
+         *
+         * @param string $version Version
+         * @throws HttpException When version is incorrect
+         */
+        public function setVersion(string $version)
+        {
+            if ($version == "1.1" or $version == "1.0" or $version == "2")
+            {
+                $this->Version = $version;
+            }
+            else
+            {
+                throw new HttpException();
+            }
+        }
+
+        /**
+         * Getter for $Version
+         *
+         * @return string Version
+         */
+        public function getVersion()
+        {
+            return $this->Version;
         }
 
         /**

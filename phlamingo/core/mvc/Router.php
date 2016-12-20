@@ -50,7 +50,8 @@
             foreach ($this->routes as $route)
             {
                 // Divide route mask and real URI to parts by / delimiter e.g "user/5" to ["user", 5]
-                $routeParts = explode("/", $route["mask"]);
+                $mask = trim($route["mask"], "/");
+                $routeParts = explode("/", $mask);
                 $uriParts = explode("/", trim($request->URI, "/"));
 
                 // Browse all parts of route. Route can has more parts then URI because it can has optional parameters
@@ -60,7 +61,7 @@
                     $routePart = array_shift($routeParts);
                     $routePart = $routePart !== NULL ? $routePart : "{empty}";
 
-                    //
+                    // Iterate URI parts
                     $uriPart = array_shift($uriParts);
                     $uriPart = $uriPart !== NULL ? $uriPart : "{empty}";
 
@@ -90,7 +91,6 @@
                     // Route part and uriPart are equal e.g: /ArticleController/{int} == /ArticleController/5 -
                     // controllers are same but its not limited just to controllers and action
                     elseif ($routePart == $uriPart) {
-                        $params[] = $uriPart;
                         $finalRoute = $route;
                         continue;
                     } else {

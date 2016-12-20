@@ -15,8 +15,9 @@
 
     use DocBlockReader\Reader;
     use Phlamingo\Core\Object;
-    use Phlamingo\Di\Container;
     use Phlamingo\HTTP\Request;
+    use Phlamingo\Core\MVC\Exceptions\ControllerException;
+    use Phlamingo\HTTP\Response;
 
 
     /**
@@ -26,9 +27,15 @@
     abstract class BaseController extends Object
     {
         /**
-         * @Service request
+         * @Service Request
+         * @var Request
          */
         public $Request;
+
+        /**
+         * @Service Session
+         */
+        public $Session;
 
         public function BeforeAction()
         {
@@ -42,6 +49,58 @@
 
         public final function Run(string $action, ...$params)
         {
+            $this->BeforeAction();
+            $response = $this->$action(...$params);
+            $this->AfterAction();
 
+            if ($response instanceof Response)
+            {
+                return $response;
+            }
+            elseif (is_string($response))
+            {
+                return new Response($response);
+            }
+            elseif (is_array($response))
+            {
+                return new JsonResponse($response);
+            }
+            elseif ($response instanceof \DOMDocument)
+            {
+                return new XmlResponse($response);
+            }
+            else
+            {
+                // Implement controller exception !!!
+                throw new ControllerException();
+            }
+        }
+
+        protected final function SetupPersists()
+        {
+
+        }
+
+        protected final function Render(string $template)
+        {
+
+        }
+
+        protected final function Redirect($pathOrEvent, ...$params)
+        {
+            if (is_string($pathOrEvent))
+            {
+                return new Response("", "1.1", 301, "UTF-8", "Location: " . $pathOrEvent);
+            }
+            elseif (is_array($pathOrEvent))
+            {
+                $router = new Router();
+                $router->GenerateURL($pathOrEvent, ...$params);
+                return new Response("", "1.1", 301, "UTF-8", "Location: " . $pathOrEvent);
+            }
+            else
+            {
+                throw new ControllerException("Path" . var_export($pathOrEvent) . "can't be redirected");
+            }
         }
     }
