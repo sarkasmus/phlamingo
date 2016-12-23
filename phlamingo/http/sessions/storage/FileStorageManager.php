@@ -95,4 +95,11 @@
                 rename(TEMP . "/sess" . $session->SessionID, TEMP . "/sess" . $newSessionId);
             }
         }
+
+        public function GetIterator() : int
+        {
+            $iterator = (int)file_get_contents(TEMP . "/sessIterator") + 1;
+            file_put_contents(TEMP . "/sessIterator", $iterator);
+            return $iterator;
+        }
     }

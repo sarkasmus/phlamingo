@@ -23,7 +23,12 @@
 
         public function setUp()
         {
-            $this->Session = new Session(hash("sha256", "1"));
+            $storageManagerMock = $this->createMock("Phlamingo\\HTTP\\Sessions\\Storage\\FileStorageManager");
+            $storageManagerMock->expects($this->once())->method("Pull")->willReturn(false);
+            $this->Session = new Session(
+                hash("sha256", "1"),
+                $storageManagerMock
+            );
             $this->Session->Reflection = new \ReflectionClass($this->Session);
         }
 

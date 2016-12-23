@@ -72,7 +72,8 @@
         public function RegenerateSessionID()
         {
             $oldSessID = $this->SessionID;
-            $iterator = (int)file_get_contents(TEMP . "/sessIterator") + 1;
+            $iterator = $this->StorageManager->GetIterator();
+            $this->StorageManager->Destroy($this);
             $this->SessionID = hash("sha256", $_SERVER['REMOTE_ADDR'] . $iterator);
             setcookie(
                 "SessID",
@@ -83,10 +84,7 @@
                 false,
                 true
             );
-            file_put_contents(TEMP . "/sessIterator", $iterator);
-
-            if (file_exists(TEMP . "/sess" . $oldSessID))
-                unlink(TEMP . "/sess" . $oldSessID);
+            var_dump($this->SessionID);
         }
 
         /**
