@@ -1,0 +1,8 @@
+section1:
+    value1: "string"
+    value2: 123
+section2:
+    subsection1:
+        val1: 12
+        val2: true
+    value1: ["1", "item", 564]
