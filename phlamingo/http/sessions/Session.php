@@ -20,6 +20,8 @@
 
     /**
      * {Description}
+     *
+     * @Service Session
      */
     class Session extends SessionSection
     {
@@ -62,8 +64,10 @@
             {
                 $this->RegenerateSessionID();
             }
-
-            $this->Pull();
+            else
+            {
+                $this->Pull();
+            }
         }
 
         /**
@@ -71,7 +75,6 @@
          */
         public function RegenerateSessionID()
         {
-            $oldSessID = $this->SessionID;
             $iterator = $this->StorageManager->GetIterator();
             $this->StorageManager->Destroy($this);
             $this->SessionID = hash("sha256", $_SERVER['REMOTE_ADDR'] . $iterator);
@@ -84,7 +87,6 @@
                 false,
                 true
             );
-            var_dump($this->SessionID);
         }
 
         /**
@@ -147,6 +149,10 @@
                         $this->Sections[$name]->Expiration("key", $variable);
                     }
                 }
+            }
+            else
+            {
+                throw new SessionException("Session ID {$this->SessionID} doesn't exists");
             }
         }
 
@@ -223,7 +229,7 @@
          *
          * @return string SessionID
          */
-        public function getSessionID() : string
+        public function getSessionID() : ?string
         {
             return $this->SessionID;
         }
@@ -256,5 +262,13 @@
         public function getSections() : array
         {
             return $this->Sections;
+        }
+
+        /**
+         * Destructor - automatic saves session
+         */
+        public function __destruct()
+        {
+            $this->Save();
         }
     }
