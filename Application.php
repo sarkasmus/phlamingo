@@ -55,45 +55,23 @@
 
         public function SetupDI(Container $container)
         {
-            $container->AddService("Request", function(){
-                return new Request(
-                    $_SERVER['REQUEST_URI'],
-                    $_SERVER['REQUEST_METHOD'],
-                    explode("/", $_SERVER['SERVER_PROTOCOL'])[1],
-                    $_GET,
-                    getallheaders(),
-                    $_COOKIE,
-                    $_FILES,
-                    file_get_contents("php://input")
-                );
-            });
+            $diCacher = new \Phlamingo\Cache\ApplicationCachers\DICacher();
 
-            $container->AddService("Session", function(Container $container){
-                $request = $container->Get("Request");
-                if (isset($container->Singletons["Session"]))
+            if ($diCacher->Cached())
+            {
+                foreach ($diCacher->Get() as $service => $factory)
                 {
-                    return $container->Singletons["Session"];
+                    $container->AddService($service, new $factory);
                 }
-                elseif (isset($request->Cookies["SessID"]))
+            }
+            else
+            {
+                $diCacher->Cache();
+                foreach ($diCacher->Get() as $service => $factory)
                 {
-                    $container->Singletons["Session"] = new Phlamingo\HTTP\Sessions\Session($request->Cookies["SessID"]);
-                    return $container->Singletons["Session"];
+                    $container->AddService($service, new $factory);
                 }
-                else
-                {
-                    $container->Singletons["Session"] = new Phlamingo\HTTP\Sessions\Session();
-                    setcookie(
-                        "SessID",
-                        $container->Singletons["Session"]->SessionID,
-                        time() + 8600 * 14,
-                        "/",
-                        DOMAIN,
-                        false,
-                        true
-                    );
-                    return $container->Singletons["Session"];
-                }
-            });
+            }
         }
 
         /**
@@ -104,9 +82,27 @@
          */
         public function SetupRouter(Router $router) : Router
         {
+            /*$routerCacher = new \Phlamingo\Cache\ApplicationCachers\RouterCacher();
+
+            if ($routerCacher->Cached())
+            {
+                foreach ($routerCacher->Get() as $mask => $event)
+                {
+                    $router->AddRoute($mask, $event);
+                }
+            }
+            else
+            {
+                $routerCacher->Cache();
+                foreach ($routerCacher->Get() as $mask => $event)
+                {
+                    $router->AddRoute($mask, $event);
+                }
+            }*/
+
             // Here setup your router:
-            $router->SetHomepage(["controller" => new App\Main\Controllers\HomeController(), "action" => "DefaultAction"]);
-            $router->AddRoute("/session/{string}", ["controller" => new \App\Main\Controllers\HomeController(), "action" => "SetSessionAction"]);
+            $router->SetHomepage(["controller" => "App\\Main\\Controllers\\HomeController", "action" => "DefaultAction"]);
+            $router->AddRoute("/regenerateid/", ["controller" => "\\App\\Main\\Controllers\\HomeController", "action" => "RegenerateID"]);
             /*$router->AddRoute("controller/user/{1-100}", ["controller" => "Controller", "action" => "UserAction"]);
             $router->AddRoute("controller/user/{int:admin}", ["controller" => "Controller", "action" => "UserAction"]);
             $router->AddRoute("article/{en|fr|de}", ["controller" => "Article", "action" => "Read"]);*/

@@ -14,9 +14,13 @@
     $loader = require __DIR__ . "/vendor/autoload.php";
     require __DIR__ . "/Application.php";
 
+    define("APP", __DIR__ . "/app");
     define("PHLAMINGO", __DIR__ . "/phlamingo");
     define("TEMP", PHLAMINGO . "/temp");
     define("DOMAIN", $_SERVER['HTTP_HOST']);
+
+    // clear the cache in development mode...
+    \Phlamingo\Cache\Cache::ClearCache();
 
     // Create instance of Application
     $application = new Application();

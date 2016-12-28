@@ -19,6 +19,8 @@
     /**
      * HTTP Request - fully programable extension
      * for control HTTP protocol
+     *
+     * @Service Request
      */
     class Request extends Object
     {
