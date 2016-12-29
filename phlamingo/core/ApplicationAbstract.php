@@ -44,7 +44,7 @@
             $container = ContainerSingleton::GetContainer();
             $request = $container->Get("Request");
             $event = $router->Route($request);
-            $this->Main($event['controller'], $event['action'], ...$event['params']);
+            $this->Main(new $event['controller'], $event['action'], ...$event['params']);
         }
 
         /**
