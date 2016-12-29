@@ -10,7 +10,7 @@
  * This source code is part of Phlamingo project
  */
 
-namespace Phlamingo\HTTP\Sessions\Factories;
+namespace Phlamingo\HTTP\Factories;
 
 use Phlamingo\Di\BaseFactory;
 use Phlamingo\HTTP\Request;
