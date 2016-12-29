@@ -49,6 +49,23 @@
         public function Config(Configurator $config) : Configurator
         {
             // Here setup your app:
+            $configCacher = new \Phlamingo\Cache\ApplicationCachers\ConfigCacher();
+
+            if ($configCacher->Cached())
+            {
+                foreach ($configCacher->Get() as $key => $values)
+                {
+                    $config->Push($values, $key);
+                }
+            }
+            else
+            {
+                $configCacher->Cache();
+                foreach ($configCacher->Get() as $key => $values)
+                {
+                    $config->Push($values, $key);
+                }
+            }
 
             return $config;
         }
@@ -82,7 +99,7 @@
          */
         public function SetupRouter(Router $router) : Router
         {
-            /*$routerCacher = new \Phlamingo\Cache\ApplicationCachers\RouterCacher();
+            $routerCacher = new \Phlamingo\Cache\ApplicationCachers\RouterCacher();
 
             if ($routerCacher->Cached())
             {
@@ -98,10 +115,10 @@
                 {
                     $router->AddRoute($mask, $event);
                 }
-            }*/
+            }
 
             // Here setup your router:
-            $router->SetHomepage(["controller" => "App\\Main\\Controllers\\HomeController", "action" => "DefaultAction"]);
+            /*$router->SetHomepage(["controller" => "App\\Main\\Controllers\\HomeController", "action" => "DefaultAction"]);
             $router->AddRoute("/regenerateid/", ["controller" => "\\App\\Main\\Controllers\\HomeController", "action" => "RegenerateID"]);
             /*$router->AddRoute("controller/user/{1-100}", ["controller" => "Controller", "action" => "UserAction"]);
             $router->AddRoute("controller/user/{int:admin}", ["controller" => "Controller", "action" => "UserAction"]);
