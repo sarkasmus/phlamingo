@@ -14,6 +14,7 @@
     namespace Phlamingo\Config\Parsers;
     
     use Phlamingo\Config\Exceptions\ConfigException;
+    use Symfony\Component\Yaml\Yaml;
     
     
     /**
@@ -29,7 +30,7 @@
          */
         public function Parse(string $code) : array
         {
-            $result = spyc_load($code);
+            $result = Yaml::parse($code);
             return $result;
         }
     
@@ -44,7 +45,7 @@
         {
             if (file_exists($path))
             {
-                $result = spyc_load_file($path);
+                $result = Yaml::parse(file_get_contents($path));
                 return $result;
             }
             else
@@ -61,7 +62,7 @@
          */
         public function Dump(array $data) : string
         {
-            $result = Spyc::YAMLDump($data);
+            $result = Yaml::dump($data);
             return $result;
         }
     
@@ -73,7 +74,7 @@
          */
         public function DumpToFile(array $data, string $path)
         {
-            $result = Spyc::YAMLDump($data);
+            $result = Yaml::dump($data);
     
             $file = fopen($path, "w");
             fwrite($file, $result);
