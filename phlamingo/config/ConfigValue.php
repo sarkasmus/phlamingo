@@ -82,6 +82,16 @@
         }
 
         /**
+         * Getter for property Value
+         *
+         * @return mixed Value
+         */
+        public function getValue()
+        {
+            return $this->Value;
+        }
+
+        /**
          * Setter for self::$Priority property
          *
          * @param int $priority Priority to set
@@ -112,7 +122,14 @@
                 $code .= "['$key']";
             }
 
-            $code .= " = $this->Value";
+            if (is_string($this->Value))
+            {
+                $code .= " = '$this->Value';";
+            }
+            else
+            {
+                $code .= " = $this->Value;";
+            }
             eval($code);
 
             return $array;

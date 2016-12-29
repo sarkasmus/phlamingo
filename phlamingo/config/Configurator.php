@@ -21,7 +21,7 @@
     /**
      * Configurator manages config of application
      */
-    class Configurator extends Object
+    class Configurator extends Object implements \IteratorAggregate
     {
         /**
          * List of config entries
@@ -37,8 +37,13 @@
          * @param string|mixed $defaultValue Default value
          * @throws ConfigException When ConfigValue with name $name already exists
          */
-        public function AddConfigValue(string $name, $value, $defaultValue)
+        public function AddConfigValue(string $name, $value, $defaultValue = null)
         {
+            if ($defaultValue === null)
+            {
+                $defaultValue = $value;
+            }
+
             if (!isset($this->ConfigValues[$name]))
             {
                 $this->ConfigValues[$name] = new ConfigValue($name, $value, $defaultValue);
@@ -84,7 +89,23 @@
             }
             else
             {
-                throw new ConfigException("ConfigValue with name {$name} is not defined");
+                $valuesMatches = [];
+                foreach ($this->ConfigValues as $key => $value)
+                {
+                    if (strstr($key, $name, true) !== false and empty(strstr($key, $name, true)))
+                    {
+                        $valuesMatches[$key] = $this->ConfigValues[$key]->Value;
+                    }
+                }
+
+                if (!empty($valuesMatches))
+                {
+                    return $valuesMatches;
+                }
+                else
+                {
+                    throw new ConfigException("ConfigValue with name {$name} is not defined");
+                }
             }
         }
 
@@ -155,55 +176,17 @@
          */
         public function PullAll() : array
         {
+            return $this->getIterator();
+        }
+
+        public function getIterator()
+        {
             $return = [];
-            foreach ($this->ConfigValues as $configValue)
+            foreach ($this->ConfigValues as $key => $value)
             {
-                array_merge_recursive($return, $configValue->GetAsArray());
+                $return[$key] = $value->Value;
             }
-
             return $return;
-        }
-
-        /**
-         * Moves cursor to next entry
-         *
-         * @return bool True if entry is not last False if current entry is last
-         */
-        public function Pull() : bool
-        {
-            $i = $this->Current[1];
-            if ($i <= count($this->ConfigValues))
-            {
-                $this->Current = [array_slice($this->ConfigValues, $i, $i), $i + 1];
-                return true;
-            }
-
-            $this->Current = [null, 1];
-            return false;
-        }
-
-        /**
-         * Current entry cursor
-         * @var array $Current
-         */
-        protected $Current = [null, 1];
-
-        /**
-         * Returns current entry value
-         *
-         * @return string|mixed Value of current entry
-         * @throws ConfigException When current is not loaded by Pull()
-         */
-        public function Current()
-        {
-            if (isset($this->Current[0]))
-            {
-                return $this->Current[0][0]->Value;
-            }
-            else
-            {
-                throw new ConfigException("Can't return current because current is not loaded by Pull() yet");
-            }
         }
 
         /**
@@ -215,8 +198,10 @@
         public function Push(array $parsedValues, int $priority)
         {
             $results = [];
+            $i = 0;
             while(!empty($parsedValues))
             {
+                $i++;
                 foreach ($parsedValues as $parsedKey => $parsedValue)
                 {
                     if (is_array($parsedValue))
@@ -228,8 +213,9 @@
                         }
                     }
 
-                    if (is_string($parsedValue))
+                    if (is_scalar($parsedValue))
                     {
+                        unset($parsedValues[$parsedKey]);
                         $results[$parsedKey] = $parsedValue;
                     }
                 }
@@ -237,7 +223,14 @@
 
             foreach ($results as $key => $result)
             {
-                $this->SetConfigValue($key, $result, $priority);
+                try
+                {
+                    $this->SetConfigValue($key, $result, $priority);
+                }
+                catch (ConfigException $e)
+                {
+                    $this->AddConfigValue($key, $result);
+                }
             }
         }
     }
