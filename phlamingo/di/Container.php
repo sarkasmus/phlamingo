@@ -44,7 +44,7 @@
             }
             else
             {
-                throw new DIContainerException("$service");
+                throw new DIContainerException("dsadsadsa $service");
             }
         }
 
@@ -65,6 +65,11 @@
             if (!is_callable($factory))
             {
                 throw new DIContainerException("sdadasdsadsa");
+            }
+
+            if ($factory instanceof BaseFactory)
+            {
+                $factory->Container = $this;
             }
 
             $this->Services[$name] = $factory;

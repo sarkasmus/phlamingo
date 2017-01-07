@@ -21,14 +21,12 @@
     abstract class BaseFactory
     {
         protected $Singleton = null;
-        protected $Container;
+        public $Container;
 
         public abstract function Make();
 
         public function __invoke()
         {
-            $this->Container = ContainerSingleton::GetContainer();
-
             if (is_object($this->Make()))
             {
                 return $this->Make();
