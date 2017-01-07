@@ -4,6 +4,8 @@
     </testsuite>
     <php>
         <server name="REQUEST_URI" value="/phlamingo" />
+        <server name="REMOTE_ADDR" value="169.215.36.10" />
+        <server name="HTTP_HOST" value="www.example.com" />
         <server name="REQUEST_METHOD" value="GET" />
         <server name="SERVER_PROTOCOL" value="HTTP/1.1" />
     </php>
