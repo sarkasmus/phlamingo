@@ -24,9 +24,9 @@
         public function setUp()
         {
             $storageManagerMock = $this->createMock("Phlamingo\\HTTP\\Sessions\\Storage\\FileStorageManager");
-            $storageManagerMock->expects($this->once())->method("Pull")->willReturn(false);
+            $storageManagerMock->expects($this->once())->method("GetIterator")->willReturn(1);
             $this->Session = new Session(
-                hash("sha256", "1"),
+                null,
                 $storageManagerMock
             );
             $this->Session->Reflection = new \ReflectionClass($this->Session);
@@ -34,7 +34,7 @@
 
         public function testProperties()
         {
-            $this->assertEquals(hash("sha256", "1"), $this->Session->SessionID);
+            $this->assertEquals(hash("sha256", $_SERVER['REMOTE_ADDR'] . "1"), $this->Session->SessionID);
             $this->assertEquals("Session", $this->Session->Name);
             $this->assertInstanceOf("Phlamingo\\HTTP\\Sessions\\Storage\\FileStorageManager", $this->Session->StorageManager);
         }
