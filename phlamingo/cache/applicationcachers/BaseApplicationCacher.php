@@ -21,6 +21,11 @@
      */
     abstract class BaseApplicationCacher extends Object
     {
+        public function __construct()
+        {
+            parent::__construct();
+        }
+
         /**
          * Caches all classes with annotations @Factory and @Service
          */

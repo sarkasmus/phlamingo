@@ -32,6 +32,7 @@
          */
         public function __construct()
         {
+            parent::__construct();
             $this->Cache = new Cache("ConfigCache");
         }
 
@@ -40,7 +41,7 @@
          */
         public function Cached() : bool
         {
-            return false;//$this->Cache->IsCacheDefined();
+            return $this->Cache->IsCacheDefined();
         }
 
         public function Cache()
