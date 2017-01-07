@@ -37,16 +37,30 @@
          */
         public $Session;
 
-        public function BeforeAction()
+        /**
+         * Calls before action
+         */
+        protected function BeforeAction()
         {
 
         }
 
-        public function AfterAction()
+        /**
+         * Calls after action
+         */
+        protected function AfterAction()
         {
 
         }
 
+        /**
+         * Runs a controller action
+         *
+         * @param string $action Action name
+         * @param array $params Params of the action
+         * @return Response Response
+         * @throws ControllerException When action returns incorrect response
+         */
         public final function Run(string $action, ...$params)
         {
             $this->BeforeAction();
@@ -71,21 +85,18 @@
             }
             else
             {
-                // Implement controller exception !!!
-                throw new ControllerException();
+                throw new ControllerException("Action {$action} returns incorrect response");
             }
         }
 
-        protected final function SetupPersists()
-        {
-
-        }
-
-        protected final function Render(string $template)
-        {
-
-        }
-
+        /**
+         * Redirects user to another url
+         *
+         * @param string|array $pathOrEvent String path to redirect or event of controller as array
+         * @param array $params Params of the redirect path
+         * @return Response Response
+         * @throws \InvalidArgumentException When pathOrEvent is not of type string or array
+         */
         protected final function Redirect($pathOrEvent, ...$params)
         {
             if (is_string($pathOrEvent))
@@ -100,7 +111,7 @@
             }
             else
             {
-                throw new ControllerException("Path" . var_export($pathOrEvent) . "can't be redirected");
+                throw new \InvalidArgumentException("First parameter of Controller::Redirect method must be string or array. " . gettype($pathOrEvent) . " Given");
             }
         }
     }
