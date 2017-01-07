@@ -29,7 +29,7 @@
          */
         public function Parse(string $code) : array
         {
-            $result = json_decode($code);
+            $result = json_decode($code, true);
             return $result;
         }
 
