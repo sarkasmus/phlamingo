@@ -78,15 +78,18 @@
             $iterator = $this->StorageManager->GetIterator();
             $this->StorageManager->Destroy($this);
             $this->SessionID = hash("sha256", $_SERVER['REMOTE_ADDR'] . $iterator);
-            setcookie(
-                "SessID",
-                $this->SessionID,
-                time() + 8600 * 14,
-                "/",
-                DOMAIN,
-                false,
-                true
-            );
+            if (!headers_sent())
+            {
+                setcookie(
+                    "SessID",
+                    $this->SessionID,
+                    time() + 8600 * 14,
+                    "/",
+                    DOMAIN,
+                    false,
+                    true
+                );
+            }
         }
 
         /**
