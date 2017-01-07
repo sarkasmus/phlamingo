@@ -39,7 +39,7 @@
         {
             foreach (glob(TEMP . "/cache_*") as $cacheFile)
             {
-                unset($cacheFile);
+                unlink($cacheFile);
             }
         }
 
