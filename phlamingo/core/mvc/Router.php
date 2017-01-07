@@ -35,16 +35,27 @@
          *
          * -- Method is complex follow line comments to understand
          *
-         * @param Request $request HTTP Request
+         * @param Request|string $request HTTP Request
          * @return array Event -> controller, controller action and params
          * @throws RouterException When haven't been found any routes
          */
-        public function Route(Request $request) : array
+        public function Route($request) : array
         {
             // Output varibles, selected matching route and params in URI. varibles are used
             // as cach in proccess
             $finalRoute = null;
             $params = [];
+
+            // Setup request uri
+            $requestUri = null;
+            if ($request instanceof Request)
+            {
+                $requestUri = $request->URI;
+            }
+            else
+            {
+                $requestUri = $request;
+            }
 
             // Browse all routes
             foreach ($this->routes as $route)
@@ -52,7 +63,7 @@
                 // Divide route mask and real URI to parts by / delimiter e.g "user/5" to ["user", 5]
                 $mask = trim($route["mask"], "/");
                 $routeParts = explode("/", $mask);
-                $uriParts = explode("/", trim($request->URI, "/"));
+                $uriParts = explode("/", trim($requestUri, "/"));
 
                 // Browse all parts of route. Route can has more parts then URI because it can has optional parameters
                 while (!empty($routeParts))
