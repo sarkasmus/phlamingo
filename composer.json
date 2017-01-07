@@ -12,9 +12,6 @@
         "symfony/yaml": "3.2.*"
     },
     "autoload": {
-        "psr-4": {
-            "App\\Main\\": "app/main/",
-            "Phlamingo\\": "phlamingo/"
-        }
+        "classmap": ["phlamingo/", "app/"]
     }
 }
