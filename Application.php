@@ -55,7 +55,8 @@
             {
                 foreach ($configCacher->Get() as $key => $values)
                 {
-                    $config->Push($values, $key);
+                    if ($values !== null and $key !== null)
+                        $config->Push($values, $key);
                 }
             }
             else
@@ -63,7 +64,8 @@
                 $configCacher->Cache();
                 foreach ($configCacher->Get() as $key => $values)
                 {
-                    $config->Push($values, $key);
+                    if ($values !== null and $key !== null)
+                        $config->Push($values, $key);
                 }
             }
 
@@ -78,7 +80,8 @@
             {
                 foreach ($diCacher->Get() as $service => $factory)
                 {
-                    $container->AddService($service, new $factory);
+                    if ($service !== null and $factory !== null)
+                        $container->AddService($service, new $factory);
                 }
             }
             else
@@ -86,6 +89,7 @@
                 $diCacher->Cache();
                 foreach ($diCacher->Get() as $service => $factory)
                 {
+                    if ($service !== null and $factory !== null)
                     $container->AddService($service, new $factory);
                 }
             }
@@ -105,7 +109,8 @@
             {
                 foreach ($routerCacher->Get() as $mask => $event)
                 {
-                    $router->AddRoute($mask, $event);
+                    if ($mask !== null and $event !== null)
+                        $router->AddRoute($mask, $event);
                 }
             }
             else
@@ -113,7 +118,8 @@
                 $routerCacher->Cache();
                 foreach ($routerCacher->Get() as $mask => $event)
                 {
-                    $router->AddRoute($mask, $event);
+                    if ($mask !== null and $event !== null)
+                        $router->AddRoute($mask, $event);
                 }
             }
 
