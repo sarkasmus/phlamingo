@@ -117,13 +117,6 @@
                 }
             }
 
-            // Here setup your router:
-            /*$router->SetHomepage(["controller" => "App\\Main\\Controllers\\HomeController", "action" => "DefaultAction"]);
-            $router->AddRoute("/regenerateid/", ["controller" => "\\App\\Main\\Controllers\\HomeController", "action" => "RegenerateID"]);
-            /*$router->AddRoute("controller/user/{1-100}", ["controller" => "Controller", "action" => "UserAction"]);
-            $router->AddRoute("controller/user/{int:admin}", ["controller" => "Controller", "action" => "UserAction"]);
-            $router->AddRoute("article/{en|fr|de}", ["controller" => "Article", "action" => "Read"]);*/
-
             return $router;
         }
     }
