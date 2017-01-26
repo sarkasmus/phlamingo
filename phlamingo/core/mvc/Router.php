@@ -163,32 +163,33 @@
             {
                 if ($route["event"] == $event)
                 {
-                    $route = explode("/", $route);
+                    $route = explode("/", $route['mask']);
 
-                    foreach ($route as $key => $expression)
-                    {
-                        if (substr($expression, 0, 1) === "{" and substr($expression, -1) === "}")
-                        {
-                            $expression = trim($expression, "{}");
-                            $param = array_shift($params);
-                            if ($this->ExpressionMatch($expression, $param))
-                            {
-                                $route[$key] = $param;
+                    $result = [];
+                    $paramIterator = 0;
+                    foreach ($route as $routePart) {
+                        if (substr($routePart, 0, 1) === "{" and substr($routePart, -1) === "}") {
+                            if ($this->ExpressionMatch($routePart, $params[$paramIterator])) {
+                                $result[] = $params[$paramIterator];
+                                $paramIterator++;
+
+                            } else {
+                                throw new RouterException("Params don't matches event's route");
+
                             }
-                            else
-                            {
-                                throw new RouterException(
-                                    "Parameter {". ($key + 1) ." => $param} is not valid for expression{$expression} in route " . implode("/", $route) . ""
-                                );
-                            }
+
+                        } else {
+                            $result[] = $routePart;
+
                         }
+
                     }
-                }
-                else
-                {
-                    throw new RouterException("Route for your event wasn't found");
+
+                    return DOMAIN . "/" . implode("/", $result);
                 }
             }
+
+            throw new RouterException("Route for your event wasn't found");
         }
 
         /**
