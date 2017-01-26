@@ -55,25 +55,7 @@
          */
         public abstract function Config(Configurator $config) : Configurator;
 
-        /**
-         * Sets up a router
-         *
-         * @param Router $router Router
-         * @return Router Set router
-         */
-        public abstract function SetupRouter(Router $router) : Router;
-
         public abstract function SetupDI(Container $container);
-
-        /**
-         * Called before SetupRouter(), implements default settings of router
-         *
-         * @return Router Created router
-         */
-        public final function AbstractSetupRouter() : Router
-        {
-            return new Router();
-        }
 
         /**
          * Called before Config(), implements default configuration of application

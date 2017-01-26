@@ -32,9 +32,5 @@
     $config = $application->AbstractConfig();
     $config = $application->Config($config);
 
-    // Configurate router
-    $router = $application->AbstractSetupRouter();
-    $router = $application->SetupRouter($router);
-
     // Run application
-    $application->CallMain($router);
+    $application->CallMain(\Phlamingo\Di\ContainerSingleton::GetContainer()->Get("Router"));

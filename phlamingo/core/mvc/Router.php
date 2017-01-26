@@ -20,6 +20,8 @@
 
     /**
      * Router converts requested URLs to callable actions in application
+     *
+     * @Service Router
      */
     class Router extends Object
     {
