@@ -38,7 +38,7 @@
         protected $Content;
 
         /**
-         * Is cache saved. If it is content can't be changed
+         * Is cache saved. If it is, content can't be changed
          * @var bool $Saved
          */
         protected $Saved = false;
