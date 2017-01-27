@@ -28,7 +28,7 @@ class HomeController extends BaseController
 ```
 For register route in the Router use
 ```php
-$router->AddRoute("home/", ["controller" => new HomeController(), "action" => "HomeAction"]);
+$router->AddRoute("home/", ["controller" => HomeController::class, "action" => "HomeAction"]);
 ```
 Easy right ?
 
@@ -48,9 +48,9 @@ $this->Container->Get("serviceName");
 For registering you can use callback function or class which inherits from FactoryAbstract (will be implemented soon)
 ```php
 $this->Container->AddService("serviceName", function (){...});
-class ServiceFactory extends FactoryAbstract
+class ServiceFactory extends BaseFactory
 {
-    public function Produce()
+    public function Make()
     {
         // Implement factory here
     }
