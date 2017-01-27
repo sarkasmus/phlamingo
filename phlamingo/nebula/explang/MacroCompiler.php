@@ -79,7 +79,6 @@
                 foreach ($tokenRow as $key => $token) {
                     if ($pattern[$key] != $token['token']) {
                         $match = null;
-                        echo $token['value'];
                         break;
 
                     } else {
