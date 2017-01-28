@@ -32,19 +32,19 @@
          * @var array $tokens
          */
         protected $tokens = [
-            '/foreach(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 0, // FOREACH
-            '/for(?!each)(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 1, // FOR
-            '/(?<!else)if(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 2, // IF
-            '/elseif(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 3, // ELSEIF
-            '/as(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 4, // AS
-            '/[a-zA-Z_]{1}[a-zA-Z0-9_.\/\\\]*/i' => 5, // STRING
+            '/(?<!\w)foreach(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 0, // FOREACH
+            '/(?<!\w)for(?!each)(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 1, // FOR
+            '/(?<!\w)if(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 2, // IF
+            '/(?<!\w)elseif(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 3, // ELSEIF
+            '/(?<!\w)as(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 4, // AS
+            '/[a-zA-Z_]{1}[a-zA-Z0-9_.\[\]\/\\\]*/i' => 5, // STRING
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])(and|&&)(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 6, // LOGICAL AND
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])(or|\|\|)(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 7, // LOGICAL OR
-            '/block(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 8, // BLOCK
-            '/while(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 9, // WHILE
-            '/endforeach(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 10, // ENDFOREACH
-            '/endfor(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 11, // ENDFOR
-            '/endif(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 12, // ENDIF
+            '/(?<!\w)block(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 8, // BLOCK
+            '/(?<!\w)while(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 9, // WHILE
+            '/(?<!\w)endforeach(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 10, // ENDFOREACH
+            '/(?<!\w)endfor(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 11, // ENDFOR
+            '/(?<!\w)endif(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 12, // ENDIF
             '/(?<![=><!*\/+\-.\\\?_])=>(?![=><!*\/+\-.\\\?_])/' => 13, // ARROW OPERATOR =>
             '/(?<!\w\d)(true|false)(?!\w\d)/i' => 14, // BOOL VALUE
             '/--/' => 15, // DECREMENT OPERATOR --
@@ -52,21 +52,21 @@
             '/\*/' => 17, // MULTIPLY OPERATOR *
             '/-/' => 18, // SUBTRACT OPERATOR -
             '/\+/' => 19, // ADD OPERATOR +
-            '/else(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 20, // ELSE
-            '/endwhile(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 21, // ENDWHILE
+            '/(?<!\w)else(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 20, // ELSE
+            '/(?<!\w)endwhile(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 21, // ENDWHILE
             '/(?<![=><!*\/+\-.\\\?_])=(?![=><!*\/+\-.\\\?_])/' => 22, // EQUAL OPERATOR =
             '/(?<![=><!*\/+\-.\\\?_])>(?![=><!*\/+\-.\\\?_])/' => 23, // GREATER THAN OPERATOR >
             '/(?<![=><!*\/+\-.\\\?_])>=(?![=><!*\/+\-.\\\?_])/' => 24, // GREATER OR EQUAL THAN OPERATOR >=
             '/(?<![=><!*\/+\-.\\\?_])<(?![=><!*\/+\-.\\\?_])/' => 25, // SMALLER THAN OPERATOR <
             '/(?<![=><!*\/+\-.\\\?_])<=(?![=><!*\/+\-.\\\?_])/' => 26, // SMALLER OR EQUAL THAN OPERATOR <=
-            '/(?<!\w)[0-9](?!\w)/' => 27, // INTEGER
+            '/(?<!\w)[0-9]+(?!\w)/' => 27, // INTEGER
             '/(?<![=><!*\/+\-.\\\?_])==(?![=><!*\/+\-.\\\?_])/' => 28, // IS EQUAL
             '/(?<![=><!*\/+\-.\\\?_])===(?![=><!*\/+\-.\\\?_])/' => 29, // IS SAME
             '/(?<![=><!*\/+\-.\\\?_])!=(?![=><!*\/+\-.\\\?_])/' => 30, // NOT EQUAL
             '/(?<![=><!*\/+\-.\\\?_])!==(?![=><!*\/+\-.\\\?_])/' => 31, // NOT SAME
             '/(?<![=><!*\/+\-.\\\?_])%(?![=><!*\/+\-.\\\?_])/' => 32, // MODULO OPERATOR %
             '/(?<![=><!*\/+\-.\\\?_])!(?![=><!*\/+\-.\\\?_])/' => 33, // NEGATE OPERATOR !
-            '/endblock(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 34, // ENDFOREACH
+            '/(?<!\w)endblock(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 34, // ENDFOREACH
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])noescape(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 35, // NOESCAPE
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])repeat(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 36, // REPEAT
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])link(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 37, // LINK
@@ -75,7 +75,7 @@
             '/;/' => 40, // SEMICOLON
             '/\(/' => 41, // LEFT BRACKET
             '/\)/' => 42, // RIGHT BRACKET
-            '/\[/' => 43, // LEFT SQUARE BRACKET
+            '/(?<!\w\._)\[/' => 43, // LEFT SQUARE BRACKET
             '/\]/' => 44, // RIGHT SQUARE BRACKET
         ];
 
@@ -188,7 +188,10 @@
                 $tokenRow = $lexer->lex($macro['macro']);
                 $result[$key] = $compiler->compile($tokenRow, $macro['content']);
                 if ($result[$key] !== null) {
-                    $result[$key] = $result[$key]->compile($this);
+                    if ($result[$key]->check($this)) {
+                        $result[$key] = $result[$key]->compile($this);
+
+                    }
 
                 }
 

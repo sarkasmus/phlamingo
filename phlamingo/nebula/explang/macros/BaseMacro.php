@@ -53,6 +53,15 @@
         }
 
         /**
+         * Checks if syntax of macro is valid
+         *
+         * @param Compiler $compiler
+         * @throws CompileException When syntax is not valid
+         * @return true If syntax is valid
+         */
+        public abstract function check(Compiler &$compiler);
+
+        /**
          * Compiles macro to native PHP
          *
          * @param Compiler $compiler

@@ -13,6 +13,7 @@
 
     namespace Phlamingo\Nebula\ExpLang\Macros;
 
+    use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Compiler;
     use Phlamingo\Nebula\ExpLang\TokenList;
 
@@ -29,6 +30,25 @@
         const PATTERN = [
             TokenList::T_ENDWHILE
         ];
+
+        /**
+         * Checks if syntax of macro is valid
+         *
+         * @param Compiler $compiler
+         * @throws CompileException When syntax is not valid
+         * @return true If syntax is valid
+         */
+        public  function check(Compiler &$compiler)
+        {
+            if (!isset($this->macro[1])) {
+                return true;
+
+            } else {
+                $given = TokenList::DICTIONARY[$this->macro[1]['token']];
+                throw new CompileException("Endwhile macro doesn't expect any other tokens $given given");
+
+            }
+        }
 
         /**
          * Compiles macro to native PHP
