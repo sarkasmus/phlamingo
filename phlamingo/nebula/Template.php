@@ -72,12 +72,12 @@
                 $compiler = new Compiler($this->code);
                 $compiler->build($path);
 
+                // Compile Custom Tags
+                $compiler->compileTags();
+
                 // Compile Macros
                 $compiler->parseMacros();
                 $compiler->compileMacros();
-
-                // Compile Custom Tags
-                $compiler->compileTags();
 
                 // Save result to cache
                 $cache->Content = $compiler->getCode();
