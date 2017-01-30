@@ -15,6 +15,8 @@
 
     use Phlamingo\Core\Object;
     use Phlamingo\Nebula\ExpLang\Compiler as ExpCompiler;
+    use Phlamingo\Nebula\ExtensibleTags\Compiler as TagCompiler;
+    use phpDocumentor\Reflection\DocBlock\Tag;
 
     /**
      * Manages compiling of template.
@@ -77,9 +79,15 @@
             $this->code = strtr($this->code, $this->macros);
         }
 
+        /**
+         * Compiles custom tags
+         */
         public function compileTags()
         {
-            // Will be implemented
+            $compiler = new TagCompiler();
+            TagCompiler::registerCustomTag("menu", TagCompiler::BLOCK_DISPLAY);
+            TagCompiler::registerCustomTag("menuItem", TagCompiler::BLOCK_DISPLAY);
+            $this->code = $compiler->compile($this->code);
         }
 
         /**
