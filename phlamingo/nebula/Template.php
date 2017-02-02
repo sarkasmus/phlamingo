@@ -95,6 +95,8 @@
                 eval("?>".$compiler->getCode()."<?php");
                 $returned = ob_get_contents();
                 ob_end_clean();
+                eval("?>".$returned."<?php");
+                $returned = ob_get_contents();
 
                 return $returned;
             }

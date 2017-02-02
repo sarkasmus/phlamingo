@@ -58,6 +58,6 @@
          */
         public  function compile(Compiler &$compiler): string
         {
-            return "<?php \$text = \"";
+            return "<?php \$text = '";
         }
     }

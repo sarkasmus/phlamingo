@@ -48,6 +48,7 @@
          * List of Macros patterns
          */
         public $patternList = [
+            MarkdownMacro::class => MarkdownMacro::PATTERN,
             BlockMacro::class => BlockMacro::PATTERN,
             ElseIfMacro::class => ElseIfMacro::PATTERN,
             ElseMacro::class => ElseMacro::PATTERN,
@@ -64,7 +65,6 @@
             EndRepeatMacro::class => EndRepeatMacro::PATTERN,
             PrintVarMacro::class => PrintVarMacro::PATTERN,
             WhileMacro::class => WhileMacro::PATTERN,
-            MarkdownMacro::class => MarkdownMacro::PATTERN,
             EndMarkdownMacro::class => EndMarkdownMacro::PATTERN,
         ];
 

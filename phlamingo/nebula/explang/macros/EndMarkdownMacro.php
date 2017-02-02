@@ -58,10 +58,11 @@
          */
         public  function compile(Compiler &$compiler): string
         {
-            $return =  "\";?>";
+            $return =  "';?>";
             $return .= "<?php if (!function_exists(\"parseMarkdown\")) {
                 function parseMarkdown(string \$text)
                 {
+                    \$text = str_replace('\\$', '-::-', \$text);
                     \$markdownParser = new \\Parsedown();
                     \$explode = explode(\"\\n\", \$text);
                     \$long = 512;
@@ -82,7 +83,13 @@
 
                     }
 
-                    return \$markdownParser->text(implode(\"\\n\", \$explode));
+                    \$return = implode(\"\\n\", \$explode);
+                    \$return = \$markdownParser->text(\$return);
+                    
+                    \$return = html_entity_decode(\$return);
+                    
+                    return \$return;
+                    
                 }
 
             } ?>";
