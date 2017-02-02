@@ -77,6 +77,8 @@
             '/\)/' => 42, // RIGHT BRACKET
             '/(?<!\w\._)\[/' => 43, // LEFT SQUARE BRACKET
             '/\]/' => 44, // RIGHT SQUARE BRACKET
+            '/(?<!\w)markdown(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 45, // MARKDOWN
+            '/(?<!\w)endmarkdown(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 46, // ENDMARKDOWN
         ];
 
         /**

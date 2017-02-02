@@ -33,14 +33,17 @@
          */
         protected $code;
 
+        protected $variables = [];
+
         /**
          * Constructor.
          *
          * @param string $path Path of the template file.
          */
-        public function __construct(string $path)
+        public function __construct(string $path, array $variables)
         {
             $this->path = $path;
+            $this->variables = $variables;
         }
 
         /**
@@ -57,7 +60,11 @@
 
             // If cache is defined it returns once compiled code
             if ($cache->IsCacheDefined() === true) {
-                return $cache->Content;
+                extract($this->variables);
+                eval("?>".$cache->Content."<?php");
+                $returned = ob_get_contents();
+                ob_end_clean();
+                return $returned;
 
             } else { // Compile
                 // Find the directory of template for loading other sources
@@ -83,8 +90,13 @@
                 $cache->Content = $compiler->getCode();
                 $cache->Save();
 
-                return  $compiler->getCode();
+                // Run template
+                extract($this->variables);
+                eval("?>".$compiler->getCode()."<?php");
+                $returned = ob_get_contents();
+                ob_end_clean();
 
+                return $returned;
             }
         }
     }

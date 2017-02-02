@@ -66,6 +66,8 @@
         const T_RIGHT_BRACKET = 42;
         const T_LEFT_SQUARE_BRACKET = 43;
         const T_RIGHT_SQUARE_BRACKET = 44;
+        const T_MARKDOWN = 45;
+        const T_ENDMARKDOWN = 46;
 
         const DICTIONARY = [
             0 => "T_FOREACH",
@@ -112,6 +114,8 @@
             41 => "T_LEFT_BRACKET",
             42 => "T_RIGHT_BRACKET",
             43 => "T_LEFT_SQUARE_BRACKET",
-            44 => "T_RIGHT_SQUARE_BRACKET"
+            44 => "T_RIGHT_SQUARE_BRACKET",
+            45 => "T_MARKDOWN",
+            46 => "T_ENDMARKDOWN"
         ];
     }

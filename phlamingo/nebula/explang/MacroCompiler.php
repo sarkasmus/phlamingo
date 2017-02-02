@@ -23,6 +23,7 @@
     use Phlamingo\Nebula\ExpLang\Macros\EndForeachMacro;
     use Phlamingo\Nebula\ExpLang\Macros\EndForMacro;
     use Phlamingo\Nebula\ExpLang\Macros\EndIfMacro;
+    use Phlamingo\Nebula\ExpLang\Macros\EndMarkdownMacro;
     use Phlamingo\Nebula\ExpLang\Macros\EndRepeatMacro;
     use Phlamingo\Nebula\ExpLang\Macros\EndWhileMacro;
     use Phlamingo\Nebula\ExpLang\Macros\ForeachMacro;
@@ -30,6 +31,7 @@
     use Phlamingo\Nebula\ExpLang\Macros\IfMacro;
     use Phlamingo\Nebula\ExpLang\Macros\KeyForeachMacro;
     use Phlamingo\Nebula\ExpLang\Macros\LinkMacro;
+    use Phlamingo\Nebula\ExpLang\Macros\MarkdownMacro;
     use Phlamingo\Nebula\ExpLang\Macros\MixinMacro;
     use Phlamingo\Nebula\ExpLang\Macros\PrintVarMacro;
     use Phlamingo\Nebula\ExpLang\Macros\RepeatMacro;
@@ -61,7 +63,9 @@
             RepeatMacro::class => RepeatMacro::PATTERN,
             EndRepeatMacro::class => EndRepeatMacro::PATTERN,
             PrintVarMacro::class => PrintVarMacro::PATTERN,
-            WhileMacro::class => WhileMacro::PATTERN
+            WhileMacro::class => WhileMacro::PATTERN,
+            MarkdownMacro::class => MarkdownMacro::PATTERN,
+            EndMarkdownMacro::class => EndMarkdownMacro::PATTERN,
         ];
 
         /**
