@@ -17,7 +17,5 @@
   - [Caching](https://github.com/sarkasmus/Phlamingo/wiki/Caching)
   - [Session](https://github.com/sarkasmus/Phlamingo/wiki/Sessions)
   - [Phlamingo\Object](https://github.com/sarkasmus/Phlamingo/wiki/Phlamingo%5CCore%5CObject-and-extending-PHP-classes)
-  
-[//]: <> (Request and Response)
 - [Credits](https://github.com/sarkasmus/Phlamingo/wiki/Credits)
 - [Where it will be available?](https://github.com/sarkasmus/Phlamingo/wiki/Where-it-will-be-available)
