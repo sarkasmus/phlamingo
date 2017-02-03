@@ -1,68 +1,23 @@
-# Phlamingo
-## New modern PHP Framework
-Phlamingo is a new modern php framework in early development state. I have primary ideas about usage for programmers. I am trying to make robust, secure, all-in-one but still simple to use and intuitive. Im trying to overcome lacks of other PHP frameworks and try to really save time of programmers
+# Table of contents
 
-## Structure
-```
-phlamingo
-  |-- app/
-      |-- main/
-  |-- phlamingo/
-      |-- core/
-      |-- http/
-      |-- di/
-      |-- nebula/
-  |-- www/
-      |-- .htaccess
-      |-- index.php
-```
-## Routing and Controllers
-For create controller in package Main create class in /app/main/controllers
-```php
-class HomeController extends BaseController
-{
-    public function HomeAction()
-    {
-        return new Response("Hello world");
-    }
-```
-For register route in the Router use
-```php
-$router->AddRoute("home/", ["controller" => HomeController::class, "action" => "HomeAction"]);
-```
-Easy right ?
-
-## Dependency injection
-Dependency injection is solved in Phlamingo internally in class (which inherits from Core/Object). It solves many problems with traditional way of injecting dependencies
-which violates Law of Demeter (you have to use container instead of use new operator) and makes application extremely dependent on container.
-```php
-/**
- * @Service serviceName
- */
-public $service;
-```
-Or you can use container certainly but it's not best practice
-```php
-$this->Container->Get("serviceName");
-```
-For registering you can use callback function or class which inherits from FactoryAbstract (will be implemented soon)
-```php
-$this->Container->AddService("serviceName", function (){...});
-class ServiceFactory extends BaseFactory
-{
-    public function Make()
-    {
-        // Implement factory here
-    }
-}
-$this->Container->AddService("serviceName", new ServiceFactory());
-```
-## Nebula
-Imagine you code template in HTML and you would add some tags to it. Do you hate Javascript? Would it be better to write client scripts which
-you can test, debug and uses OOP? Yes? Thats Nebula!
-
-It uses XML modification to code template which is converted by XSLT to HTML
-Nebula XML uses namespaces n for nebula tags, h for html tags (so you can still use HTML naturally). And the best part: you can create your 
-own elements, attributes in your namespaces and
-set them behavior. You can create for example <p:myPayment> for render your payment gate or <b:grid> for bootstrap grid.
-I have also some ideas about Stylesheets and Javascript.
+- [Introduction](https://github.com/sarkasmus/Phlamingo/wiki/Introduction)
+  - [What is Phlamingo?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#what-is-phlamingo)
+  - [Why should I use it?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#why-should-i-use-it)
+  - [What are main features?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#what-are-main-features)
+  - [What do I need for use it?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#what-do-i-need-for-use-it)
+  - [Where can I find it?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#where-can-i-find-it)
+  - [How much it costs?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#how-much-it-costs)
+  - [Is it safe?](https://github.com/sarkasmus/Phlamingo/wiki/Introduction#is-it-safe)
+- [Instalation](https://github.com/sarkasmus/Phlamingo/wiki/Getting-started-with-Phlamingo---Installation-and-configuration)
+- How to use Phlamingo components
+  - [Routing](https://github.com/sarkasmus/Phlamingo/wiki/Routing)
+  - [Controllers and MVC](https://github.com/sarkasmus/Phlamingo/wiki/Controllers-and-MVC)
+  - [Dependency injection](https://github.com/sarkasmus/Phlamingo/wiki/Dependency-injection)
+  - [Configuration](https://github.com/sarkasmus/Phlamingo/wiki/Configuration)
+  - [Caching](https://github.com/sarkasmus/Phlamingo/wiki/Caching)
+  - [Session](https://github.com/sarkasmus/Phlamingo/wiki/Sessions)
+  - [Phlamingo\Object](https://github.com/sarkasmus/Phlamingo/wiki/Phlamingo%5CCore%5CObject-and-extending-PHP-classes)
+  
+[//]: <> (Request and Response)
+- [Credits](https://github.com/sarkasmus/Phlamingo/wiki/Credits)
+- [Where it will be available?](https://github.com/sarkasmus/Phlamingo/wiki/Where-it-will-be-available)
