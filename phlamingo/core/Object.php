@@ -19,6 +19,7 @@
     use DocBlockReader\Reader;
     use Phlamingo\Di\Container;
     use Phlamingo\Di\ContainerSingleton;
+    use Phlamingo\Di\EmptyService;
 
 
     /**
@@ -86,7 +87,7 @@
 
                 if (!empty($service) and $service != self::class)
                 {
-                    $this->$propertyName = $this->Container->Get($service);
+                    $this->$propertyName = new EmptyService($service);
                 }
             }
         }
@@ -216,5 +217,15 @@
         public static function SetEnviroment(bool $callSetup = true)
         {
             self::$Enviroment = $callSetup;
+        }
+
+        public function Event()
+        {
+
+        }
+
+        public function AddEventCallback()
+        {
+
         }
     }
