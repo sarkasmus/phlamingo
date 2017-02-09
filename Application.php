@@ -94,35 +94,4 @@
                 }
             }
         }
-
-        /**
-         * Here specify router settings e.g add routes
-         *
-         * @param Router $router Router
-         * @return Router Set router
-         */
-        public function SetupRouter(Router $router) : Router
-        {
-            $routerCacher = new \Phlamingo\Cache\ApplicationCachers\RouterCacher();
-
-            if ($routerCacher->Cached())
-            {
-                foreach ($routerCacher->Get() as $mask => $event)
-                {
-                    if ($mask !== null and $event !== null)
-                        $router->AddRoute($mask, $event);
-                }
-            }
-            else
-            {
-                $routerCacher->Cache();
-                foreach ($routerCacher->Get() as $mask => $event)
-                {
-                    if ($mask !== null and $event !== null)
-                        $router->AddRoute($mask, $event);
-                }
-            }
-
-            return $router;
-        }
     }
