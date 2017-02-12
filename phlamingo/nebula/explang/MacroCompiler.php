@@ -45,6 +45,11 @@
     class MacroCompiler extends Object
     {
         /**
+         * @Service MacroCacher
+         */
+        public $cacher;
+
+        /**
          * List of Macros patterns
          */
         public $patternList = [
@@ -67,6 +72,26 @@
             WhileMacro::class => WhileMacro::PATTERN,
             EndMarkdownMacro::class => EndMarkdownMacro::PATTERN,
         ];
+
+        /**
+         * Constructor.
+         */
+        public function __construct()
+        {
+            parent::__construct();
+            if ($this->cacher->Cached()) {
+                cache:
+                foreach ($this->cacher->Get() as $macro) {
+                    $this->patternList[$macro] = $macro::PATTERN;
+
+                }
+
+            } else {
+                $this->cacher->Cache();
+                goto cache;
+
+            }
+        }
 
         /**
          * Finds macro and return it's instance
