@@ -10,7 +10,8 @@
     "require": {
         "PHP": "^7.0",
         "jan-swiecki/simple-annotations": "^0.3.1",
-        "symfony/yaml": "3.2.*"
+        "symfony/yaml": "3.2.*",
+        "erusev/parsedown": "^1.6"
     },
     "autoload": {
         "classmap": ["phlamingo/", "app/"]
