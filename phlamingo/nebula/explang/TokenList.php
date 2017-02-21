@@ -68,6 +68,14 @@
         const T_RIGHT_SQUARE_BRACKET = 44;
         const T_MARKDOWN = 45;
         const T_ENDMARKDOWN = 46;
+        const T_ICON = 47;
+        const T_LOAD = 48;
+        const T_CONTAINER = 49;
+        const T_ENDCONTAINER = 50;
+        const T_ROW = 51;
+        const T_ENDROW = 52;
+        const T_COLUMN = 53;
+        const T_ENDCOLUMN = 54;
 
         const DICTIONARY = [
             0 => "T_FOREACH",
@@ -116,6 +124,14 @@
             43 => "T_LEFT_SQUARE_BRACKET",
             44 => "T_RIGHT_SQUARE_BRACKET",
             45 => "T_MARKDOWN",
-            46 => "T_ENDMARKDOWN"
+            46 => "T_ENDMARKDOWN",
+            47 => "T_ICON",
+            48 => "T_LOAD",
+            49 => "T_CONTAINER",
+            50 => "T_ENDCONTAINER",
+            51 => "T_ROW",
+            52 => "T_ENDROW",
+            53 => "T_COLUMN",
+            54 => "T_ENDCOLUMN",
         ];
     }
