@@ -40,7 +40,7 @@
         public  function check(Compiler &$compiler)
         {
             if (isset($this->macro[1]) and $this->macro[1]['token'] !== TokenList::T_NOESCAPE) {
-                throw new CompileException("Variable print macro excepts noescape keyword as second token");
+                throw new CompileException("Variable print macro excepts noescape keyword as second token {$this->macro[1]['token']}");
 
             } else {
                 return true;
@@ -61,7 +61,7 @@
 
             }
 
-            $this->macro[0]['value'] = strtr($this->macro[0]['value'], ["." => "->"]);
+            $object = strtr($this->macro[0]['value'], ["." => "->"]);
 
             if (isset($this->macro[1]['token'])) {
                 if ($this->macro[1]['token'] == TokenList::T_NOESCAPE) {
@@ -71,6 +71,7 @@
 
             }
 
-            return "<?= htmlspecialchars(\${$this->macro[0]['value']});?>";
+            $return = "<?= htmlspecialchars(\${$object});?>";
+            return $return;
         }
     }

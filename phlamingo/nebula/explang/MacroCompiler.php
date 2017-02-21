@@ -125,6 +125,7 @@
             }
 
             if (isset($match)) {
+                var_dump($tokenRow);
                 return new $match($tokenRow, $content);
 
             }

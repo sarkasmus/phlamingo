@@ -30,7 +30,7 @@
         public function parse(string $code) : array
         {
             $code = str_replace("\n", " ", $code);
-            $regex1 = '/@\{[\s\w<>=-_\+\*\/\.\[\]()?\d]+}/';
+            $regex1 = '/@\{[\s\w<>=-_\+\*\/\.\[\]()?\d"\'\$]+}/';
 
             $macros = null;
             preg_match_all($regex1, $code, $macros);

@@ -37,7 +37,7 @@
             '/(?<!\w)if(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 2, // IF
             '/(?<!\w)elseif(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 3, // ELSEIF
             '/(?<!\w)as(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 4, // AS
-            '/[a-zA-Z0-9_]{1}[a-zA-Z0-9_.\[\]\/\\\]*/i' => 5, // STRING
+            '/[a-zA-Z0-9_]{1}["\'$a-zA-Z0-9_.\[\]\/\\\]*/i' => 5, // STRING
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])(and|&&)(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 6, // LOGICAL AND
             '/(?<![a-zA-Z0-9_\-.<>*+\/\\\?|])(or|\|\|)(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 7, // LOGICAL OR
             '/(?<!\w)block(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 8, // BLOCK
@@ -75,8 +75,8 @@
             '/;/' => 40, // SEMICOLON
             '/\(/' => 41, // LEFT BRACKET
             '/\)/' => 42, // RIGHT BRACKET
-            '/(?<!\w\._)\[/' => 43, // LEFT SQUARE BRACKET
-            '/\]/' => 44, // RIGHT SQUARE BRACKET
+            '/(?<!.)\[(?!.)/' => 43, // LEFT SQUARE BRACKET
+            '/(?<!.)\](?!.)/' => 44, // RIGHT SQUARE BRACKET
             '/(?<!\w)markdown(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 45, // MARKDOWN
             '/(?<!\w)endmarkdown(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 46, // ENDMARKDOWN
             '/(?<!\w)icon(?![a-zA-Z0-9_\-.<>*+\/\\\?|])/i' => 47, // ICON
