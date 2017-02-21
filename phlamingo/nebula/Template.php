@@ -39,8 +39,9 @@
          * Constructor.
          *
          * @param string $path Path of the template file.
+         * @param array $variables Variables added into template
          */
-        public function __construct(string $path, array $variables)
+        public function __construct(string $path, array $variables = [])
         {
             $this->path = $path;
             $this->variables = $variables;
