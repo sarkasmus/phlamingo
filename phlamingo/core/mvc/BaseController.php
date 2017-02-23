@@ -13,11 +13,12 @@
 
     namespace Phlamingo\Core\MVC;
 
-    use DocBlockReader\Reader;
     use Phlamingo\Core\Object;
     use Phlamingo\HTTP\Request;
     use Phlamingo\Core\MVC\Exceptions\ControllerException;
     use Phlamingo\HTTP\Response;
+    use Phlamingo\HTTP\JsonResponse;
+    use phlamingo\http\XmlResponse;
 
 
     /**
