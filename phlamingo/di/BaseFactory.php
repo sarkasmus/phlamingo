@@ -12,6 +12,8 @@
      */
 
     namespace Phlamingo\Di;
+
+    use DocBlockReader\Reader;
     use Phlamingo\Di\Exceptions\DIContainerException;
 
 
@@ -27,6 +29,21 @@
 
         public function __invoke()
         {
+            $comment = new Reader(get_class($this));
+            $comment = $comment->getParameter("Singleton");
+
+            if ($comment == true) {
+                if (isset($this->Singleton)) {
+                    return $this->Singleton;
+
+                } else {
+                    $this->Singleton = $this->Make();
+                    return $this->Singleton;
+
+                }
+
+            }
+
             if (is_object($this->Make()))
             {
                 return $this->Make();
