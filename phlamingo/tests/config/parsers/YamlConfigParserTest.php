@@ -29,7 +29,7 @@ use Phlamingo\Config\Parsers\YamlConfigParser;
 
         public function testYaml()
         {
-            $this->assertEquals("foo: bar\n", $this->Parser->Dump(['foo' => 'bar']));
-            $this->assertEquals(['foo' => 'bar'], $this->Parser->Parse('foo: bar'));
+            $this->assertEquals("foo: bar\n", $this->Parser->dump(['foo' => 'bar']));
+            $this->assertEquals(['foo' => 'bar'], $this->Parser->parse('foo: bar'));
         }
     }

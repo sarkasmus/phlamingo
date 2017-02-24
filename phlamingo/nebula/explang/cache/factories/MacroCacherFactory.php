@@ -23,7 +23,7 @@ use Phlamingo\Di\BaseFactory;
      */
     class MacroCacherFactory extends BaseFactory
     {
-        public function Make()
+        public function make()
         {
             return new MacroCacher();
         }

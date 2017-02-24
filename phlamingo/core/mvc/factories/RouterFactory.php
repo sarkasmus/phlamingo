@@ -23,10 +23,10 @@ use Phlamingo\Core\MVC\Router;
      */
     class RouterFactory extends BaseFactory
     {
-        public function Make()
+        public function make()
         {
-            if (isset($this->Singleton)) {
-                return $this->Singleton;
+            if (isset($this->singleton)) {
+                return $this->singleton;
             } else {
                 $routerCacher = new \Phlamingo\Cache\ApplicationCachers\RouterCacher();
                 $router = new Router();
@@ -37,7 +37,7 @@ use Phlamingo\Core\MVC\Router;
                     foreach ($routerCacher->get() as $mask => $event)
                     {
                         if ($mask !== null and $event !== null) {
-                            $router->AddRoute($mask, $event);
+                            $router->addRoute($mask, $event);
                         }
                     }
 
@@ -48,12 +48,12 @@ use Phlamingo\Core\MVC\Router;
                     foreach ($routerCacher->get() as $mask => $event)
                     {
                         if ($mask !== null and $event !== null) {
-                            $router->AddRoute($mask, $event);
+                            $router->addRoute($mask, $event);
                         }
                     }
                 }
 
-                $this->Singleton = $router;
+                $this->singleton = $router;
 
                 return $router;
             }

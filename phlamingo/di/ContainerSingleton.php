@@ -18,16 +18,16 @@ namespace Phlamingo\Di;
      */
     final class ContainerSingleton
     {
-        protected static $Container;
+        protected static $container;
 
-        public static function GetContainer()
+        public static function getContainer()
         {
-            if (isset(self::$Container)) {
-                return self::$Container;
+            if (isset(self::$container)) {
+                return self::$container;
             } else {
-                self::$Container = new Container();
+                self::$container = new Container();
 
-                return self::$Container;
+                return self::$container;
             }
         }
     }

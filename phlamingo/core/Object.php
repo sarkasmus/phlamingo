@@ -76,7 +76,7 @@ namespace Phlamingo\Core;
             $this->Reflection = $reflection = new \ReflectionClass($this);
 
             // Setup di
-            $this->Container = ContainerSingleton::GetContainer();
+            $this->Container = ContainerSingleton::getContainer();
 
             $properties = $reflection->getProperties();
             foreach ($properties as $property) {

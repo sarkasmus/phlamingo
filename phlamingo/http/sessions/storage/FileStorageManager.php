@@ -21,16 +21,16 @@
      */
     class FileStorageManager extends BaseStorageManager
     {
-        public function Save(Session $session)
+        public function save(Session $session)
         {
-            $sections = $session->Sections;
+            $sections = $session->sections;
             $sections["default_session"] = $session;
 
             $result = [
                 "_session" => [
-                    "id" => $session->SessionID,
+                    "id" => $session->sessionID,
                     "time" => time(),
-                    "expiration" => $session->Expiration
+                    "expiration" => $session->expiration
                 ]
             ];
 
@@ -64,11 +64,11 @@
 
             $json = json_encode($result);
 
-            $fileName = TEMP . "/sess" . $session->SessionID;
+            $fileName = TEMP . "/sess" . $session->sessionID;
             file_put_contents($fileName, $json);
         }
 
-        public function Pull($sessionID)
+        public function pull($sessionID)
         {
             if (file_exists(TEMP . "/sess" . $sessionID))
             {
@@ -80,23 +80,23 @@
             return false;
         }
 
-        public function Destroy(Session $session)
+        public function destroy(Session $session)
         {
-            if (file_exists(TEMP . "/sess" . $session->SessionID))
+            if (file_exists(TEMP . "/sess" . $session->sessionID))
             {
-                unlink(TEMP . "/sess" . $session->SessionID);
+                unlink(TEMP . "/sess" . $session->sessionID);
             }
         }
 
-        public function RegenerateID(Session $session, string $newSessionId)
+        public function regenerateID(Session $session, string $newSessionId)
         {
-            if (file_exists(TEMP . "/sess" . $session->SessionID))
+            if (file_exists(TEMP . "/sess" . $session->sessionID))
             {
-                rename(TEMP . "/sess" . $session->SessionID, TEMP . "/sess" . $newSessionId);
+                rename(TEMP . "/sess" . $session->sessionID, TEMP . "/sess" . $newSessionId);
             }
         }
 
-        public function GetIterator() : int
+        public function getIterator() : int
         {
             $iterator = (int)file_get_contents(TEMP . "/sessIterator") + 1;
             file_put_contents(TEMP . "/sessIterator", $iterator);

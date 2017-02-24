@@ -21,10 +21,10 @@ use DocBlockReader\Reader;
      */
     abstract class BaseFactory
     {
-        protected $Singleton = null;
-        public $Container;
+        protected $singleton = null;
+        public $container;
 
-        abstract public function Make();
+        abstract public function make();
 
         public function __invoke()
         {
@@ -32,17 +32,17 @@ use DocBlockReader\Reader;
             $comment = $comment->getParameter('Singleton');
 
             if ($comment == true) {
-                if (isset($this->Singleton)) {
-                    return $this->Singleton;
+                if (isset($this->singleton)) {
+                    return $this->singleton;
                 } else {
-                    $this->Singleton = $this->Make();
+                    $this->singleton = $this->make();
 
-                    return $this->Singleton;
+                    return $this->singleton;
                 }
             }
 
-            if (is_object($this->Make())) {
-                return $this->Make();
+            if (is_object($this->make())) {
+                return $this->make();
             } else {
                 throw new DIContainerException('Factory '.self::class." doesn't return object");
             }

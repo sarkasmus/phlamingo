@@ -91,6 +91,6 @@ use Phlamingo\Core\MVC\Router;
 
             $event = ['controller' => $event[0], 'action' => $event[1]];
 
-            return $this->router->GenerateURL($event, ...$params);
+            return $this->router->generateURL($event, ...$params);
         }
     }

@@ -11,11 +11,11 @@
      * This source code is part of Phlamingo project
      */
 
-namespace Phlamingo\Core\MVC;
+    namespace Phlamingo\Core\MVC;
 
-use Phlamingo\Core\MVC\Exceptions\RouterException;
-    use Phlamingo\Core\Object;
-    use Phlamingo\HTTP\Request;
+    use Phlamingo\Core\MVC\Exceptions\RouterException;
+        use Phlamingo\Core\Object;
+        use Phlamingo\HTTP\Request;
 
     /**
      * Router converts requested URLs to callable actions in application.
@@ -82,10 +82,10 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
 
                         // Checks when expression matches URI value e.g: {int} matches: 5, 90
                         // {string} matches any text {en|de} matches "en" or "de"
-                        if ($this->ExpressionMatch($expression, $uriPart)) {
+                        if ($this->expressionMatch($expression, $uriPart)) {
                             // If value is empty it will be replaced by default value from expression
                             // or else will return $uriPart
-                            $params[] = $this->ExpressionValue($expression, $uriPart);
+                            $params[] = $this->expressionValue($expression, $uriPart);
                             $finalRoute = $route;
                             continue;
                         } else {
@@ -134,7 +134,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          * @param string $mask  Mask of route (e.g: "controller/action", "user/{int:default}")
          * @param array  $event Event, array containing controller and action to call
          */
-        public function AddRoute(string $mask, array $event)
+        public function addRoute(string $mask, array $event)
         {
             $this->routes[] = ['mask' => trim($mask, '/'), 'event' => $event];
         }
@@ -149,7 +149,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          *
          * @return string Generated URL
          */
-        public function GenerateURL(array $event, ...$params) : string
+        public function generateURL(array $event, ...$params) : string
         {
             foreach ($this->routes as $route) {
                 if ($route['event'] == $event) {
@@ -159,7 +159,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
                     $paramIterator = 0;
                     foreach ($route as $routePart) {
                         if (substr($routePart, 0, 1) === '{' and substr($routePart, -1) === '}') {
-                            if ($this->ExpressionMatch($routePart, $params[$paramIterator])) {
+                            if ($this->expressionMatch($routePart, $params[$paramIterator])) {
                                 $result[] = $params[$paramIterator];
                                 $paramIterator++;
                             } else {
@@ -182,7 +182,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          *
          * @param array $event Event
          */
-        public function SetHomepage(array $event)
+        public function setHomepage(array $event)
         {
             $this->routes[] = ['mask' => '', 'event' => $event];
         }
@@ -197,7 +197,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          *
          * @return bool Matches or not
          */
-        protected function ExpressionMatch(string $expression, $uriPart) : bool
+        protected function expressionMatch(string $expression, $uriPart) : bool
         {
             if ($expression == 'empty') {
                 return true;
@@ -205,7 +205,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
                 $results = [];
                 $subExpressions = explode('|', $expression);
                 foreach ($subExpressions as $subExpression) {
-                    $results[] = $this->ParseSubExpression($subExpression, $uriPart);
+                    $results[] = $this->parseSubExpression($subExpression, $uriPart);
                 }
 
                 return in_array(true, $results);
@@ -222,11 +222,11 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          *
          * @return bool Matches or not
          */
-        protected function ParseSubExpression(string $subExpression, $uriPart) : bool
+        protected function parseSubExpression(string $subExpression, $uriPart) : bool
         {
             $types = ['string', 'int', 'number'];
             if (in_array($subExpression, $types)) {
-                return $this->ExpressionTypes($subExpression, $uriPart);
+                return $this->expressionTypes($subExpression, $uriPart);
             } elseif (strpos($subExpression, '-')) {
                 $subExpression = explode('-', $subExpression);
                 if ((int) $uriPart >= (int) $subExpression[0] and (int) $uriPart <= (int) $subExpression[1]) {
@@ -240,7 +240,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
                     return true;
                 } else {
                     // Calling self method
-                    return $this->ParseSubExpression($subExpression[0], $uriPart);
+                    return $this->parseSubExpression($subExpression[0], $uriPart);
                 }
             } elseif ($subExpression == $uriPart) {
                 return true;
@@ -257,7 +257,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          *
          * @return bool Is value of type in expression or not
          */
-        protected function ExpressionTypes(string $expression, $uriPart) : bool
+        protected function expressionTypes(string $expression, $uriPart) : bool
         {
             if ($expression == 'string' and is_string($uriPart)) {
                 return true;
@@ -276,7 +276,7 @@ use Phlamingo\Core\MVC\Exceptions\RouterException;
          *
          * @return mixed Value or if it is empty it returns default value of expression
          */
-        protected function ExpressionValue(string $expression, $uriPart)
+        protected function expressionValue(string $expression, $uriPart)
         {
             if (strpos($expression, ':') and $uriPart == '{empty}') {
                 return explode(':', $expression)[1];

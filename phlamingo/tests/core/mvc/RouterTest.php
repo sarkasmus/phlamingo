@@ -22,13 +22,13 @@ use Phlamingo\Core\MVC\Router;
         public function setUp()
         {
             $this->Router = new Router();
-            $this->Router->AddRoute('/route1', ['controller' => 'controller', 'action' => 'action']);
-            $this->Router->AddRoute('/route2/route2', ['controller' => 'controller', 'action' => 'action']);
-            $this->Router->AddRoute('/route3/{string}', ['controller' => 'controller', 'action' => 'action']);
-            $this->Router->AddRoute('/route4/{int}', ['controller' => 'controller', 'action' => 'action']);
-            $this->Router->AddRoute('/route5/{en|fr}', ['controller' => 'controller', 'action' => 'action']);
-            $this->Router->AddRoute('/route6/{string:default}', ['controller' => 'controller', 'action' => 'action']);
-            $this->Router->AddRoute('/route7/{int|default}', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route1', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route2/route2', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route3/{string}', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route4/{int}', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route5/{en|fr}', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route6/{string:default}', ['controller' => 'controller', 'action' => 'action']);
+            $this->Router->addRoute('/route7/{int|default}', ['controller' => 'controller', 'action' => 'action']);
         }
 
         public function testRoutes()
