@@ -31,24 +31,24 @@ use Phlamingo\Core\MVC\Exceptions\ControllerException;
          *
          * @var Request
          */
-        public $Request;
+        public $request;
 
         /**
          * @Service Session
          */
-        public $Session;
+        public $session;
 
         /**
          * Calls before action.
          */
-        protected function BeforeAction()
+        protected function beforeAction()
         {
         }
 
         /**
          * Calls after action.
          */
-        protected function AfterAction()
+        protected function afterAction()
         {
         }
 
@@ -62,11 +62,11 @@ use Phlamingo\Core\MVC\Exceptions\ControllerException;
          *
          * @return Response Response
          */
-        final public function Run(string $action, ...$params)
+        final public function run(string $action, ...$params)
         {
-            $this->BeforeAction();
+            $this->beforeAction();
             $response = $this->$action(...$params);
-            $this->AfterAction();
+            $this->afterAction();
 
             if ($response instanceof Response) {
                 return $response;
@@ -91,13 +91,13 @@ use Phlamingo\Core\MVC\Exceptions\ControllerException;
          *
          * @return Response Response
          */
-        final protected function Redirect($pathOrEvent, ...$params)
+        final protected function redirect($pathOrEvent, ...$params)
         {
             if (is_string($pathOrEvent)) {
                 return new Response('', '1.1', 301, 'UTF-8', 'Location: '.$pathOrEvent);
             } elseif (is_array($pathOrEvent)) {
                 $router = new Router();
-                $router->GenerateURL($pathOrEvent, ...$params);
+                $router->generateURL($pathOrEvent, ...$params);
 
                 return new Response('', '1.1', 301, 'UTF-8', 'Location: '.$pathOrEvent);
             } else {

@@ -40,9 +40,9 @@ use Phlamingo\Config\Configurator;
          */
         final public function CallMain(Router $router)
         {
-            $container = ContainerSingleton::GetContainer();
-            $request = $container->Get('Request');
-            $event = $router->Route($request);
+            $container = ContainerSingleton::getContainer();
+            $request = $container->get('Request');
+            $event = $router->route($request);
             $this->Main(new $event['controller'](), $event['action'], ...$event['params']);
         }
 

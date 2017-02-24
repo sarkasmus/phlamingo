@@ -24,25 +24,26 @@ use Phlamingo\Di\BaseFactory;
      */
     class SessionFactory extends BaseFactory
     {
-        public function Make()
+        public function make()
         {
-            $request = $this->Container->Get('Request');
-            if (isset($this->Container->Singletons['Session'])) {
-                return $this->Container->Singletons['Session'];
+            $request = $this->container->Get('Request');
+
+            if (isset($this->singleton)) {
+                return $this->singleton;
             } elseif (isset($request->Cookies['SessID'])) {
                 try {
-                    $this->Container->Singletons['Session'] = new Session($request->Cookies['SessID']);
+                    $this->singleton = new Session($request->Cookies['SessID']);
 
-                    return $this->Container->Singletons['Session'];
+                    return $this->singleton;
                 } catch (SessionException $e) {
-                    $this->Container->Singletons['Session'] = new Session();
+                    $this->singleton = new Session();
 
-                    return $this->Container->Singletons['Session'];
+                    return $this->singleton;
                 }
             } else {
-                $this->Container->Singletons['Session'] = new Session();
+                $this->singleton = new Session();
 
-                return $this->Container->Singletons['Session'];
+                return $this->singleton;
             }
         }
     }

@@ -35,9 +35,9 @@ use Phlamingo\Di\BaseFactory;
 
     class TestingServiceFactory extends BaseFactory
     {
-        public function Make()
+        public function make()
         {
-            $service = new TestingService($this->Container->Get('service1'));
+            $service = new TestingService($this->container->Get('service1'));
 
             return $service;
         }
@@ -50,12 +50,12 @@ use Phlamingo\Di\BaseFactory;
         public function setUp()
         {
             $this->Container = new Container();
-            $this->Container->AddService('service1', function () {
+            $this->Container->addService('service1', function () {
                 return new Dependency();
             });
-            $this->Container->AddService('service2', new TestingServiceFactory());
+            $this->Container->addService('service2', new TestingServiceFactory());
 
-            $this->Container->AddAlias('service2', 'alias');
+            $this->Container->addAlias('service2', 'alias');
         }
 
         public function testServices()

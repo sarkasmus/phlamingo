@@ -29,21 +29,21 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          *
          * @var string
          */
-        protected $SessionID;
+        protected $sessionID;
 
         /**
          * StorageManager object to control saving, pulling and destroying session data.
          *
          * @var BaseStorageManager
          */
-        protected $StorageManager;
+        protected $storageManager;
 
         /**
          * List of sections in sessions.
          *
          * @var array
          */
-        protected $Sections = [];
+        protected $sections = [];
 
         /**
          * Constructor.
@@ -58,28 +58,28 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
                 $storageManager = new FileStorageManager();
             }
 
-            $this->SessionID = $sessionID;
-            $this->StorageManager = $storageManager;
+            $this->sessionID = $sessionID;
+            $this->storageManager = $storageManager;
 
             if ($sessionID === null) {
-                $this->RegenerateSessionID();
+                $this->regenerateSessionID();
             } else {
-                $this->Pull();
+                $this->pull();
             }
         }
 
         /**
          * Regenerates session ID of current session.
          */
-        public function RegenerateSessionID()
+        public function regenerateSessionID()
         {
-            $iterator = $this->StorageManager->GetIterator();
-            $this->StorageManager->Destroy($this);
-            $this->SessionID = hash('sha256', $_SERVER['REMOTE_ADDR'].$iterator);
+            $iterator = $this->storageManager->getIterator();
+            $this->storageManager->Destroy($this);
+            $this->sessionID = hash('sha256', $_SERVER['REMOTE_ADDR'].$iterator);
             if (!headers_sent()) {
                 setcookie(
                     'SessID',
-                    $this->SessionID,
+                    $this->sessionID,
                     time() + 8600 * 14,
                     '/',
                     DOMAIN,
@@ -92,15 +92,15 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
         /**
          * Pulls data from storage manager for current session relation (with session id).
          */
-        public function Pull()
+        public function pull()
         {
-            if (($pulledContent = $this->StorageManager->Pull($this->SessionID)) !== false) {
+            if (($pulledContent = $this->storageManager->Pull($this->sessionID)) !== false) {
                 $default = $pulledContent['default_session'];
 
-                $this->Expiration($default['expiration']);
+                $this->expiration($default['expiration']);
 
                 if ($default['locked']) {
-                    $this->Lock();
+                    $this->lock();
                 }
 
                 foreach ($default['variables'] as $key => $variable) {
@@ -108,47 +108,47 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
                 }
 
                 foreach ($default['lockedVariables'] as $key => $variable) {
-                    $this->Lock($key);
+                    $this->lock($key);
                 }
 
                 foreach ($default['expirations'] as $key => $variable) {
-                    $this->Expiration('key', $variable);
+                    $this->expiration('key', $variable);
                 }
 
                 unset($pulledContent['_session'], $pulledContent['default_session']);
                 foreach ($pulledContent as $section) {
                     $name = $section['name'];
-                    $this->AddSection($name);
+                    $this->addSection($name);
 
-                    $this->Sections[$name]->Expiration($section['expiration']);
+                    $this->sections[$name]->Expiration($section['expiration']);
 
                     if ($section['locked']) {
-                        $this->Sections[$name]->Lock();
+                        $this->sections[$name]->Lock();
                     }
 
                     foreach ($section['variables'] as $key => $variable) {
-                        $this->Sections[$name]->$key = $variable;
+                        $this->sections[$name]->$key = $variable;
                     }
 
                     foreach ($section['lockedVariables'] as $key => $variable) {
-                        $this->Sections[$name]->Lock($key);
+                        $this->sections[$name]->Lock($key);
                     }
 
                     foreach ($section['expirations'] as $key => $variable) {
-                        $this->Sections[$name]->Expiration('key', $variable);
+                        $this->sections[$name]->Expiration('key', $variable);
                     }
                 }
             } else {
-                throw new SessionException("Session ID {$this->SessionID} doesn't exists");
+                throw new SessionException("Session ID {$this->sessionID} doesn't exists");
             }
         }
 
         /**
          * Destroys session.
          */
-        public function Destroy()
+        public function destroy()
         {
-            $this->StorageManager->Destroy($this);
+            $this->storageManager->Destroy($this);
         }
 
         /**
@@ -159,11 +159,11 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          * @throws SessionException          When section name already exists
          * @throws \InvalidArgumentException When string is empty
          */
-        public function AddSection(string $name)
+        public function addSection(string $name)
         {
             if (!empty($name)) {
-                if (!isset($this->Sections[$name])) {
-                    $this->Sections[$name] = new SessionSection($name);
+                if (!isset($this->sections[$name])) {
+                    $this->sections[$name] = new SessionSection($name);
                 } else {
                     throw new SessionException("Session section with name {$name} already exists and can!'t be added");
                 }
@@ -183,8 +183,8 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          */
         public function __get(string $name)
         {
-            if (isset($this->Sections[$name])) {
-                return $this->Sections[$name];
+            if (isset($this->sections[$name])) {
+                return $this->sections[$name];
             } else {
                 try {
                     return parent::__get($name);
@@ -197,9 +197,9 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
         /**
          * Saves session relation by storage manager.
          */
-        public function Save()
+        public function save()
         {
-            $this->StorageManager->Save($this);
+            $this->storageManager->Save($this);
         }
 
         /**
@@ -209,7 +209,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          */
         public function getSessionID() : ?string
         {
-            return $this->SessionID;
+            return $this->sessionID;
         }
 
         /**
@@ -219,7 +219,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          */
         public function setStorageManager(BaseStorageManager $storageManager)
         {
-            $this->StorageManager = $storageManager;
+            $this->storageManager = $storageManager;
         }
 
         /**
@@ -229,7 +229,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          */
         public function getStorageManager() : BaseStorageManager
         {
-            return $this->StorageManager;
+            return $this->storageManager;
         }
 
         /**
@@ -239,7 +239,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          */
         public function getSections() : array
         {
-            return $this->Sections;
+            return $this->sections;
         }
 
         /**
@@ -247,6 +247,6 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
          */
         public function __destruct()
         {
-            $this->Save();
+            $this->save();
         }
     }

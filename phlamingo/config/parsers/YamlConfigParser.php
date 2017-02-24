@@ -28,7 +28,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          *
          * @return array Array
          */
-        public function Parse(string $code) : array
+        public function parse(string $code) : array
         {
             $result = Yaml::parse($code);
 
@@ -44,7 +44,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          *
          * @return array Array
          */
-        public function ParseFile(string $path) : array
+        public function parseFile(string $path) : array
         {
             if (file_exists($path)) {
                 $result = Yaml::parse(file_get_contents($path));
@@ -62,7 +62,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          *
          * @return string Yaml code
          */
-        public function Dump(array $data) : string
+        public function dump(array $data) : string
         {
             $result = Yaml::dump($data);
 
@@ -75,7 +75,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          * @param array  $data Array
          * @param string $path Path to file
          */
-        public function DumpToFile(array $data, string $path)
+        public function dumpToFile(array $data, string $path)
         {
             $result = Yaml::dump($data);
 

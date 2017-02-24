@@ -22,7 +22,7 @@ use Phlamingo\HTTP\Request;
  */
 class RequestFactory extends BaseFactory
 {
-    public function Make() : Request
+    public function make() : Request
     {
         return new Request(
             $_SERVER['REQUEST_URI'],

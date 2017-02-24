@@ -32,7 +32,7 @@ namespace Phlamingo\Core;
          *
          * @var \ReflectionClass
          */
-        public $Reflection;
+        public $reflection;
 
         /**
          * Extension methods list.
@@ -46,9 +46,9 @@ namespace Phlamingo\Core;
          *
          * @var Container
          */
-        public $Container;
+        public $container;
 
-        private static $Enviroment = true;
+        private static $enviroment = true;
 
         /**
          * Constructor.
@@ -59,7 +59,7 @@ namespace Phlamingo\Core;
          */
         public function __construct()
         {
-            if (self::$Enviroment === true) {
+            if (self::$enviroment === true) {
                 $this->ThisSetup();
             }
         }
@@ -73,10 +73,10 @@ namespace Phlamingo\Core;
         protected function ThisSetup()
         {
             // Setup reflection
-            $this->Reflection = $reflection = new \ReflectionClass($this);
+            $this->reflection = $reflection = new \ReflectionClass($this);
 
             // Setup di
-            $this->Container = ContainerSingleton::GetContainer();
+            $this->container = ContainerSingleton::getContainer();
 
             $properties = $reflection->getProperties();
             foreach ($properties as $property) {
@@ -101,10 +101,10 @@ namespace Phlamingo\Core;
          */
         public function __get(string $name)
         {
-            if (isset($this->Reflection)) {
-                if ($this->Reflection->hasProperty($name)) {
-                    if ($this->Reflection->hasMethod('get'.ucfirst($name))) {
-                        return $this->Reflection->getMethod('get'.ucfirst($name))->invoke($this);
+            if (isset($this->reflection)) {
+                if ($this->reflection->hasProperty($name)) {
+                    if ($this->reflection->hasMethod('get'.ucfirst($name))) {
+                        return $this->reflection->getMethod('get'.ucfirst($name))->invoke($this);
                     } else {
                         throw new MemberAccessException("Property {$name} has not defined getter in class {".get_class($this).'}');
                     }
@@ -132,10 +132,10 @@ namespace Phlamingo\Core;
             }
 
             // Implements setters
-            if (isset($this->Reflection)) {
-                if ($this->Reflection->hasProperty($name)) {
-                    if ($this->Reflection->hasMethod('set'.ucfirst($name))) {
-                        $this->Reflection->getMethod('set'.ucfirst($name))->invoke($this, $value);
+            if (isset($this->reflection)) {
+                if ($this->reflection->hasProperty($name)) {
+                    if ($this->reflection->hasMethod('set'.ucfirst($name))) {
+                        $this->reflection->getMethod('set'.ucfirst($name))->invoke($this, $value);
                     } else {
                         throw new MemberAccessException("Property {$name} has not defined setter in class {".get_class($this).'}');
                     }
@@ -178,8 +178,8 @@ namespace Phlamingo\Core;
         {
             if (isset($this->methods[$name])) {
                 return $this->methods[$name](...$arguments);
-            } elseif (isset($this->Reflection)) {
-                if (substr($name, 0, 2) === 'on' and $this->Reflection->hasProperty(substr($name, 2).'Event')) {
+            } elseif (isset($this->reflection)) {
+                if (substr($name, 0, 2) === 'on' and $this->reflection->hasProperty(substr($name, 2).'Event')) {
                     $event = substr($name, 2).'Event';
                     foreach ($this->$event as $event) {
                         $event();
@@ -192,7 +192,7 @@ namespace Phlamingo\Core;
 
         public static function SetEnviroment(bool $callSetup = true)
         {
-            self::$Enviroment = $callSetup;
+            self::$enviroment = $callSetup;
         }
 
         public function Event()

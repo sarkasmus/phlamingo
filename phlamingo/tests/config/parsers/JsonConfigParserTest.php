@@ -29,7 +29,7 @@ use Phlamingo\Config\Parsers\JsonConfigParser;
 
         public function testJson()
         {
-            $this->assertEquals('{"foo":"bar"}', $this->Parser->Dump(['foo' => 'bar']));
-            $this->assertEquals(['foo' => 'bar'], $this->Parser->Parse('{"foo":"bar"}'));
+            $this->assertEquals('{"foo":"bar"}', $this->Parser->dump(['foo' => 'bar']));
+            $this->assertEquals(['foo' => 'bar'], $this->Parser->parse('{"foo":"bar"}'));
         }
     }

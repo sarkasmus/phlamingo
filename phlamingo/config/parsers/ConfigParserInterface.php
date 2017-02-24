@@ -14,11 +14,11 @@ namespace Phlamingo\Config\Parsers;
 
 interface ConfigParserInterface
 {
-    public function Parse(string $code);
+    public function parse(string $code);
 
-    public function ParseFile(string $path);
+    public function parseFile(string $path);
 
-    public function Dump(array $data);
+    public function dump(array $data);
 
-    public function DumpToFile(array $data, string $path);
+    public function dumpToFile(array $data, string $path);
 }

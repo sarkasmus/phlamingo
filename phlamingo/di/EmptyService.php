@@ -11,102 +11,102 @@
      * This source code is part of Phlamingo project
      */
 
-namespace Phlamingo\Di;
+    namespace Phlamingo\Di;
 
-class EmptyService
-{
-    /**
-         * Service name and instance.
-         *
-         * @var string|object
-         */
-        protected $_service;
-
+    class EmptyService
+    {
         /**
-         * Constructor.
-         *
-         * @param string $serviceName Service name
-         */
-        public function __construct(string $serviceName)
-        {
-            $this->_service = $serviceName;
-        }
+             * Service name and instance.
+             *
+             * @var string|object
+             */
+            protected $_service;
 
-        /**
-         * Checks if service has been instanced and if it has not makes instance of it.
-         */
-        protected function check()
-        {
-            if (is_string($this->_service)) {
-                $container = ContainerSingleton::GetContainer();
-                $this->_service = $container->Get($this->_service);
+            /**
+             * Constructor.
+             *
+             * @param string $serviceName Service name
+             */
+            public function __construct(string $serviceName)
+            {
+                $this->_service = $serviceName;
             }
-        }
 
-        /**
-         * Glove get method.
-         *
-         * @param string $name Name of the service's property
-         *
-         * @return mixed Value of property
-         */
-        public function __get(string $name)
-        {
-            $this->check();
+            /**
+             * Checks if service has been instanced and if it has not makes instance of it.
+             */
+            protected function check()
+            {
+                if (is_string($this->_service)) {
+                    $container = ContainerSingleton::getContainer();
+                    $this->_service = $container->get($this->_service);
+                }
+            }
 
-            return $this->_service->$name;
-        }
+            /**
+             * Glove get method.
+             *
+             * @param string $name Name of the service's property
+             *
+             * @return mixed Value of property
+             */
+            public function __get(string $name)
+            {
+                $this->check();
 
-        /**
-         * Glove set method.
-         *
-         * @param string $name  Name of the service's property
-         * @param mixed  $value Value to set
-         */
-        public function __set(string $name, $value)
-        {
-            $this->check();
-            $this->_service->$name = $value;
-        }
+                return $this->_service->$name;
+            }
 
-        /**
-         * Glove call method.
-         *
-         * @param string $name      Name of the service's method
-         * @param array  $arguments Arguments of method
-         *
-         * @return mixed Call result
-         */
-        public function __call(string $name, $arguments)
-        {
-            $this->check();
+            /**
+             * Glove set method.
+             *
+             * @param string $name  Name of the service's property
+             * @param mixed  $value Value to set
+             */
+            public function __set(string $name, $value)
+            {
+                $this->check();
+                $this->_service->$name = $value;
+            }
 
-            return $this->_service->$name(...$arguments);
-        }
+            /**
+             * Glove call method.
+             *
+             * @param string $name      Name of the service's method
+             * @param array  $arguments Arguments of method
+             *
+             * @return mixed Call result
+             */
+            public function __call(string $name, $arguments)
+            {
+                $this->check();
 
-        /**
-         * Glove isset method.
-         *
-         * @param string $name Name of the service's property
-         *
-         * @return bool
-         */
-        public function __isset($name)
-        {
-            $this->check();
+                return $this->_service->$name(...$arguments);
+            }
 
-            return $this->_service->__isset($name);
-        }
+            /**
+             * Glove isset method.
+             *
+             * @param string $name Name of the service's property
+             *
+             * @return bool
+             */
+            public function __isset($name)
+            {
+                $this->check();
 
-        /**
-         * Glove invoke method.
-         *
-         * @param array $arguments Arguments of callback
-         */
-        public function __invoke(...$arguments)
-        {
-            $this->check();
+                return $this->_service->__isset($name);
+            }
 
-            return $this->_service->__invoke(...$arguments);
-        }
-}
+            /**
+             * Glove invoke method.
+             *
+             * @param array $arguments Arguments of callback
+             */
+            public function __invoke(...$arguments)
+            {
+                $this->check();
+
+                return $this->_service->__invoke(...$arguments);
+            }
+    }

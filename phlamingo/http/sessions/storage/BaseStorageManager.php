@@ -21,8 +21,9 @@
      */
     abstract class BaseStorageManager
     {
-        public abstract function Pull($sessionID);
-        public abstract function Save(Session $session);
-        public abstract function Destroy(Session $session);
-        public abstract function RegenerateID(Session $session, string $newSessionId);
+        public abstract function pull($sessionID);
+        public abstract function save(Session $session);
+        public abstract function destroy(Session $session);
+        public abstract function regenerateID(Session $session, string $newSessionId);
+        public abstract function getIterator() : int;
     }

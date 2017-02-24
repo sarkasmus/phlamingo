@@ -27,7 +27,7 @@ namespace Phlamingo\Config;
          *
          * @var array|ConfigValue
          */
-        protected $ConfigValues = [];
+        protected $configValues = [];
 
         /**
          * Inserts new config entry.
@@ -38,14 +38,14 @@ namespace Phlamingo\Config;
          *
          * @throws ConfigException When ConfigValue with name $name already exists
          */
-        public function AddConfigValue(string $name, $value, $defaultValue = null)
+        public function addConfigValue(string $name, $value, $defaultValue = null)
         {
             if ($defaultValue === null) {
                 $defaultValue = $value;
             }
 
-            if (!isset($this->ConfigValues[$name])) {
-                $this->ConfigValues[$name] = new ConfigValue($name, $value, $defaultValue);
+            if (!isset($this->configValues[$name])) {
+                $this->configValues[$name] = new ConfigValue($name, $value, $defaultValue);
             } else {
                 throw new ConfigException("Config value {$name} cannot be added because it already exists");
             }
@@ -60,10 +60,10 @@ namespace Phlamingo\Config;
          *
          * @throws ConfigException If entry is not defined
          */
-        public function SetConfigValue(string $name, $value, int $priority)
+        public function setConfigValue(string $name, $value, int $priority)
         {
-            if (isset($this->ConfigValues[$name])) {
-                $this->ConfigValues[$name]->ChangeValue($value, $priority);
+            if (isset($this->configValues[$name])) {
+                $this->configValues[$name]->ChangeValue($value, $priority);
             } else {
                 throw new ConfigException("ConfigValue with name {$name} which your are trying to write to is not defined");
             }
@@ -78,15 +78,15 @@ namespace Phlamingo\Config;
          *
          * @return string|mixed Value of entry
          */
-        public function GetConfigValue(string $name)
+        public function getConfigValue(string $name)
         {
-            if (isset($this->ConfigValues[$name])) {
-                return $this->ConfigValues[$name]->Value;
+            if (isset($this->configValues[$name])) {
+                return $this->configValues[$name]->Value;
             } else {
                 $valuesMatches = [];
-                foreach ($this->ConfigValues as $key => $value) {
+                foreach ($this->configValues as $key => $value) {
                     if (strstr($key, $name, true) !== false and empty(strstr($key, $name, true))) {
-                        $valuesMatches[$key] = $this->ConfigValues[$key]->Value;
+                        $valuesMatches[$key] = $this->configValues[$key]->Value;
                     }
                 }
 
@@ -101,9 +101,9 @@ namespace Phlamingo\Config;
         /**
          * Clears all config entries, resets priority and sets value for default.
          */
-        public function ClearAllConfigurations()
+        public function clearAllConfigurations()
         {
-            foreach ($this->ConfigValues as $configValue) {
+            foreach ($this->configValues as $configValue) {
                 $configValue->Priority = ConfigValue::DEFAULT_PRIORITY;
                 $configValue->Value = $configValue->DefaultValue;
             }
@@ -116,11 +116,11 @@ namespace Phlamingo\Config;
          *
          * @throws ConfigException When entry is not defined
          */
-        public function ClearValue(string $name)
+        public function clearValue(string $name)
         {
-            if (isset($this->ConfigValues[$name])) {
-                $this->ConfigValues[$name]->Priority = ConfigValue::DEFAULT_PRIORITY;
-                $this->ConfigValues[$name]->Value = $this->ConfigValues[$name]->DefaultValue;
+            if (isset($this->configValues[$name])) {
+                $this->configValues[$name]->Priority = ConfigValue::DEFAULT_PRIORITY;
+                $this->configValues[$name]->Value = $this->configValues[$name]->DefaultValue;
             } else {
                 throw new ConfigException("ConfigValue with name {$name} is not defined");
             }
@@ -133,10 +133,10 @@ namespace Phlamingo\Config;
          *
          * @throws ConfigException When entry is not defined
          */
-        public function ResetPriorityOfValue(string $name)
+        public function resetPriorityOfValue(string $name)
         {
-            if (isset($this->ConfigValues[$name])) {
-                $this->ConfigValues[$name]->Priority = ConfigValue::DEFAULT_PRIORITY;
+            if (isset($this->configValues[$name])) {
+                $this->configValues[$name]->Priority = ConfigValue::DEFAULT_PRIORITY;
             } else {
                 throw new ConfigException("ConfigValue with name {$name} is not defined");
             }
@@ -145,9 +145,9 @@ namespace Phlamingo\Config;
         /**
          * Resets priority of all entries.
          */
-        public function ResetPriorities()
+        public function resetPriorities()
         {
-            foreach ($this->ConfigValues as $configValue) {
+            foreach ($this->configValues as $configValue) {
                 $configValue->Priority = ConfigValue::DEFAULT_PRIORITY;
             }
         }
@@ -157,7 +157,7 @@ namespace Phlamingo\Config;
          *
          * @return array Entries
          */
-        public function PullAll() : array
+        public function pullAll() : array
         {
             return $this->getIterator();
         }
@@ -165,7 +165,7 @@ namespace Phlamingo\Config;
         public function getIterator()
         {
             $return = [];
-            foreach ($this->ConfigValues as $key => $value) {
+            foreach ($this->configValues as $key => $value) {
                 $return[$key] = $value->Value;
             }
 
@@ -178,7 +178,7 @@ namespace Phlamingo\Config;
          * @param array $parsedValues Entries
          * @param int   $priority     Priority to write
          */
-        public function Push(array $parsedValues, int $priority)
+        public function push(array $parsedValues, int $priority)
         {
             $results = [];
             $i = 0;
@@ -201,9 +201,9 @@ namespace Phlamingo\Config;
 
             foreach ($results as $key => $result) {
                 try {
-                    $this->SetConfigValue($key, $result, $priority);
+                    $this->setConfigValue($key, $result, $priority);
                 } catch (ConfigException $e) {
-                    $this->AddConfigValue($key, $result);
+                    $this->addConfigValue($key, $result);
                 }
             }
         }

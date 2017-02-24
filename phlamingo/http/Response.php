@@ -27,7 +27,7 @@ use Phlamingo\Core\Object;
          *
          * @var array
          */
-        public $StatusList = [
+        public $statusList = [
             100 => 'Continue',
             101 => 'Switching Protocols',
             102 => 'Processing',            // RFC2518
@@ -96,42 +96,42 @@ use Phlamingo\Core\Object;
          *
          * @var string
          */
-        protected $Version;
+        protected $version;
 
         /**
          * Code status of response.
          *
          * @var int
          */
-        protected $StatusCode;
+        protected $statusCode;
 
         /**
          * Text variant of status of response.
          *
          * @var string
          */
-        protected $Status;
+        protected $status;
 
         /**
          * Charset which is used in response.
          *
          * @var string
          */
-        public $Charset;
+        public $charset;
 
         /**
          * All other headers in response.
          *
          * @var array
          */
-        public $Headers;
+        public $headers;
 
         /**
          * Content of response.
          *
          * @var string
          */
-        public $Content;
+        public $content;
 
         /**
          * Constructor.
@@ -148,20 +148,20 @@ use Phlamingo\Core\Object;
         {
             parent::__construct();
 
-            $this->Content = $content;
-            $this->Charset = $charset;
-            $this->Headers = $headers;
+            $this->content = $content;
+            $this->charset = $charset;
+            $this->headers = $headers;
 
             if ($version == '1.1' or $version == '1.0' or $version == '2') {
-                $this->Version = $version;
+                $this->version = $version;
             } else {
                 throw new HttpException();
             }
 
             // Convert number code to text
-            if (array_key_exists($statusCode, $this->StatusList)) {
-                $this->Status = strtr($statusCode, $this->StatusList);
-                $this->StatusCode = $statusCode;
+            if (array_key_exists($statusCode, $this->statusList)) {
+                $this->status = strtr($statusCode, $this->statusList);
+                $this->statusCode = $statusCode;
             } else {
                 throw new HttpException();
             }
@@ -172,9 +172,9 @@ use Phlamingo\Core\Object;
          *
          * @param string $header Header to add
          */
-        public function AddHeader(string $header)
+        public function addHeader(string $header)
         {
-            $this->Headers[] = $header;
+            $this->headers[] = $header;
         }
 
         /**
@@ -186,9 +186,9 @@ use Phlamingo\Core\Object;
          */
         public function setStatusCode(int $code)
         {
-            if (array_key_exists($code, $this->StatusList)) {
-                $this->StatusCode = $code;
-                $this->Status = strtr($code, $this->StatusList);
+            if (array_key_exists($code, $this->statusList)) {
+                $this->statusCode = $code;
+                $this->status = strtr($code, $this->statusList);
             } else {
                 throw new HttpException();
             }
@@ -201,12 +201,12 @@ use Phlamingo\Core\Object;
          */
         public function getStatusCode()
         {
-            return $this->StatusCode;
+            return $this->statusCode;
         }
 
         public function getStatus()
         {
-            return $this->Status;
+            return $this->status;
         }
 
         /**
@@ -219,7 +219,7 @@ use Phlamingo\Core\Object;
         public function setVersion(string $version)
         {
             if ($version == '1.1' or $version == '1.0' or $version == '2') {
-                $this->Version = $version;
+                $this->version = $version;
             } else {
                 throw new HttpException();
             }
@@ -232,19 +232,19 @@ use Phlamingo\Core\Object;
          */
         public function getVersion()
         {
-            return $this->Version;
+            return $this->version;
         }
 
         /**
          * Sends all headers.
          */
-        public function SendHeaders()
+        public function sendHeaders()
         {
             if (!headers_sent()) {
-                $this->Headers[] = "HTTP $this->Version $this->StatusCode $this->Status";
-                $this->Headers[] = 'Charset: '.$this->Charset;
-                foreach ($this->Headers as $header) {
-                    header($header, true, $this->StatusCode);
+                $this->headers[] = "HTTP $this->version $this->statusCode $this->status";
+                $this->headers[] = 'Charset: '.$this->charset;
+                foreach ($this->headers as $header) {
+                    header($header, true, $this->statusCode);
                 }
             }
         }
@@ -252,17 +252,17 @@ use Phlamingo\Core\Object;
         /**
          * Sends content.
          */
-        public function SendContent()
+        public function sendContent()
         {
-            echo $this->Content;
+            echo $this->content;
         }
 
         /**
          * Sends full response.
          */
-        public function Send()
+        public function send()
         {
-            $this->SendHeaders();
-            $this->SendContent();
+            $this->sendHeaders();
+            $this->sendContent();
         }
     }

@@ -27,63 +27,63 @@ use Phlamingo\Core\Object;
          *
          * @var bool
          */
-        protected $Locked = false;
+        protected $locked = false;
 
         /**
          * List of locked variable names.
          *
          * @var array
          */
-        protected $LockedVariables = [];
+        protected $lockedVariables = [];
 
         /**
          * Name of the section.
          *
          * @var string
          */
-        protected $Name;
+        protected $name;
 
         /**
          * Expiration of section in seconds.
          *
          * @var int
          */
-        protected $Expiration = 0;
+        protected $expiration = 0;
 
         /**
          * List of variables and it`s values (name => value).
          *
          * @var array
          */
-        protected $Variables = [];
+        protected $variables = [];
 
         /**
          * List of setters (variable => callable setter).
          *
          * @var array
          */
-        protected $Setters = [];
+        protected $setters = [];
 
         /**
          * List of getters (variable =. callable getter).
          *
          * @var array
          */
-        protected $Getters = [];
+        protected $getters = [];
 
         /**
          * List of variables expiration (variable => expiration).
          *
          * @var array
          */
-        protected $Expirations = [];
+        protected $expirations = [];
 
         /**
          * List of save mode algorythms.
          *
          * @var array
          */
-        protected $SaveModes = [];
+        protected $saveModes = [];
 
         /**
          * Constructor.
@@ -93,7 +93,7 @@ use Phlamingo\Core\Object;
         public function __construct(string $name)
         {
             parent::__construct();
-            $this->Name = $name;
+            $this->name = $name;
         }
 
         /**
@@ -103,7 +103,7 @@ use Phlamingo\Core\Object;
          */
         public function getIterator()
         {
-            return $this->Variables;
+            return $this->variables;
         }
 
         /**
@@ -120,12 +120,12 @@ use Phlamingo\Core\Object;
          */
         public function __get(string $name)
         {
-            if (isset($this->Variables[$name])) {
-                if (isset($this->Getters[$name])) {
+            if (isset($this->variables[$name])) {
+                if (isset($this->getters[$name])) {
                     // Call getter if its defined
-                    return $this->Getters[$name]($this->Variables[$name]);
+                    return $this->getters[$name]($this->variables[$name]);
                 } else {
-                    return $this->Variables[$name];
+                    return $this->variables[$name];
                 }
             } else {
                 // If Variable is not defined calls parent (Core\Object - properties) if Object throws exception
@@ -133,7 +133,7 @@ use Phlamingo\Core\Object;
                 try {
                     return parent::__get($name);
                 } catch (\Exception $e) {
-                    throw new SessionException("Session variable {$name} is not defined in section {$this->Name}");
+                    throw new SessionException("Session variable {$name} is not defined in section {$this->name}");
                 }
             }
         }
@@ -152,18 +152,18 @@ use Phlamingo\Core\Object;
         public function __set(string $name, $value)
         {
             // If section or variable is locked then variable is not accessible for write
-            if ($this->Locked === false and in_array($name, $this->LockedVariables) === false) {
+            if ($this->locked === false and in_array($name, $this->lockedVariables) === false) {
                 try {
                     parent::__set($name, $value);
                 } catch (\Exception $e) {
-                    if (isset($this->Setters[$name])) {
-                        $this->Variables[$name] = $this->Setters[$name]($this->Variables[$name], $value);
+                    if (isset($this->setters[$name])) {
+                        $this->variables[$name] = $this->setters[$name]($this->variables[$name], $value);
                     } else {
-                        $this->Variables[$name] = $value;
+                        $this->variables[$name] = $value;
                     }
                 }
             } else {
-                throw new SessionException("Can't write to session variable {$name} because section {$this->Name} is locked");
+                throw new SessionException("Can't write to session variable {$name} because section {$this->name} is locked");
             }
         }
 
@@ -180,19 +180,19 @@ use Phlamingo\Core\Object;
          * @throws \InvalidArgumentException When section name is empty string
          * @throws SessionException          When session variable is not defined
          */
-        public function Rename(string $variableOrNewSectionName, string $newName = null)
+        public function rename(string $variableOrNewSectionName, string $newName = null)
         {
             // Override case: Rename(string $newSectionName) - renaming current section
             if ($newName === null) {
                 if (!empty($variableOrNewSectionName)) {
-                    $this->Name = $variableOrNewSectionName;
+                    $this->name = $variableOrNewSectionName;
                 } else {
                     throw new \InvalidArgumentException("New section name {$variableOrNewSectionName} is empty and section can't be renamed");
                 }
             } else { // Override case Rename(string $variable, string $newName) - renaming variable
-                if (isset($this->Variables[$variableOrNewSectionName])) {
-                    $this->Variables[$newName] = $this->Variables[$variableOrNewSectionName];
-                    unset($this->Variables[$variableOrNewSectionName]);
+                if (isset($this->variables[$variableOrNewSectionName])) {
+                    $this->variables[$newName] = $this->variables[$variableOrNewSectionName];
+                    unset($this->variables[$variableOrNewSectionName]);
                 } else {
                     throw new SessionException("Session variable {$variableOrNewSectionName} is not defined and can't be renamed");
                 }
@@ -211,31 +211,31 @@ use Phlamingo\Core\Object;
          *
          * @throws SessionException
          */
-        public function Move(SessionSection &$section, string $variable = null)
+        public function move(SessionSection &$section, string $variable = null)
         {
             // If variable name is set
             if ($variable !== null) {
                 // If variable is defined in section
-                if (isset($this->Variables[$variable])) {
+                if (isset($this->variables[$variable])) {
                     if (!isset($section->$variable)) {
-                        $section->$variable = $this->Variables[$variable];
-                        unset($this->Variables[$variable]);
+                        $section->$variable = $this->variables[$variable];
+                        unset($this->variables[$variable]);
                     } else {
                         // When variable name is defined in getting section variable from current section can`t be moved
-                        throw new SessionException("Session variable name conflict occured: variable {$variable} can't be moved to section {$section->Name} because variable with this name alerady exists");
+                        throw new SessionException("Session variable name conflict occured: variable {$variable} can't be moved to section {$section->name} because variable with this name alerady exists");
                     }
                 } else {
-                    throw new SessionException("Variable {$variable} is not defined in section {$this->Name} and can't be moved to section {$section->Name}");
+                    throw new SessionException("Variable {$variable} is not defined in section {$this->name} and can't be moved to section {$section->name}");
                 }
             }
             // If variable name is not set - moving all variables to section
             else {
                 // Variables are preprocessed and checked if getting section has not variable with same name
                 $moving = [];
-                foreach ($this->Variables as $key => $variable) {
+                foreach ($this->variables as $key => $variable) {
                     if (isset($section->$key)) {
                         // When variable name is defined in getting section variable from current section can`t be moved
-                        throw new SessionException("Session variable name conflict occurred: variable {$key} can't be moved to section {$section->Name} because variable with this name alerady exists");
+                        throw new SessionException("Session variable name conflict occurred: variable {$key} can't be moved to section {$section->name} because variable with this name alerady exists");
                     }
 
                     $moving[$key] = $variable;
@@ -256,17 +256,17 @@ use Phlamingo\Core\Object;
          *
          * @throws SessionException When variable name is not defined
          */
-        public function Clear(string $variable = null)
+        public function clear(string $variable = null)
         {
             if ($variable !== null) {
-                if (isset($this->Variables[$variable])) {
-                    $this->Variables[$variable] = null;
+                if (isset($this->variables[$variable])) {
+                    $this->variables[$variable] = null;
                 } else {
                     throw new SessionException("Session variable {$variable} is not defined and can't be cleared");
                 }
             } else {
-                foreach ($this->Variables as $key => $variable) {
-                    $this->Variables[$key] = null;
+                foreach ($this->variables as $key => $variable) {
+                    $this->variables[$key] = null;
                 }
             }
         }
@@ -280,23 +280,23 @@ use Phlamingo\Core\Object;
          * @throws SessionException When variable is already locked
          * @throws SessionException When section is already locked
          */
-        public function Lock(string $variable = null)
+        public function lock(string $variable = null)
         {
             if ($variable !== null) {
-                if (!in_array($variable, $this->LockedVariables)) {
-                    if (isset($this->Variables[$variable])) {
-                        $this->LockedVariables[] = $variable;
+                if (!in_array($variable, $this->lockedVariables)) {
+                    if (isset($this->variables[$variable])) {
+                        $this->lockedVariables[] = $variable;
                     } else {
-                        throw new SessionException("Can't lock session variable {$variable} in section {$this->Name} because it is not defined");
+                        throw new SessionException("Can't lock session variable {$variable} in section {$this->name} because it is not defined");
                     }
                 } else {
-                    throw new SessionException("Can't lock session variable {$variable} in section {$this->Name} because it is already locked");
+                    throw new SessionException("Can't lock session variable {$variable} in section {$this->name} because it is already locked");
                 }
             } else {
-                if ($this->Locked === false) {
-                    $this->Locked = true;
+                if ($this->locked === false) {
+                    $this->locked = true;
                 } else {
-                    throw new SessionException("Can't lock section {$this->Name} because it is already locked");
+                    throw new SessionException("Can't lock section {$this->name} because it is already locked");
                 }
             }
         }
@@ -310,18 +310,18 @@ use Phlamingo\Core\Object;
          *
          * @return bool Locked
          */
-        public function IsLocked(string $variable = null) : bool
+        public function isLocked(string $variable = null) : bool
         {
             if ($variable === null) {
-                return $this->Locked;
+                return $this->locked;
             } else {
-                if (in_array($variable, $this->LockedVariables)) {
+                if (in_array($variable, $this->lockedVariables)) {
                     return true;
                 } else {
-                    if (isset($this->Variables[$variable])) {
+                    if (isset($this->variables[$variable])) {
                         return false;
                     } else {
-                        throw new SessionException("Session variable {$variable} is not defined in section {$this->Name}");
+                        throw new SessionException("Session variable {$variable} is not defined in section {$this->name}");
                     }
                 }
             }
@@ -334,21 +334,21 @@ use Phlamingo\Core\Object;
          *
          * @throws SessionException When variable or section is not locked and can`t be unlocked
          */
-        public function Unlock(string $variable = null)
+        public function unlock(string $variable = null)
         {
             if ($variable !== null) {
-                if (in_array($variable, $this->LockedVariables)) {
-                    if (($key = array_search($variable, $this->LockedVariables)) !== false) {
-                        unset($this->LockedVariables[$key]);
+                if (in_array($variable, $this->lockedVariables)) {
+                    if (($key = array_search($variable, $this->lockedVariables)) !== false) {
+                        unset($this->lockedVariables[$key]);
                     }
                 } else {
-                    throw new SessionException("Can't unlock session variable {$variable} in section {$this->Name} because it is not locked");
+                    throw new SessionException("Can't unlock session variable {$variable} in section {$this->name} because it is not locked");
                 }
             } else {
-                if ($this->Locked === true) {
-                    $this->Locked = false;
+                if ($this->locked === true) {
+                    $this->locked = false;
                 } else {
-                    throw new SessionException("Can't unlock section {$this->Name} because it is not locked");
+                    throw new SessionException("Can't unlock section {$this->name} because it is not locked");
                 }
             }
         }
@@ -365,14 +365,14 @@ use Phlamingo\Core\Object;
         public function Setter($variableOrSectionSetter, callable $setter = null)
         {
             if ($setter !== null) {
-                if (isset($this->Variables[$variableOrSectionSetter])) {
-                    $this->Setters[$variableOrSectionSetter] = $setter;
+                if (isset($this->variables[$variableOrSectionSetter])) {
+                    $this->setters[$variableOrSectionSetter] = $setter;
                 } else {
-                    throw new SessionException("Session variable {$variableOrSectionSetter} in section {$this->Name} is not defined");
+                    throw new SessionException("Session variable {$variableOrSectionSetter} in section {$this->name} is not defined");
                 }
             } elseif (is_callable($variableOrSectionSetter)) {
-                foreach ($this->Setters as $variable => $value) {
-                    $this->Setters[$variable] = $variableOrSectionSetter;
+                foreach ($this->setters as $variable => $value) {
+                    $this->setters[$variable] = $variableOrSectionSetter;
                 }
             } else {
                 throw new \InvalidArgumentException('SessionSection::Setter requires first parameter type callable when second is not given');
@@ -388,17 +388,17 @@ use Phlamingo\Core\Object;
          * @throws SessionException          When variable is not defined
          * @throws \InvalidArgumentException When $variableOrSectionGetter is not callable
          */
-        public function Getter($variableOrSectionGetter, callable $getter = null)
+        public function getter($variableOrSectionGetter, callable $getter = null)
         {
             if ($getter !== null) {
-                if (isset($this->Variables[$variableOrSectionGetter])) {
-                    $this->Getters[$variableOrSectionGetter] = $getter;
+                if (isset($this->variables[$variableOrSectionGetter])) {
+                    $this->getters[$variableOrSectionGetter] = $getter;
                 } else {
-                    throw new SessionException("Session variable {$variableOrSectionGetter} in section {$this->Name} is not defined");
+                    throw new SessionException("Session variable {$variableOrSectionGetter} in section {$this->name} is not defined");
                 }
             } elseif (is_callable($variableOrSectionGetter)) {
-                foreach ($this->Getters as $variable => $value) {
-                    $this->Getters[$variable] = $variableOrSectionGetter;
+                foreach ($this->getters as $variable => $value) {
+                    $this->getters[$variable] = $variableOrSectionGetter;
                 }
             } else {
                 throw new \InvalidArgumentException('SessionSection::Getter requires first parameter type callable when second is not given');
@@ -414,20 +414,20 @@ use Phlamingo\Core\Object;
          * @throws SessionException          When session variable is not defined
          * @throws \InvalidArgumentException When time expression is invalid
          */
-        public function Expiration($variableOrSectionExpiration, $expiration = null)
+        public function expiration($variableOrSectionExpiration, $expiration = null)
         {
             if ($expiration !== null) {
-                if (isset($this->Variables[$variableOrSectionExpiration])) {
-                    if ($this->IsTimeExpressionValid($expiration)) {
-                        $this->Expirations[$variableOrSectionExpiration] = $this->ParseExpiration($expiration);
+                if (isset($this->variables[$variableOrSectionExpiration])) {
+                    if ($this->isTimeExpressionValid($expiration)) {
+                        $this->expirations[$variableOrSectionExpiration] = $this->parseExpiration($expiration);
                     } else {
                         throw new \InvalidArgumentException("Time expression {$expiration} is invalid");
                     }
                 } else {
-                    throw new SessionException("Session variable {$variableOrSectionExpiration} in section {$this->Name} is not defined");
+                    throw new SessionException("Session variable {$variableOrSectionExpiration} in section {$this->name} is not defined");
                 }
-            } elseif ($this->IsTimeExpressionValid($variableOrSectionExpiration) === true) {
-                $this->Expiration = $this->ParseExpiration($variableOrSectionExpiration);
+            } elseif ($this->isTimeExpressionValid($variableOrSectionExpiration) === true) {
+                $this->expiration = $this->parseExpiration($variableOrSectionExpiration);
             } else {
                 throw new \InvalidArgumentException("Time expression {$variableOrSectionExpiration} is invalid");
             }
@@ -442,33 +442,33 @@ use Phlamingo\Core\Object;
          *
          * @return int Expiration in seconds
          */
-        public function VarExpiration(string $name) : int
+        public function varExpiration(string $name) : int
         {
-            if (isset($this->Variables[$name])) {
-                if (isset($this->Expirations[$name])) {
-                    return $this->Expirations[$name];
+            if (isset($this->variables[$name])) {
+                if (isset($this->expirations[$name])) {
+                    return $this->expirations[$name];
                 } else {
                     return 0;
                 }
             } else {
-                throw new SessionException("Session variable {$name} in section {$this->Name} is not defined");
+                throw new SessionException("Session variable {$name} in section {$this->name} is not defined");
             }
         }
 
-        public function AddSaveMode(BaseSaveMode $saveMode)
+        public function addSaveMode(BaseSaveMode $saveMode)
         {
-            $this->SaveModes[] = $saveMode;
+            $this->saveModes[] = $saveMode;
         }
 
-        public function CallSaveModes()
+        public function callSaveModes()
         {
         }
 
-        public function RemoveSaveMode(string $saveModeType)
+        public function removeSaveMode(string $saveModeType)
         {
-            foreach ($this->SaveModes as $key => $saveMode) {
+            foreach ($this->saveModes as $key => $saveMode) {
                 if (get_class($saveMode) == $saveModeType) {
-                    unset($this->SaveModes[$key]);
+                    unset($this->saveModes[$key]);
                 }
             }
         }
@@ -480,7 +480,7 @@ use Phlamingo\Core\Object;
          *
          * @return bool If expression is valid
          */
-        protected function IsTimeExpressionValid($expression) : bool
+        protected function isTimeExpressionValid($expression) : bool
         {
             if (is_numeric($expression) and $expression >= 0) {
                 return true;
@@ -498,7 +498,7 @@ use Phlamingo\Core\Object;
          *
          * @return int Time in seconds
          */
-        protected function ParseExpiration($expression) : int
+        protected function parseExpiration($expression) : int
         {
             if (is_numeric($expression)) {
                 return (int) $expression;
@@ -516,7 +516,7 @@ use Phlamingo\Core\Object;
          */
         public function getName()
         {
-            return $this->Name;
+            return $this->name;
         }
 
         /**
@@ -526,7 +526,7 @@ use Phlamingo\Core\Object;
          */
         public function getExpiration()
         {
-            return $this->Expiration;
+            return $this->expiration;
         }
 
         /**
@@ -536,7 +536,7 @@ use Phlamingo\Core\Object;
          */
         public function getLockedVariables()
         {
-            return $this->LockedVariables;
+            return $this->lockedVariables;
         }
 
         /**
@@ -546,12 +546,12 @@ use Phlamingo\Core\Object;
          */
         public function getExpirations()
         {
-            return $this->Expirations;
+            return $this->expirations;
         }
 
         public function getVariables()
         {
-            return $this->Variables;
+            return $this->variables;
         }
 
         /**
@@ -561,7 +561,7 @@ use Phlamingo\Core\Object;
          */
         public function getSaveModes()
         {
-            return $this->SaveModes;
+            return $this->saveModes;
         }
 
         /**
@@ -571,7 +571,7 @@ use Phlamingo\Core\Object;
          */
         public function getSetters()
         {
-            return $this->Setters;
+            return $this->setters;
         }
 
         /**
@@ -581,6 +581,6 @@ use Phlamingo\Core\Object;
          */
         public function getGetters()
         {
-            return $this->Getters;
+            return $this->getters;
         }
     }

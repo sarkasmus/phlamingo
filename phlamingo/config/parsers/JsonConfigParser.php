@@ -27,7 +27,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          *
          * @return array Array
          */
-        public function Parse(string $code) : array
+        public function parse(string $code) : array
         {
             $result = json_decode($code, true);
 
@@ -43,7 +43,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          *
          * @return array Array
          */
-        public function ParseFile(string $path) : array
+        public function parseFile(string $path) : array
         {
             if (file_exists($path)) {
                 $result = json_decode(file_get_contents($path));
@@ -61,7 +61,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          *
          * @return string Json code
          */
-        public function Dump(array $data) : string
+        public function dump(array $data) : string
         {
             $result = json_encode($data);
 
@@ -74,7 +74,7 @@ use Phlamingo\Config\Exceptions\ConfigException;
          * @param array  $data Array
          * @param string $path Path to file
          */
-        public function DumpToFile(array $data, string $path)
+        public function dumpToFile(array $data, string $path)
         {
             $result = json_encode($data);
 

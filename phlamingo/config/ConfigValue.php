@@ -27,26 +27,26 @@ use Phlamingo\Core\Object;
          *
          * @var string
          */
-        protected $Name;
+        protected $name;
 
         /**
          * Value of configuration entry.
          *
          * @var string|mixed
          */
-        protected $Value;
+        protected $value;
 
         /**
          * Default value when value is clear.
          *
          * @var string|mixed
          */
-        protected $DefaultValue;
+        protected $defaultValue;
 
         /** Getter for $DefaultValue */
         public function getDefaultValue()
         {
-            return $this->DefaultValue;
+            return $this->defaultValue;
         }
 
         /**
@@ -66,9 +66,9 @@ use Phlamingo\Core\Object;
         public function __construct(string $name, $value, $defaultValue)
         {
             parent::__construct();
-            $this->Name = $name;
-            $this->Value = $value;
-            $this->DefaultValue = $defaultValue;
+            $this->name = $name;
+            $this->value = $value;
+            $this->defaultValue = $defaultValue;
         }
 
         /**
@@ -79,10 +79,10 @@ use Phlamingo\Core\Object;
          *
          * @return bool If value was changed
          */
-        public function ChangeValue($value, int $priority = 0) : bool
+        public function changeValue($value, int $priority = 0) : bool
         {
             if ($this->Priority <= $priority) {
-                $this->Value = $value;
+                $this->value = $value;
 
                 return true;
             } else {
@@ -97,7 +97,7 @@ use Phlamingo\Core\Object;
          */
         public function getValue()
         {
-            return $this->Value;
+            return $this->value;
         }
 
         /**
@@ -121,9 +121,9 @@ use Phlamingo\Core\Object;
          *
          * @return array ConfigValue as array
          */
-        public function GetAsArray()
+        public function getAsArray()
         {
-            $keys = explode('/', $this->Name);
+            $keys = explode('/', $this->name);
             $array = [];
             $code = '$array';
 
@@ -131,10 +131,10 @@ use Phlamingo\Core\Object;
                 $code .= "['$key']";
             }
 
-            if (is_string($this->Value)) {
-                $code .= " = '$this->Value';";
+            if (is_string($this->value)) {
+                $code .= " = '$this->value';";
             } else {
-                $code .= " = $this->Value;";
+                $code .= " = $this->value;";
             }
             eval($code);
 
