@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Macros;
+namespace Phlamingo\Nebula\ExpLang\Macros;
 
-    use Phlamingo\Nebula\Exceptions\CompileException;
+use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Compiler;
     use Phlamingo\Nebula\ExpLang\TokenList;
 
@@ -24,6 +24,7 @@
     {
         /**
          * Pattern which identificates macro first token.
+         *
          * @const array PATTERN
          */
         const PATTERN = [
@@ -31,13 +32,15 @@
         ];
 
         /**
-         * Checks if syntax of macro is valid
+         * Checks if syntax of macro is valid.
          *
          * @param Compiler $compiler
+         *
          * @throws CompileException When syntax is not valid
+         *
          * @return true If syntax is valid
          */
-        public  function check(Compiler &$compiler)
+        public function check(Compiler &$compiler)
         {
             $pattern = [
                 TokenList::T_FOREACH,
@@ -45,44 +48,40 @@
                 TokenList::T_AS,
                 TokenList::T_STRING,
                 TokenList::T_ARROW,
-                TokenList::T_STRING
+                TokenList::T_STRING,
             ];
 
             foreach ($this->macro as $key => $value) {
                 if ($value['token'] != $pattern[$key]) {
                     $given = TokenList::DICTIONARY[$value['token']];
                     $first = TokenList::DICTIONARY[$pattern[$key]];
-                    $second = TokenList::DICTIONARY[$pattern[$key-1]];
+                    $second = TokenList::DICTIONARY[$pattern[$key - 1]];
                     throw new CompileException("Foreach macro excepts {$first} after {$second}, $given given");
-
                 }
-
             }
 
             return true;
         }
 
         /**
-         * Compiles macro to native PHP
+         * Compiles macro to native PHP.
          *
          * @param Compiler $compiler
+         *
          * @return string Code
          */
-        public  function compile(Compiler &$compiler): string
+        public function compile(Compiler &$compiler): string
         {
             unset($this->macro[0]);
-            $return = "<?php foreach (";
+            $return = '<?php foreach (';
             foreach ($this->macro as $key => $value) {
                 if ($value['token'] == TokenList::T_STRING) {
-                    $return .= "\$" . $value['value'] . " ";
-
+                    $return .= '$'.$value['value'].' ';
                 } else {
-                    $return .= $value['value'] . " ";
-
+                    $return .= $value['value'].' ';
                 }
-
             }
-            $return .= ") : ?>";
+            $return .= ') : ?>';
 
             return $return;
         }

@@ -11,12 +11,11 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Macros;
+namespace Phlamingo\Nebula\ExpLang\Macros;
 
-    use Phlamingo\Nebula\Exceptions\CompileException;
+use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Compiler;
     use Phlamingo\Nebula\ExpLang\TokenList;
-
 
     /**
      * Represents Nebula macro.
@@ -27,22 +26,25 @@
     {
         /**
          * Pattern which identificates macro first token.
+         *
          * @const array PATTERN
          */
         const PATTERN = [
-            TokenList::T_ICON
+            TokenList::T_ICON,
         ];
 
         /**
-         * Checks if syntax of macro is valid
+         * Checks if syntax of macro is valid.
          *
          * @param Compiler $compiler
+         *
          * @throws CompileException When syntax is not valid
+         *
          * @return true If syntax is valid
          */
         public function check(Compiler &$compiler)
         {
-             $listOfIcons = array(
+            $listOfIcons = [
                 'fa-glass'                               => 'f000',
                 'fa-music'                               => 'f001',
                 'fa-search'                              => 'f002',
@@ -676,34 +678,32 @@
                 'fa-yoast'                               => 'f2b1',
                 'fa-themeisle'                           => 'f2b2',
                 'fa-google-plus-official'                => 'f2b3',
-                'fa-font-awesome'                        => 'f2b4'
-             ); // TODO add new icons
+                'fa-font-awesome'                        => 'f2b4',
+             ]; // TODO add new icons
 
-             if (!key_exists("fa-" . $this->macro[1]['value'], $listOfIcons)) {
+             if (!array_key_exists('fa-'.$this->macro[1]['value'], $listOfIcons)) {
                  // TODO implement "soft error"
                  return true;
-
              } else {
                  return true;
-
              }
         }
 
         /**
-         * Compiles macro to native PHP
+         * Compiles macro to native PHP.
          *
          * @param Compiler $compiler
+         *
          * @return string Code
          */
-        public  function compile(Compiler &$compiler): string
+        public function compile(Compiler &$compiler): string
         {
             $icon = $this->macro[1]['value'];
             unset($this->macro[0], $this->macro[1]);
 
-            $classes = "";
+            $classes = '';
             foreach ($this->macro as $key => $value) {
-                $classes .= "fa-" . $value['value'] . " ";
-
+                $classes .= 'fa-'.$value['value'].' ';
             }
 
             return "<i class='fa fa-{$icon} {$classes}'></i>";

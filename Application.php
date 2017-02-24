@@ -10,30 +10,27 @@
      *
      * This source code is part of Phlamingo project
      */
-
-    use Phlamingo\Core\MVC\BaseController;
-    use Phlamingo\HTTP\Request;
-    use Phlamingo\Core\MVC\Router;
     use Phlamingo\Config\Configurator;
+    use Phlamingo\Core\MVC\BaseController;
     use Phlamingo\Di\Container;
+    use Phlamingo\HTTP\Request;
 
     /**
      * Application manages all actions to setup environment and
-     * proccess the user request
+     * proccess the user request.
      */
     class Application extends \Phlamingo\Core\ApplicationAbstract
     {
         /**
-         * Here write code to run your app
+         * Here write code to run your app.
          *
-         * @param BaseController $controller Requested controller
-         * @param string $controllerAction Name of requested action
-         * @param array|mixed $params Params of controller action
+         * @param BaseController $controller       Requested controller
+         * @param string         $controllerAction Name of requested action
+         * @param array|mixed    $params           Params of controller action
          */
         public function Main(BaseController $controller, string $controllerAction, ...$params)
         {
             // Here write your code:
-
 
             // Runs controller
             $response = $controller->run($controllerAction, ...$params);
@@ -41,9 +38,10 @@
         }
 
         /**
-         * Here write your config code before app will start
+         * Here write your config code before app will start.
          *
          * @param Configurator $config Config class
+         *
          * @return Configurator Set config class
          */
         public function Config(Configurator $config) : Configurator
@@ -51,21 +49,18 @@
             // Here setup your app:
             $configCacher = new \Phlamingo\Cache\ApplicationCachers\ConfigCacher();
 
-            if ($configCacher->Cached())
-            {
-                foreach ($configCacher->Get() as $key => $values)
-                {
-                    if ($values !== null and $key !== null)
+            if ($configCacher->Cached()) {
+                foreach ($configCacher->Get() as $key => $values) {
+                    if ($values !== null and $key !== null) {
                         $config->Push($values, $key);
+                    }
                 }
-            }
-            else
-            {
+            } else {
                 $configCacher->Cache();
-                foreach ($configCacher->Get() as $key => $values)
-                {
-                    if ($values !== null and $key !== null)
+                foreach ($configCacher->Get() as $key => $values) {
+                    if ($values !== null and $key !== null) {
                         $config->Push($values, $key);
+                    }
                 }
             }
 
@@ -76,21 +71,18 @@
         {
             $diCacher = new \Phlamingo\Cache\ApplicationCachers\DICacher();
 
-            if ($diCacher->Cached())
-            {
-                foreach ($diCacher->Get() as $service => $factory)
-                {
-                    if ($service !== null and $factory !== null)
-                        $container->AddService($service, new $factory);
+            if ($diCacher->Cached()) {
+                foreach ($diCacher->Get() as $service => $factory) {
+                    if ($service !== null and $factory !== null) {
+                        $container->AddService($service, new $factory());
+                    }
                 }
-            }
-            else
-            {
+            } else {
                 $diCacher->Cache();
-                foreach ($diCacher->Get() as $service => $factory)
-                {
-                    if ($service !== null and $factory !== null)
-                    $container->AddService($service, new $factory);
+                foreach ($diCacher->Get() as $service => $factory) {
+                    if ($service !== null and $factory !== null) {
+                        $container->AddService($service, new $factory());
+                    }
                 }
             }
         }

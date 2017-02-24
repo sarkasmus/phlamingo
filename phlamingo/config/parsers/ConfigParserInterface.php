@@ -10,13 +10,15 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Config\Parsers;
+namespace Phlamingo\Config\Parsers;
 
+interface ConfigParserInterface
+{
+    public function Parse(string $code);
 
-    interface ConfigParserInterface
-    {
-        public function Parse(string $code);
-        public function ParseFile(string $path);
-        public function Dump(array $data);
-        public function DumpToFile(array $data, string $path);
-    }
+    public function ParseFile(string $path);
+
+    public function Dump(array $data);
+
+    public function DumpToFile(array $data, string $path);
+}

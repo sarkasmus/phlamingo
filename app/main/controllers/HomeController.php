@@ -11,14 +11,13 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace App\Main\Controllers;
+namespace App\Main\Controllers;
 
-    use Phlamingo\Core\MVC\BaseController;
+use Phlamingo\Core\MVC\BaseController;
     use Phlamingo\HTTP\Response;
 
-
     /**
-     * {Description}
+     * {Description}.
      */
     class HomeController extends BaseController
     {
@@ -27,6 +26,6 @@
          */
         public function DefaultAction()
         {
-            return new Response("Hello world");
+            return new Response('Hello world');
         }
     }

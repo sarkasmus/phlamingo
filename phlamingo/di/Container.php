@@ -11,64 +11,61 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Di;
+namespace Phlamingo\Di;
 
-    use Phlamingo\Di\Exceptions\DIContainerException;
-
+use Phlamingo\Di\Exceptions\DIContainerException;
 
     /**
-     * Container is non-static wrapper of StaticContainer for using in classes
+     * Container is non-static wrapper of StaticContainer for using in classes.
      */
     class Container
     {
         /**
-         * List of service factories -> callables (FactoryAbstract, callback)
-         * @var array $services
+         * List of service factories -> callables (FactoryAbstract, callback).
+         *
+         * @var array
          */
         private $Services = [];
 
         public $Singletons = [];
 
         /**
-         * Returns a service
+         * Returns a service.
          *
          * @param string $service Name of service
-         * @return mixed Service
+         *
          * @throws DIContainerException
+         *
+         * @return mixed Service
          */
         public function Get(string $service)
         {
-            if (isset($this->Services[$service]))
-            {
+            if (isset($this->Services[$service])) {
                 return $this->Services[$service]($this);
-            }
-            else
-            {
+            } else {
                 throw new DIContainerException("dsadsadsa $service");
             }
         }
 
         /**
-         * Register a service to container
+         * Register a service to container.
          *
-         * @param string $name Service name
+         * @param string   $name    Service name
          * @param callable $factory Service factory
+         *
          * @throws DIContainerException
          */
         public function AddService(string $name, callable $factory)
         {
-            if (isset($this->Services[$name]))
-            {
-                throw new DIContainerException("sadsaddsasda");
+            if (isset($this->Services[$name])) {
+                throw new DIContainerException('sadsaddsasda');
             }
 
-            if (!is_callable($factory))
-            {
-                throw new DIContainerException("sdadasdsadsa");
+            if (!is_callable($factory)) {
+                throw new DIContainerException('sdadasdsadsa');
             }
 
-            if ($factory instanceof BaseFactory)
-            {
+            if ($factory instanceof BaseFactory) {
                 $factory->Container = $this;
             }
 
@@ -76,28 +73,23 @@
         }
 
         /**
-         * Register an alias for the service
+         * Register an alias for the service.
          *
          * @param string $service Affected service
-         * @param string $alias Alias
+         * @param string $alias   Alias
+         *
          * @throws DIContainerException
          */
         public function AddAlias(string $service, string $alias)
         {
-            if (!isset($this->Services[$alias]))
-            {
-                if (isset($this->Services[$service]))
-                {
+            if (!isset($this->Services[$alias])) {
+                if (isset($this->Services[$service])) {
                     $this->Services[$alias] = $this->Services[$service];
+                } else {
+                    throw new DIContainerException('');
                 }
-                else
-                {
-                    throw new DIContainerException("");
-                }
-            }
-            else
-            {
-                throw new DIContainerException("");
+            } else {
+                throw new DIContainerException('');
             }
         }
     }

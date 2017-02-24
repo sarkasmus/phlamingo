@@ -11,29 +11,23 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\HTTP;
+namespace Phlamingo\HTTP;
 
-
-    /**
-     * {Description}
+/**
+     * {Description}.
      */
     class RedirectResponse extends Response
     {
         public function __construct($pathOrEvent, ...$params)
         {
-            if (is_string($pathOrEvent))
-            {
-                parent::__construct("", "1.1", 301, "UTF-8", "Location: " . $pathOrEvent);
-            }
-            elseif (is_array($pathOrEvent))
-            {
+            if (is_string($pathOrEvent)) {
+                parent::__construct('', '1.1', 301, 'UTF-8', 'Location: '.$pathOrEvent);
+            } elseif (is_array($pathOrEvent)) {
                 $router = new Router();
                 $router->GenerateURL($pathOrEvent, ...$params);
-                parent::__construct("", "1.1", 301, "UTF-8", "Location: " . $pathOrEvent);
-            }
-            else
-            {
-                throw new HttpException("Path" . var_export($pathOrEvent) . "can't be redirected");
+                parent::__construct('', '1.1', 301, 'UTF-8', 'Location: '.$pathOrEvent);
+            } else {
+                throw new HttpException('Path'.var_export($pathOrEvent)."can't be redirected");
             }
         }
     }

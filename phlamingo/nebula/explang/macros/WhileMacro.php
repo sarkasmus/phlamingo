@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Macros;
+namespace Phlamingo\Nebula\ExpLang\Macros;
 
-    use Phlamingo\Nebula\Exceptions\CompileException;
+use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Compiler;
     use Phlamingo\Nebula\ExpLang\TokenList;
 
@@ -24,20 +24,23 @@
     {
         /**
          * Pattern which identificates macro first token.
+         *
          * @const array PATTERN
          */
         const PATTERN = [
-            TokenList::T_WHILE
+            TokenList::T_WHILE,
         ];
 
         /**
-         * Checks if syntax of macro is valid
+         * Checks if syntax of macro is valid.
          *
          * @param Compiler $compiler
+         *
          * @throws CompileException When syntax is not valid
+         *
          * @return true If syntax is valid
          */
-        public  function check(Compiler &$compiler)
+        public function check(Compiler &$compiler)
         {
             $macro = $this->macro;
             unset($macro[0]);
@@ -71,34 +74,30 @@
 
             foreach ($macro as $token) {
                 if (!in_array($token['token'], $allowedTokens)) {
-                    throw new CompileException("While macro: The logic expression does contain bad tokens - logic expression is invalid in while macro");
-
+                    throw new CompileException('While macro: The logic expression does contain bad tokens - logic expression is invalid in while macro');
                 }
-
             }
         }
 
         /**
-         * Compiles macro to native PHP
+         * Compiles macro to native PHP.
          *
          * @param Compiler $compiler
+         *
          * @return string Code
          */
-        public  function compile(Compiler &$compiler): string
+        public function compile(Compiler &$compiler): string
         {
             unset($this->macro[0]);
-            $return = "<?php while (";
+            $return = '<?php while (';
             foreach ($this->macro as $key => $value) {
                 if ($value['token'] == TokenList::T_STRING) {
-                    $return .= "\$" . $value['value'] . " ";
-
+                    $return .= '$'.$value['value'].' ';
                 } else {
-                    $return .= $value['value'] . " ";
-
+                    $return .= $value['value'].' ';
                 }
-
             }
-            $return .= ") : ?>";
+            $return .= ') : ?>';
 
             return $return;
         }

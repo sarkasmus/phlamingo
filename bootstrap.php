@@ -10,14 +10,13 @@
      *
      * This source code is part of Phlamingo project
      */
+    $loader = require __DIR__.'/vendor/autoload.php';
+    require __DIR__.'/Application.php';
 
-    $loader = require __DIR__ . "/vendor/autoload.php";
-    require __DIR__ . "/Application.php";
-
-    define("APP", __DIR__ . "/app");
-    define("PHLAMINGO", __DIR__ . "/phlamingo");
-    define("TEMP", PHLAMINGO . "/temp");
-    define("DOMAIN", $_SERVER['HTTP_HOST']);
+    define('APP', __DIR__.'/app');
+    define('PHLAMINGO', __DIR__.'/phlamingo');
+    define('TEMP', PHLAMINGO.'/temp');
+    define('DOMAIN', $_SERVER['HTTP_HOST']);
 
     // clear the cache in development mode...
     \Phlamingo\Cache\Cache::ClearCache();
@@ -33,4 +32,4 @@
     $config = $application->Config($config);
 
     // Run application
-    $application->CallMain(\Phlamingo\Di\ContainerSingleton::GetContainer()->Get("Router"));
+    $application->CallMain(\Phlamingo\Di\ContainerSingleton::GetContainer()->Get('Router'));

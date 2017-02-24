@@ -11,13 +11,13 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Cache\Factories;
-    use Phlamingo\Di\BaseFactory;
+namespace Phlamingo\Nebula\ExpLang\Cache\Factories;
+
+use Phlamingo\Di\BaseFactory;
     use Phlamingo\Nebula\ExpLang\Cache\MacroCacher;
 
-
     /**
-     * {Description}
+     * {Description}.
      *
      * @Factory MacroCacher
      */

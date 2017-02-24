@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Macros;
+namespace Phlamingo\Nebula\ExpLang\Macros;
 
-    use Phlamingo\Nebula\Exceptions\CompileException;
+use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Compiler;
     use Phlamingo\Nebula\ExpLang\TokenList;
 
@@ -24,39 +24,41 @@
     {
         /**
          * Pattern which identificates macro first token.
+         *
          * @const array PATTERN
          */
         const PATTERN = [
-            TokenList::T_ELSE
+            TokenList::T_ELSE,
         ];
 
         /**
-         * Checks if syntax of macro is valid
+         * Checks if syntax of macro is valid.
          *
          * @param Compiler $compiler
+         *
          * @throws CompileException When syntax is not valid
+         *
          * @return true If syntax is valid
          */
-        public  function check(Compiler &$compiler)
+        public function check(Compiler &$compiler)
         {
             if (!isset($this->macro[1])) {
                 return true;
-
             } else {
                 $given = TokenList::DICTIONARY[$this->macro[1]['token']];
                 throw new CompileException("Else macro doesn't expect any other tokens $given given");
-
             }
         }
 
         /**
-         * Compiles macro to native PHP
+         * Compiles macro to native PHP.
          *
          * @param Compiler $compiler
+         *
          * @return string Code
          */
-        public  function compile(Compiler &$compiler): string
+        public function compile(Compiler &$compiler): string
         {
-            return "<?php else: ?>";
+            return '<?php else: ?>';
         }
     }

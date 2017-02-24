@@ -11,11 +11,10 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Di;
+namespace Phlamingo\Di;
 
-
-    /**
-     * {Description}
+/**
+     * {Description}.
      */
     final class ContainerSingleton
     {
@@ -23,13 +22,11 @@
 
         public static function GetContainer()
         {
-            if (isset(self::$Container))
-            {
+            if (isset(self::$Container)) {
                 return self::$Container;
-            }
-            else
-            {
+            } else {
                 self::$Container = new Container();
+
                 return self::$Container;
             }
         }

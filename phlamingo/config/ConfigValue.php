@@ -11,49 +11,56 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Config;
+namespace Phlamingo\Config;
 
-    use Phlamingo\Core\Object;
+use Phlamingo\Core\Object;
 
     /**
-     * ConfigValue represents entry in configuration of application
+     * ConfigValue represents entry in configuration of application.
      */
     class ConfigValue extends Object
     {
         const DEFAULT_PRIORITY = -1;
 
         /**
-         * Name of the entry
-         * @var string $Name
+         * Name of the entry.
+         *
+         * @var string
          */
         protected $Name;
 
         /**
-         * Value of configuration entry
-         * @var string|mixed $Value
+         * Value of configuration entry.
+         *
+         * @var string|mixed
          */
         protected $Value;
 
         /**
-         * Default value when value is clear
-         * @var string|mixed $DefaultValue
+         * Default value when value is clear.
+         *
+         * @var string|mixed
          */
         protected $DefaultValue;
 
         /** Getter for $DefaultValue */
-        public function getDefaultValue() { return $this->DefaultValue; }
+        public function getDefaultValue()
+        {
+            return $this->DefaultValue;
+        }
 
         /**
-         * Highest priority set of this value
-         * @var int $Priority
+         * Highest priority set of this value.
+         *
+         * @var int
          */
         protected $Priority = self::DEFAULT_PRIORITY;
 
         /**
-         * Constructor
+         * Constructor.
          *
-         * @param string $name Name of the entry
-         * @param string|mixed $value Value of the entry
+         * @param string       $name         Name of the entry
+         * @param string|mixed $value        Value of the entry
          * @param string|mixed $defaultValue Default value when value is clear
          */
         public function __construct(string $name, $value, $defaultValue)
@@ -65,16 +72,18 @@
         }
 
         /**
-         * Sets the value if priority is higher or equal than last priority set
+         * Sets the value if priority is higher or equal than last priority set.
          *
-         * @param string|mixed $value Value to set
-         * @param int $priority Priority
+         * @param string|mixed $value    Value to set
+         * @param int          $priority Priority
+         *
          * @return bool If value was changed
          */
         public function ChangeValue($value, int $priority = 0) : bool
         {
             if ($this->Priority <= $priority) {
                 $this->Value = $value;
+
                 return true;
             } else {
                 return false;
@@ -82,7 +91,7 @@
         }
 
         /**
-         * Getter for property Value
+         * Getter for property Value.
          *
          * @return mixed Value
          */
@@ -92,9 +101,10 @@
         }
 
         /**
-         * Setter for self::$Priority property
+         * Setter for self::$Priority property.
          *
          * @param int $priority Priority to set
+         *
          * @throws \InvalidArgumentException When priority is lower than lowest allowed
          */
         public function setPriority(int $priority)
@@ -107,27 +117,23 @@
         }
 
         /**
-         * Returns value as array in format with keys as path e.g: $array['database']['mysql']['host'] = "localhost"
+         * Returns value as array in format with keys as path e.g: $array['database']['mysql']['host'] = "localhost".
          *
          * @return array ConfigValue as array
          */
         public function GetAsArray()
         {
-            $keys = explode("/", $this->Name);
+            $keys = explode('/', $this->Name);
             $array = [];
-            $code = "\$array";
+            $code = '$array';
 
-            foreach ($keys as $key)
-            {
+            foreach ($keys as $key) {
                 $code .= "['$key']";
             }
 
-            if (is_string($this->Value))
-            {
+            if (is_string($this->Value)) {
                 $code .= " = '$this->Value';";
-            }
-            else
-            {
+            } else {
                 $code .= " = $this->Value;";
             }
             eval($code);

@@ -6,11 +6,9 @@
 
 namespace App\Main\Models;
 
-
 /**
- * {Description}
+ * {Description}.
  */
 class HomeModel
 {
-
 }

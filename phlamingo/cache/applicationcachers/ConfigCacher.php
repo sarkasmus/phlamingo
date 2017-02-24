@@ -11,33 +11,33 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Cache\ApplicationCachers;
+namespace Phlamingo\Cache\ApplicationCachers;
 
+use Phlamingo\Cache\Cache;
     use Phlamingo\Core\Object;
     use Symfony\Component\Yaml\Yaml;
-    use Phlamingo\Cache\Cache;
 
     /**
-     * {Description}
+     * {Description}.
      */
     class ConfigCacher extends Object
     {
         /**
-         * Instance of cache with name ConfigCache
+         * Instance of cache with name ConfigCache.
          */
         protected $Cache;
 
         /**
-         * Constructor
+         * Constructor.
          */
         public function __construct()
         {
             parent::__construct();
-            $this->Cache = new Cache("ConfigCache");
+            $this->Cache = new Cache('ConfigCache');
         }
 
         /**
-         * Returns if config was already cached
+         * Returns if config was already cached.
          */
         public function Cached() : bool
         {
@@ -47,8 +47,8 @@
         public function Cache()
         {
             // TODO IMPLEMENT OTHER EXTENSIONS (yml)
-            $defaultConfig = Yaml::parse(file_get_contents(PHLAMINGO . "/config.yaml"));
-            $appConfig = Yaml::parse(file_get_contents(APP . "/main/appconfig.yaml"));
+            $defaultConfig = Yaml::parse(file_get_contents(PHLAMINGO.'/config.yaml'));
+            $appConfig = Yaml::parse(file_get_contents(APP.'/main/appconfig.yaml'));
 
             $json = json_encode([$defaultConfig, $appConfig]);
             $this->Cache->Content = $json;
@@ -56,11 +56,12 @@
         }
 
         /**
-         * Returns cached data
+         * Returns cached data.
          */
         public function Get()
         {
             $content = $this->Cache->Content;
+
             return json_decode($content, true);
         }
     }

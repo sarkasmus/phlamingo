@@ -11,46 +11,40 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Di;
+namespace Phlamingo\Di;
 
-    use DocBlockReader\Reader;
+use DocBlockReader\Reader;
     use Phlamingo\Di\Exceptions\DIContainerException;
 
-
     /**
-     * {Description}
+     * {Description}.
      */
     abstract class BaseFactory
     {
         protected $Singleton = null;
         public $Container;
 
-        public abstract function Make();
+        abstract public function Make();
 
         public function __invoke()
         {
             $comment = new Reader(get_class($this));
-            $comment = $comment->getParameter("Singleton");
+            $comment = $comment->getParameter('Singleton');
 
             if ($comment == true) {
                 if (isset($this->Singleton)) {
                     return $this->Singleton;
-
                 } else {
                     $this->Singleton = $this->Make();
+
                     return $this->Singleton;
-
                 }
-
             }
 
-            if (is_object($this->Make()))
-            {
+            if (is_object($this->Make())) {
                 return $this->Make();
-            }
-            else
-            {
-                throw new DIContainerException("Factory " . self::class . " doesn't return object");
+            } else {
+                throw new DIContainerException('Factory '.self::class." doesn't return object");
             }
         }
     }

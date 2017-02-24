@@ -12,11 +12,9 @@
 
 namespace Phlamingo\HTTP\Sessions\SaveModes;
 
-
 /**
- * {Description}
+ * {Description}.
  */
 class BaseSaveMode
 {
-
 }

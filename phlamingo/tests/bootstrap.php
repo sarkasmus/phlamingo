@@ -10,7 +10,6 @@
      *
      * This source code is part of Phlamingo project
      */
-
-    $loader = require __DIR__ . "/../../vendor/autoload.php";
-    define("DOMAIN", $_SERVER['HTTP_HOST']);
+    $loader = require __DIR__.'/../../vendor/autoload.php';
+    define('DOMAIN', $_SERVER['HTTP_HOST']);
     \Phlamingo\Core\Object::SetEnviroment(false);
