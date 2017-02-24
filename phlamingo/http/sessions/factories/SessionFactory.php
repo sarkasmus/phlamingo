@@ -11,44 +11,38 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\HTTP\Sessions\Factories;
+namespace Phlamingo\HTTP\Sessions\Factories;
 
-    use Phlamingo\Di\BaseFactory;
-    use Phlamingo\HTTP\Sessions\Session;
+use Phlamingo\Di\BaseFactory;
     use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
-
+    use Phlamingo\HTTP\Sessions\Session;
 
     /**
-     * {Description}
+     * {Description}.
      *
      * @Factory Session
      */
     class SessionFactory extends BaseFactory
     {
-        public  function Make()
+        public function Make()
         {
-            $request = $this->Container->Get("Request");
-            if (isset($this->Container->Singletons["Session"]))
-            {
-                return $this->Container->Singletons["Session"];
-            }
-            elseif (isset($request->Cookies["SessID"]))
-            {
-                try
-                {
-                    $this->Container->Singletons["Session"] = new Session($request->Cookies["SessID"]);
-                    return $this->Container->Singletons["Session"];
+            $request = $this->Container->Get('Request');
+            if (isset($this->Container->Singletons['Session'])) {
+                return $this->Container->Singletons['Session'];
+            } elseif (isset($request->Cookies['SessID'])) {
+                try {
+                    $this->Container->Singletons['Session'] = new Session($request->Cookies['SessID']);
+
+                    return $this->Container->Singletons['Session'];
+                } catch (SessionException $e) {
+                    $this->Container->Singletons['Session'] = new Session();
+
+                    return $this->Container->Singletons['Session'];
                 }
-                catch (SessionException $e)
-                {
-                    $this->Container->Singletons["Session"] = new Session();
-                    return $this->Container->Singletons["Session"];
-                }
-            }
-            else
-            {
-                $this->Container->Singletons["Session"] = new Session();
-                return $this->Container->Singletons["Session"];
+            } else {
+                $this->Container->Singletons['Session'] = new Session();
+
+                return $this->Container->Singletons['Session'];
             }
         }
     }

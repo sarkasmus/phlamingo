@@ -11,15 +11,13 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\Core;
+namespace Phlamingo\Nebula\Core;
 
-    use Phlamingo\Core\Object;
-
+use Phlamingo\Core\Object;
 
     /**
-     * {Description}
+     * {Description}.
      */
     class Template extends Object
     {
-
     }

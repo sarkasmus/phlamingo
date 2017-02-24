@@ -11,21 +11,21 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\HTTP;
+namespace Phlamingo\HTTP;
 
-    use Phlamingo\Core\Object;
+use Phlamingo\Core\Object;
     use Phlamingo\HTTP\Exceptions\HttpException;
-
 
     /**
      * A HTTP Response object - fully programmable extension
-     * for control HTTP protocol
+     * for control HTTP protocol.
      */
     class Response extends Object
     {
         /**
-         * List of all http status codes and their status texts
-         * @var array $statusList
+         * List of all http status codes and their status texts.
+         *
+         * @var array
          */
         public $StatusList = [
             100 => 'Continue',
@@ -92,53 +92,59 @@
         ];
 
         /**
-         * Version of HTTP protocol
-         * @var string $Version
+         * Version of HTTP protocol.
+         *
+         * @var string
          */
         protected $Version;
 
         /**
-         * Code status of response
-         * @var integer $StatusCode
+         * Code status of response.
+         *
+         * @var int
          */
         protected $StatusCode;
 
         /**
-         * Text variant of status of response
-         * @var string $Status
+         * Text variant of status of response.
+         *
+         * @var string
          */
         protected $Status;
 
         /**
-         * Charset which is used in response
-         * @var string $Charset
+         * Charset which is used in response.
+         *
+         * @var string
          */
         public $Charset;
 
         /**
-         * All other headers in response
-         * @var array $Headers
+         * All other headers in response.
+         *
+         * @var array
          */
         public $Headers;
 
         /**
-         * Content of response
-         * @var string $Content
+         * Content of response.
+         *
+         * @var string
          */
         public $Content;
 
         /**
-         * Constructor
+         * Constructor.
          *
-         * @param string    $content       Content of response
-         * @param string    $version       Version of HTTP protocol            [optional  =  "1.1"        ]
-         * @param integer   $statusCode    Code status of response             [optional  =  200          ]
-         * @param string    $charset       Charset which is used in response   [optional  =  "UTF-8"      ]
-         * @param array     $headers       All other headers in response       [optional  =  empty array  ]
+         * @param string $content    Content of response
+         * @param string $version    Version of HTTP protocol            [optional  =  "1.1"        ]
+         * @param int    $statusCode Code status of response             [optional  =  200          ]
+         * @param string $charset    Charset which is used in response   [optional  =  "UTF-8"      ]
+         * @param array  $headers    All other headers in response       [optional  =  empty array  ]
          *
          * @throws HttpException When http status code doesn't exists (is not defined in http protocol)
          */
-        public function __construct(string $content, string $version = "1.1", int $statusCode = 200, string $charset = "UTF-8", array $headers = [])
+        public function __construct(string $content, string $version = '1.1', int $statusCode = 200, string $charset = 'UTF-8', array $headers = [])
         {
             parent::__construct();
 
@@ -146,29 +152,23 @@
             $this->Charset = $charset;
             $this->Headers = $headers;
 
-            if ($version == "1.1" or $version == "1.0" or $version == "2")
-            {
+            if ($version == '1.1' or $version == '1.0' or $version == '2') {
                 $this->Version = $version;
-            }
-            else
-            {
+            } else {
                 throw new HttpException();
             }
 
             // Convert number code to text
-            if (key_exists($statusCode, $this->StatusList))
-            {
+            if (array_key_exists($statusCode, $this->StatusList)) {
                 $this->Status = strtr($statusCode, $this->StatusList);
                 $this->StatusCode = $statusCode;
-            }
-            else
-            {
+            } else {
                 throw new HttpException();
             }
         }
 
         /**
-         * Adds header to header array
+         * Adds header to header array.
          *
          * @param string $header Header to add
          */
@@ -178,26 +178,24 @@
         }
 
         /**
-         * Sets new status code
+         * Sets new status code.
          *
-         * @param integer $code Status code
+         * @param int $code Status code
+         *
          * @throws HttpException When http status code doesn't exists (is not defined in http protocol)
          */
         public function setStatusCode(int $code)
         {
-            if (key_exists($code, $this->StatusList))
-            {
+            if (array_key_exists($code, $this->StatusList)) {
                 $this->StatusCode = $code;
                 $this->Status = strtr($code, $this->StatusList);
-            }
-            else
-            {
+            } else {
                 throw new HttpException();
             }
         }
 
         /**
-         * Getter for $StatusCode
+         * Getter for $StatusCode.
          *
          * @return int StatusCode value
          */
@@ -212,25 +210,23 @@
         }
 
         /**
-         * Setter for $Version
+         * Setter for $Version.
          *
          * @param string $version Version
+         *
          * @throws HttpException When version is incorrect
          */
         public function setVersion(string $version)
         {
-            if ($version == "1.1" or $version == "1.0" or $version == "2")
-            {
+            if ($version == '1.1' or $version == '1.0' or $version == '2') {
                 $this->Version = $version;
-            }
-            else
-            {
+            } else {
                 throw new HttpException();
             }
         }
 
         /**
-         * Getter for $Version
+         * Getter for $Version.
          *
          * @return string Version
          */
@@ -240,23 +236,21 @@
         }
 
         /**
-         * Sends all headers
+         * Sends all headers.
          */
         public function SendHeaders()
         {
-            if (!headers_sent())
-            {
+            if (!headers_sent()) {
                 $this->Headers[] = "HTTP $this->Version $this->StatusCode $this->Status";
-                $this->Headers[] = "Charset: " . $this->Charset;
-                foreach ($this->Headers as $header)
-                {
+                $this->Headers[] = 'Charset: '.$this->Charset;
+                foreach ($this->Headers as $header) {
                     header($header, true, $this->StatusCode);
                 }
             }
         }
 
         /**
-         * Sends content
+         * Sends content.
          */
         public function SendContent()
         {
@@ -264,7 +258,7 @@
         }
 
         /**
-         * Sends full response
+         * Sends full response.
          */
         public function Send()
         {

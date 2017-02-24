@@ -11,18 +11,17 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace phlamingo\http;
+namespace phlamingo\http;
 
-
-    /**
-     * {Description}
+/**
+     * {Description}.
      */
     class XmlResponse extends Response
     {
-        public function __construct(\DOMDocument $content, $version = "1.1", $statusCode = 200, $charset = "UTF-8", array $headers = [])
+        public function __construct(\DOMDocument $content, $version = '1.1', $statusCode = 200, $charset = 'UTF-8', array $headers = [])
         {
             $content = $content->saveXML();
-            $headers[] = "Content-Type: application/xml";
+            $headers[] = 'Content-Type: application/xml';
             parent::__construct($content, $version, $statusCode, $charset, $headers);
         }
     }

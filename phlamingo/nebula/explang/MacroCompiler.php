@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang;
+namespace Phlamingo\Nebula\ExpLang;
 
-    use Phlamingo\Core\Object;
+use Phlamingo\Core\Object;
     use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Macros\BaseMacro;
     use Phlamingo\Nebula\ExpLang\Macros\BlockMacro;
@@ -29,18 +29,14 @@
     use Phlamingo\Nebula\ExpLang\Macros\ForeachMacro;
     use Phlamingo\Nebula\ExpLang\Macros\ForMacro;
     use Phlamingo\Nebula\ExpLang\Macros\IfMacro;
-    use Phlamingo\Nebula\ExpLang\Macros\KeyForeachMacro;
     use Phlamingo\Nebula\ExpLang\Macros\LinkMacro;
     use Phlamingo\Nebula\ExpLang\Macros\MarkdownMacro;
-    use Phlamingo\Nebula\ExpLang\Macros\MixinMacro;
     use Phlamingo\Nebula\ExpLang\Macros\PrintVarMacro;
     use Phlamingo\Nebula\ExpLang\Macros\RepeatMacro;
-    use Phlamingo\Nebula\ExpLang\Macros\TranslateMacro;
     use Phlamingo\Nebula\ExpLang\Macros\WhileMacro;
 
-
     /**
-     * Compiles macro from token row
+     * Compiles macro from token row.
      */
     class MacroCompiler extends Object
     {
@@ -50,26 +46,26 @@
         public $cacher;
 
         /**
-         * List of Macros patterns
+         * List of Macros patterns.
          */
         public $patternList = [
-            MarkdownMacro::class => MarkdownMacro::PATTERN,
-            BlockMacro::class => BlockMacro::PATTERN,
-            ElseIfMacro::class => ElseIfMacro::PATTERN,
-            ElseMacro::class => ElseMacro::PATTERN,
-            EndBlockMacro::class => EndBlockMacro::PATTERN,
-            EndForeachMacro::class => EndForeachMacro::PATTERN,
-            EndForMacro::class => EndForMacro::PATTERN,
-            EndIfMacro::class => EndIfMacro::PATTERN,
-            EndWhileMacro::class => EndWhileMacro::PATTERN,
-            ForeachMacro::class => ForeachMacro::PATTERN,
-            ForMacro::class => ForMacro::PATTERN,
-            IfMacro::class => IfMacro::PATTERN,
-            LinkMacro::class => LinkMacro::PATTERN,
-            RepeatMacro::class => RepeatMacro::PATTERN,
-            EndRepeatMacro::class => EndRepeatMacro::PATTERN,
-            PrintVarMacro::class => PrintVarMacro::PATTERN,
-            WhileMacro::class => WhileMacro::PATTERN,
+            MarkdownMacro::class    => MarkdownMacro::PATTERN,
+            BlockMacro::class       => BlockMacro::PATTERN,
+            ElseIfMacro::class      => ElseIfMacro::PATTERN,
+            ElseMacro::class        => ElseMacro::PATTERN,
+            EndBlockMacro::class    => EndBlockMacro::PATTERN,
+            EndForeachMacro::class  => EndForeachMacro::PATTERN,
+            EndForMacro::class      => EndForMacro::PATTERN,
+            EndIfMacro::class       => EndIfMacro::PATTERN,
+            EndWhileMacro::class    => EndWhileMacro::PATTERN,
+            ForeachMacro::class     => ForeachMacro::PATTERN,
+            ForMacro::class         => ForMacro::PATTERN,
+            IfMacro::class          => IfMacro::PATTERN,
+            LinkMacro::class        => LinkMacro::PATTERN,
+            RepeatMacro::class      => RepeatMacro::PATTERN,
+            EndRepeatMacro::class   => EndRepeatMacro::PATTERN,
+            PrintVarMacro::class    => PrintVarMacro::PATTERN,
+            WhileMacro::class       => WhileMacro::PATTERN,
             EndMarkdownMacro::class => EndMarkdownMacro::PATTERN,
         ];
 
@@ -83,23 +79,22 @@
                 cache:
                 foreach ($this->cacher->Get() as $macro) {
                     $this->patternList[$macro] = $macro::PATTERN;
-
                 }
-
             } else {
                 $this->cacher->Cache();
                 goto cache;
-
             }
         }
 
         /**
-         * Finds macro and return it's instance
+         * Finds macro and return it's instance.
          *
-         * @param array $tokenRow Row of tokens
-         * @param string $content [Unused]
-         * @return BaseMacro Macro
+         * @param array  $tokenRow Row of tokens
+         * @param string $content  [Unused]
+         *
          * @throws CompileException When macro wasn't found
+         *
+         * @return BaseMacro Macro
          */
         public function compile(array $tokenRow, string $content)
         {
@@ -109,29 +104,23 @@
                     if ($pattern[$key] != $token['token']) {
                         $match = null;
                         break;
-
                     } else {
                         $match = $macro;
                         break;
-
                     }
-
                 }
 
                 if (isset($match)) {
                     break;
-
                 }
             }
 
             if (isset($match)) {
                 var_dump($tokenRow);
-                return new $match($tokenRow, $content);
 
-            }
-            else
-            {
-                throw new CompileException("");
+                return new $match($tokenRow, $content);
+            } else {
+                throw new CompileException('');
             }
         }
     }

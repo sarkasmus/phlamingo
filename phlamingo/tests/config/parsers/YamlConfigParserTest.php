@@ -11,11 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Tests\Config\Parsers;
+namespace Phlamingo\Tests\Config\Parsers;
 
-
-    use Phlamingo\Config\Parsers\YamlConfigParser;
-
+use Phlamingo\Config\Parsers\YamlConfigParser;
 
     class YamlConfigParserTest extends \PHPUnit_Framework_TestCase
     {
@@ -31,7 +29,7 @@
 
         public function testYaml()
         {
-            $this->assertEquals("foo: bar\n", $this->Parser->Dump(array("foo" => "bar")));
-            $this->assertEquals(array("foo" => "bar"), $this->Parser->Parse("foo: bar"));
+            $this->assertEquals("foo: bar\n", $this->Parser->Dump(['foo' => 'bar']));
+            $this->assertEquals(['foo' => 'bar'], $this->Parser->Parse('foo: bar'));
         }
     }

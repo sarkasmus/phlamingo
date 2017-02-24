@@ -11,25 +11,25 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\Compile;
+namespace Phlamingo\Nebula\Compile;
 
-    use Phlamingo\Core\Object;
-
+use Phlamingo\Core\Object;
 
     /**
-     * Finds macros in code
+     * Finds macros in code.
      */
     class MacroParser extends Object
     {
         /**
-         * Finds macros in code
+         * Finds macros in code.
          *
          * @param string $code Code
+         *
          * @return array Macros found
          */
         public function parse(string $code) : array
         {
-            $code = str_replace("\n", " ", $code);
+            $code = str_replace("\n", ' ', $code);
             $regex1 = '/@\{[\s\w<>=-_\+\*\/\.\[\]()?\d"\'\$]+}/';
 
             $macros = null;
@@ -38,13 +38,10 @@
             $result = [];
             if ($macros !== null) {
                 foreach ($macros[0] as $macro) {
-                    $result[$macro] = ['macro' => trim($macro, '@{}'), 'content' => ""];
-
+                    $result[$macro] = ['macro' => trim($macro, '@{}'), 'content' => ''];
                 }
-
             } else {
                 return [];
-
             }
 
             return $result;

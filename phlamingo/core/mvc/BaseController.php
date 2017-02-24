@@ -11,24 +11,24 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Core\MVC;
+namespace Phlamingo\Core\MVC;
 
+use Phlamingo\Core\MVC\Exceptions\ControllerException;
     use Phlamingo\Core\Object;
-    use Phlamingo\HTTP\Request;
-    use Phlamingo\Core\MVC\Exceptions\ControllerException;
-    use Phlamingo\HTTP\Response;
     use Phlamingo\HTTP\JsonResponse;
+    use Phlamingo\HTTP\Request;
+    use Phlamingo\HTTP\Response;
     use phlamingo\http\XmlResponse;
-
 
     /**
      * BaseController is parent of all controllers in
-     * application and is providing its base logic
+     * application and is providing its base logic.
      */
     abstract class BaseController extends Object
     {
         /**
          * @Service Request
+         *
          * @var Request
          */
         public $Request;
@@ -39,80 +39,69 @@
         public $Session;
 
         /**
-         * Calls before action
+         * Calls before action.
          */
         protected function BeforeAction()
         {
-
         }
 
         /**
-         * Calls after action
+         * Calls after action.
          */
         protected function AfterAction()
         {
-
         }
 
         /**
-         * Runs a controller action
+         * Runs a controller action.
          *
          * @param string $action Action name
-         * @param array $params Params of the action
-         * @return Response Response
+         * @param array  $params Params of the action
+         *
          * @throws ControllerException When action returns incorrect response
+         *
+         * @return Response Response
          */
-        public final function Run(string $action, ...$params)
+        final public function Run(string $action, ...$params)
         {
             $this->BeforeAction();
             $response = $this->$action(...$params);
             $this->AfterAction();
 
-            if ($response instanceof Response)
-            {
+            if ($response instanceof Response) {
                 return $response;
-            }
-            elseif (is_string($response))
-            {
+            } elseif (is_string($response)) {
                 return new Response($response);
-            }
-            elseif (is_array($response))
-            {
+            } elseif (is_array($response)) {
                 return new JsonResponse($response);
-            }
-            elseif ($response instanceof \DOMDocument)
-            {
+            } elseif ($response instanceof \DOMDocument) {
                 return new XmlResponse($response);
-            }
-            else
-            {
+            } else {
                 throw new ControllerException("Action {$action} returns incorrect response");
             }
         }
 
         /**
-         * Redirects user to another url
+         * Redirects user to another url.
          *
          * @param string|array $pathOrEvent String path to redirect or event of controller as array
-         * @param array $params Params of the redirect path
-         * @return Response Response
+         * @param array        $params      Params of the redirect path
+         *
          * @throws \InvalidArgumentException When pathOrEvent is not of type string or array
+         *
+         * @return Response Response
          */
-        protected final function Redirect($pathOrEvent, ...$params)
+        final protected function Redirect($pathOrEvent, ...$params)
         {
-            if (is_string($pathOrEvent))
-            {
-                return new Response("", "1.1", 301, "UTF-8", "Location: " . $pathOrEvent);
-            }
-            elseif (is_array($pathOrEvent))
-            {
+            if (is_string($pathOrEvent)) {
+                return new Response('', '1.1', 301, 'UTF-8', 'Location: '.$pathOrEvent);
+            } elseif (is_array($pathOrEvent)) {
                 $router = new Router();
                 $router->GenerateURL($pathOrEvent, ...$params);
-                return new Response("", "1.1", 301, "UTF-8", "Location: " . $pathOrEvent);
-            }
-            else
-            {
-                throw new \InvalidArgumentException("First parameter of Controller::Redirect method must be string or array. " . gettype($pathOrEvent) . " Given");
+
+                return new Response('', '1.1', 301, 'UTF-8', 'Location: '.$pathOrEvent);
+            } else {
+                throw new \InvalidArgumentException('First parameter of Controller::Redirect method must be string or array. '.gettype($pathOrEvent).' Given');
             }
         }
     }

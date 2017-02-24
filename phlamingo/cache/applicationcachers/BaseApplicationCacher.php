@@ -11,13 +11,12 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Cache\ApplicationCachers;
+namespace Phlamingo\Cache\ApplicationCachers;
 
-    use Phlamingo\Core\Object;
-
+use Phlamingo\Core\Object;
 
     /**
-     * {Description}
+     * {Description}.
      */
     abstract class BaseApplicationCacher extends Object
     {
@@ -27,17 +26,17 @@
         }
 
         /**
-         * Caches all classes with annotations @Factory and @Service
+         * Caches all classes with annotations @Factory and @Service.
          */
-        public abstract function Cache();
+        abstract public function Cache();
 
         /**
-         * Returns if DI was already cached
+         * Returns if DI was already cached.
          */
-        public abstract function Cached() : bool;
+        abstract public function Cached() : bool;
 
         /**
-         * Returns cached data
+         * Returns cached data.
          */
-        public abstract function Get();
+        abstract public function Get();
     }

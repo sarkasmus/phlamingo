@@ -11,10 +11,11 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\HTTP\Sessions\Exceptions;
+namespace Phlamingo\HTTP\Sessions\Exceptions;
 
-
-    /**
-     * {Description}
+/**
+     * {Description}.
      */
-    class SessionException extends \Exception {}
+    class SessionException extends \Exception
+    {
+    }

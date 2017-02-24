@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Macros;
+namespace Phlamingo\Nebula\ExpLang\Macros;
 
-    use Phlamingo\Nebula\Exceptions\CompileException;
+use Phlamingo\Nebula\Exceptions\CompileException;
     use Phlamingo\Nebula\ExpLang\Compiler;
     use Phlamingo\Nebula\ExpLang\TokenList;
 
@@ -24,54 +24,54 @@
     {
         /**
          * Pattern which identificates macro first token.
+         *
          * @const array PATTERN
          */
         const PATTERN = [
-            TokenList::T_STRING
+            TokenList::T_STRING,
         ];
 
         /**
-         * Checks if syntax of macro is valid
+         * Checks if syntax of macro is valid.
          *
          * @param Compiler $compiler
+         *
          * @throws CompileException When syntax is not valid
+         *
          * @return true If syntax is valid
          */
-        public  function check(Compiler &$compiler)
+        public function check(Compiler &$compiler)
         {
             if (isset($this->macro[1]) and $this->macro[1]['token'] !== TokenList::T_NOESCAPE) {
                 throw new CompileException("Variable print macro excepts noescape keyword as second token {$this->macro[1]['token']}");
-
             } else {
                 return true;
-
             }
         }
 
         /**
-         * Compiles macro to native PHP
+         * Compiles macro to native PHP.
          *
          * @param Compiler $compiler
+         *
          * @return string Code
          */
-        public  function compile(Compiler &$compiler): string
+        public function compile(Compiler &$compiler): string
         {
             if ($compiler->hasVariable($this->macro[0]['value'])) {
                 return $compiler->getVariable($this->macro[0]['value']);
-
             }
 
-            $object = strtr($this->macro[0]['value'], ["." => "->"]);
+            $object = strtr($this->macro[0]['value'], ['.' => '->']);
 
             if (isset($this->macro[1]['token'])) {
                 if ($this->macro[1]['token'] == TokenList::T_NOESCAPE) {
                     return "<?= \${$this->macro[0]['value']}; ?>";
-
                 }
-
             }
 
             $return = "<?= htmlspecialchars(\${$object});?>";
+
             return $return;
         }
     }

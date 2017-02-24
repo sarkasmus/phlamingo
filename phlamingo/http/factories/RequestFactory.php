@@ -15,24 +15,24 @@ namespace Phlamingo\HTTP\Factories;
 use Phlamingo\Di\BaseFactory;
 use Phlamingo\HTTP\Request;
 
-
 /**
- * {Description}
+ * {Description}.
+ *
  * @Factory Request
  */
 class RequestFactory extends BaseFactory
 {
-    public  function Make() : Request
+    public function Make() : Request
     {
         return new Request(
             $_SERVER['REQUEST_URI'],
             $_SERVER['REQUEST_METHOD'],
-            explode("/", $_SERVER['SERVER_PROTOCOL'])[1],
+            explode('/', $_SERVER['SERVER_PROTOCOL'])[1],
             $_GET,
             getallheaders(),
             $_COOKIE,
             $_FILES,
-            file_get_contents("php://input")
+            file_get_contents('php://input')
         );
     }
 }
