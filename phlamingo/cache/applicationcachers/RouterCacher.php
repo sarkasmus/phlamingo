@@ -39,12 +39,12 @@
         /**
          * Returns if config was already cached
          */
-        public function Cached() : bool
+        public function cached() : bool
         {
-            return $this->Cache->IsCacheDefined();
+            return $this->Cache->isCacheDefined();
         }
 
-        public  function Cache()
+        public  function cache()
         {
             $roots = [PHLAMINGO . "/", APP . "/"];
             $paths = [];
@@ -94,13 +94,13 @@
             }
 
             $this->Cache->Content = json_encode($routes);
-            $this->Cache->Save();
+            $this->Cache->save();
         }
 
         /**
          * Returns cached data
          */
-        public function Get()
+        public function get()
         {
             $content = $this->Cache->Content;
             return json_decode($content, true);

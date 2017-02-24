@@ -20,7 +20,7 @@
     /**
      * {Description}
      */
-    class ConfigCacher extends Object
+    class ConfigCacher extends BaseApplicationCacher
     {
         /**
          * Instance of cache with name ConfigCache
@@ -39,12 +39,12 @@
         /**
          * Returns if config was already cached
          */
-        public function Cached() : bool
+        public function cached() : bool
         {
-            return $this->Cache->IsCacheDefined();
+            return $this->Cache->isCacheDefined();
         }
 
-        public function Cache()
+        public function cache()
         {
             // TODO IMPLEMENT OTHER EXTENSIONS (yml)
             $defaultConfig = Yaml::parse(file_get_contents(PHLAMINGO . "/config.yaml"));
@@ -52,13 +52,13 @@
 
             $json = json_encode([$defaultConfig, $appConfig]);
             $this->Cache->Content = $json;
-            $this->Cache->Save();
+            $this->Cache->save();
         }
 
         /**
          * Returns cached data
          */
-        public function Get()
+        public function get()
         {
             $content = $this->Cache->Content;
             return json_decode($content, true);

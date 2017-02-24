@@ -20,7 +20,7 @@
     define("DOMAIN", $_SERVER['HTTP_HOST']);
 
     // clear the cache in development mode...
-    \Phlamingo\Cache\Cache::ClearCache();
+    \Phlamingo\Cache\Cache::clearCache();
 
     // Create instance of Application
     $application = new Application();

@@ -29,15 +29,15 @@
         /**
          * Caches all classes with annotations @Factory and @Service
          */
-        public abstract function Cache();
+        public abstract function cache();
 
         /**
          * Returns if DI was already cached
          */
-        public abstract function Cached() : bool;
+        public abstract function cached() : bool;
 
         /**
          * Returns cached data
          */
-        public abstract function Get();
+        public abstract function get();
     }

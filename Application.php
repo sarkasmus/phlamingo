@@ -51,9 +51,9 @@
             // Here setup your app:
             $configCacher = new \Phlamingo\Cache\ApplicationCachers\ConfigCacher();
 
-            if ($configCacher->Cached())
+            if ($configCacher->cached())
             {
-                foreach ($configCacher->Get() as $key => $values)
+                foreach ($configCacher->get() as $key => $values)
                 {
                     if ($values !== null and $key !== null)
                         $config->Push($values, $key);
@@ -61,8 +61,8 @@
             }
             else
             {
-                $configCacher->Cache();
-                foreach ($configCacher->Get() as $key => $values)
+                $configCacher->cache();
+                foreach ($configCacher->get() as $key => $values)
                 {
                     if ($values !== null and $key !== null)
                         $config->Push($values, $key);
@@ -76,9 +76,9 @@
         {
             $diCacher = new \Phlamingo\Cache\ApplicationCachers\DICacher();
 
-            if ($diCacher->Cached())
+            if ($diCacher->cached())
             {
-                foreach ($diCacher->Get() as $service => $factory)
+                foreach ($diCacher->get() as $service => $factory)
                 {
                     if ($service !== null and $factory !== null)
                         $container->AddService($service, new $factory);
@@ -86,8 +86,8 @@
             }
             else
             {
-                $diCacher->Cache();
-                foreach ($diCacher->Get() as $service => $factory)
+                $diCacher->cache();
+                foreach ($diCacher->get() as $service => $factory)
                 {
                     if ($service !== null and $factory !== null)
                     $container->AddService($service, new $factory);

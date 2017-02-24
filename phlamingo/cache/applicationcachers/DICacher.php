@@ -39,15 +39,15 @@
         /**
          * Returns if DI was already cached
          */
-        public function Cached() : bool
+        public function cached() : bool
         {
-            return $this->Cache->IsCacheDefined();
+            return $this->Cache->isCacheDefined();
         }
 
         /**
          * Caches all classes with annotations @Factory and @Service
          */
-        public function Cache()
+        public function cache()
         {
             $roots = [PHLAMINGO . "/", APP . "/"];
             $paths = [];
@@ -104,13 +104,13 @@
 
             $cacheContent = json_encode($couples);
             $this->Cache->Content = $cacheContent;
-            $this->Cache->Save();
+            $this->Cache->save();
         }
 
         /**
          * Returns cached data
          */
-        public function Get()
+        public function get()
         {
             $content = $this->Cache->Content;
             return json_decode($content);

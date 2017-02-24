@@ -44,7 +44,7 @@
          */
         public function Cached() : bool
         {
-            return $this->Cache->IsCacheDefined();
+            return $this->Cache->isCacheDefined();
         }
 
         /**
@@ -92,7 +92,7 @@
 
             $cacheContent = json_encode($macros);
             $this->Cache->Content = $cacheContent;
-            $this->Cache->Save();
+            $this->Cache->save();
         }
 
         /**

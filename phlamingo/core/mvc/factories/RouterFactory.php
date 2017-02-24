@@ -32,9 +32,9 @@
                 $routerCacher = new \Phlamingo\Cache\ApplicationCachers\RouterCacher();
                 $router = new Router();
 
-                if ($routerCacher->Cached())
+                if ($routerCacher->cached())
                 {
-                    foreach ($routerCacher->Get() as $mask => $event)
+                    foreach ($routerCacher->get() as $mask => $event)
                     {
                         if ($mask !== null and $event !== null)
                             $router->AddRoute($mask, $event);
@@ -42,8 +42,8 @@
                 }
                 else
                 {
-                    $routerCacher->Cache();
-                    foreach ($routerCacher->Get() as $mask => $event)
+                    $routerCacher->cache();
+                    foreach ($routerCacher->get() as $mask => $event)
                     {
                         if ($mask !== null and $event !== null)
                             $router->AddRoute($mask, $event);

@@ -27,7 +27,7 @@
          *
          * @param Cache $cache Instance of cache to save
          */
-        public function Save(Cache $cache)
+        public function save(Cache $cache)
         {
             file_put_contents(TEMP . "/cache_" . $cache->Name, $cache->Content);
         }
@@ -35,7 +35,7 @@
         /**
          * Clears all cache files
          */
-        public function ClearCache()
+        public function clearCache()
         {
             foreach (glob(TEMP . "/cache_*") as $cacheFile)
             {
@@ -49,7 +49,7 @@
          * @param Cache $cache Cache
          * @return bool
          */
-        public function IsPullable(Cache $cache): bool
+        public function isPullable(Cache $cache): bool
         {
             if (file_exists(TEMP . "/cache_" . $cache->Name))
             {
@@ -68,9 +68,9 @@
          * @return string Content
          * @throws CacheException When cache is not saved and can't be pulled
          */
-        public  function Pull(Cache $cache): string
+        public  function pull(Cache $cache): string
         {
-            if ($this->IsPullable($cache))
+            if ($this->isPullable($cache))
             {
                 $content = file_get_contents(TEMP . "/cache_" . $cache->Name);
                 return $content;

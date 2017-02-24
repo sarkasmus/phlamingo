@@ -27,12 +27,12 @@
          *
          * @param Cache $cache Instance of cache to save
          */
-        public abstract function Save(Cache $cache);
+        public abstract function save(Cache $cache);
 
         /**
          * Clears all cache files
          */
-        public abstract function ClearCache();
+        public abstract function clearCache();
 
         /**
          * Returns if cache is saved in file
@@ -40,7 +40,7 @@
          * @param Cache $cache Cache
          * @return bool
          */
-        public abstract function IsPullable(Cache $cache) : bool;
+        public abstract function isPullable(Cache $cache) : bool;
 
         /**
          * Pulls content from file
@@ -48,5 +48,5 @@
          * @param Cache $cache Cache to pull to
          * @return string Content
          */
-        public abstract function Pull(Cache $cache) : string;
+        public abstract function pull(Cache $cache) : string;
     }

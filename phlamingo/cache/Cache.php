@@ -73,13 +73,13 @@
             $this->Name = $name;
             $this->Content = $content;
 
-            $this->Pull();
+            $this->pull();
         }
 
         /**
          * Pulls saved content from storage manager to cache
          */
-        public function Pull()
+        public function pull()
         {
             if ($this->StorageManager->IsPullable($this))
             {
@@ -92,7 +92,7 @@
          *
          * @return bool
          */
-        public function IsCacheDefined() : bool
+        public function isCacheDefined() : bool
         {
             return $this->StorageManager->IsPullable($this);
         }
@@ -102,7 +102,7 @@
          *
          * @throws CacheException When content is empty
          */
-        public function Save()
+        public function save()
         {
             if (!empty($this->Content))
             {
@@ -118,10 +118,10 @@
         /**
          * Clears all cache files
          */
-        public static function ClearCache()
+        public static function clearCache()
         {
             $storageManager = new FileStorageManager();
-            $storageManager->ClearCache();
+            $storageManager->clearCache();
         }
 
         /**

@@ -60,7 +60,7 @@
             $cache = new Cache("TemplatesCache_{$path}");
 
             // If cache is defined it returns once compiled code
-            if ($cache->IsCacheDefined() === true) {
+            if ($cache->isCacheDefined() === true) {
                 extract($this->variables);
                 eval("?>".$cache->Content."<?php");
                 $returned = ob_get_contents();
@@ -89,7 +89,7 @@
 
                 // Save result to cache
                 $cache->Content = $compiler->getCode();
-                $cache->Save();
+                $cache->save();
 
                 // Run template
                 extract($this->variables);
