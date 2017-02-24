@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula;
+namespace Phlamingo\Nebula;
 
-    use Phlamingo\Cache\Cache;
+use Phlamingo\Cache\Cache;
     use Phlamingo\Nebula\Compile\Compiler;
 
     /**
@@ -23,13 +23,15 @@
     {
         /**
          * Path of template file.
-         * @var string $path
+         *
+         * @var string
          */
         protected $path;
 
         /**
          * Code of the template.
-         * @var string $code
+         *
+         * @var string
          */
         protected $code;
 
@@ -38,8 +40,8 @@
         /**
          * Constructor.
          *
-         * @param string $path Path of the template file.
-         * @param array $variables Variables added into template
+         * @param string $path      Path of the template file.
+         * @param array  $variables Variables added into template
          */
         public function __construct(string $path, array $variables = [])
         {
@@ -48,30 +50,30 @@
         }
 
         /**
-         * Returns compiled code of the template
+         * Returns compiled code of the template.
          *
          * @return string Code
          */
         public function __toString() : string
         {
             // Replace path characters
-            $path = strtr($this->path, ["\\" => "_", "/" => "_", ":" => "_"]);
+            $path = strtr($this->path, ['\\' => '_', '/' => '_', ':' => '_']);
             // Create cache of template code
             $cache = new Cache("TemplatesCache_{$path}");
 
             // If cache is defined it returns once compiled code
             if ($cache->isCacheDefined() === true) {
                 extract($this->variables);
-                eval("?>".$cache->Content."<?php");
+                eval('?>'.$cache->Content.'<?php');
                 $returned = ob_get_contents();
                 ob_end_clean();
-                return $returned;
 
+                return $returned;
             } else { // Compile
                 // Find the directory of template for loading other sources
-                $path = explode("/", str_replace("\\", "/", $this->path));
+                $path = explode('/', str_replace('\\', '/', $this->path));
                 array_pop($path);
-                $path = implode("/", $path);
+                $path = implode('/', $path);
 
                 // Get code of template
                 $this->code = file_get_contents($this->path);
@@ -93,10 +95,10 @@
 
                 // Run template
                 extract($this->variables);
-                eval("?>".$compiler->getCode()."<?php");
+                eval('?>'.$compiler->getCode().'<?php');
                 $returned = ob_get_contents();
                 ob_end_clean();
-                eval("?>".$returned."<?php");
+                eval('?>'.$returned.'<?php');
                 $returned = ob_get_contents();
 
                 return $returned;

@@ -11,36 +11,35 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Cache;
+namespace Phlamingo\Nebula\ExpLang\Cache;
 
-    use Phlamingo\Core\Object;
+use DocBlockReader\Reader;
     use Phlamingo\Cache\Cache;
-    use DocBlockReader\Reader;
-
+    use Phlamingo\Core\Object;
 
     /**
-     * {Description}
+     * {Description}.
      *
      * @Service MacroCacher
      */
     class MacroCacher extends Object
     {
         /**
-         * Instance of cache with name MacroCache
+         * Instance of cache with name MacroCache.
          */
         protected $Cache;
 
         /**
-         * Constructor
+         * Constructor.
          */
         public function __construct()
         {
             parent::__construct();
-            $this->Cache = new Cache("MacroCache");
+            $this->Cache = new Cache('MacroCache');
         }
 
         /**
-         * Returns if DI was already cached
+         * Returns if DI was already cached.
          */
         public function Cached() : bool
         {
@@ -48,44 +47,38 @@
         }
 
         /**
-         * Caches all classes with annotations @Factory and @Service
+         * Caches all classes with annotations @Factory and @Service.
          */
         public function Cache()
         {
-            $roots = [PHLAMINGO . "/", APP . "/"];
+            $roots = [PHLAMINGO.'/', APP.'/'];
             $paths = [];
-            foreach ($roots as $root)
-            {
+            foreach ($roots as $root) {
                 $iter = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($root, \RecursiveDirectoryIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::SELF_FIRST,
                     \RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
                 );
 
-                foreach ($iter as $path => $dir)
-                {
-                    if ($dir->isFile() and $dir->getExtension() == "php" and empty(strpos($path, "tests")))
-                    {
+                foreach ($iter as $path => $dir) {
+                    if ($dir->isFile() and $dir->getExtension() == 'php' and empty(strpos($path, 'tests'))) {
                         $paths[] = $path;
                     }
                 }
             }
 
-            foreach ($paths as $path)
-            {
-                require_once($path);
+            foreach ($paths as $path) {
+                require_once $path;
             }
 
             $classes = get_declared_classes();
 
             $macros = [];
-            foreach ($classes as $class)
-            {
+            foreach ($classes as $class) {
                 $reader = new Reader($class);
-                $macro = $reader->getParameter("Macro");
+                $macro = $reader->getParameter('Macro');
 
-                if (isset($macro))
-                {
+                if (isset($macro)) {
                     $macros[] = $class;
                 }
             }
@@ -96,11 +89,12 @@
         }
 
         /**
-         * Returns cached data
+         * Returns cached data.
          */
         public function Get()
         {
             $content = $this->Cache->Content;
+
             return json_decode($content, true);
         }
     }

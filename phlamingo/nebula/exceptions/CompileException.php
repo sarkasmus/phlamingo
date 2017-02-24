@@ -1,5 +1,6 @@
-<?php    
-    
+<?php
+
+
     /**
      * @author Michal Doubek <michal@doubkovi.cz>
      * @license LGPL 3
@@ -10,11 +11,12 @@
      *
      * This source code is part of Phlamingo project
      */
-    
-    namespace Phlamingo\Nebula\Exceptions;
 
-    
-    /**
-     * {Description}
+namespace Phlamingo\Nebula\Exceptions;
+
+/**
+     * {Description}.
      */
-    class CompileException extends \Exception { }
+    class CompileException extends \Exception
+    {
+    }

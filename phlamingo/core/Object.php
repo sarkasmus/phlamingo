@@ -11,46 +11,47 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Core;
+namespace Phlamingo\Core;
 
-    // Exceptions
-    use Phlamingo\Core\Exceptions\MemberAccessException;
-
+// Exceptions
     use DocBlockReader\Reader;
+    use Phlamingo\Core\Exceptions\MemberAccessException;
     use Phlamingo\Di\Container;
     use Phlamingo\Di\ContainerSingleton;
     use Phlamingo\Di\EmptyService;
 
-
     /**
      * Object is parent of almost all classes in the
      * Phlamingo and can be used in other classes in the project
-     * It provides dependency injection logic, properties, events etc
+     * It provides dependency injection logic, properties, events etc.
      */
     abstract class Object
     {
         /**
-         * Reflection of this class
-         * @var \ReflectionClass $Reflection
+         * Reflection of this class.
+         *
+         * @var \ReflectionClass
          */
         public $Reflection;
 
         /**
-         * Extension methods list
-         * @var array $methods
+         * Extension methods list.
+         *
+         * @var array
          */
         protected $methods = [];
 
         /**
-         * Dependency injection container
-         * @var Container $Container
+         * Dependency injection container.
+         *
+         * @var Container
          */
         public $Container;
 
         private static $Enviroment = true;
 
         /**
-         * Constructor
+         * Constructor.
          *
          * IMPORTANT:
          * Default calls setup automatically if constructor is
@@ -58,14 +59,13 @@
          */
         public function __construct()
         {
-            if (Object::$Enviroment === true)
-            {
+            if (self::$Enviroment === true) {
                 $this->ThisSetup();
             }
         }
 
         /**
-         * Setups the inner environment of class
+         * Setups the inner environment of class.
          *
          * Initiates reflection and container and sets
          * dependencies of class
@@ -79,139 +79,115 @@
             $this->Container = ContainerSingleton::GetContainer();
 
             $properties = $reflection->getProperties();
-            foreach ($properties as $property)
-            {
+            foreach ($properties as $property) {
                 $propertyName = $property->getName();
-                $docReader = new Reader($reflection->getName(), $propertyName, "property");
-                $service = $docReader->getParameter("Service");
+                $docReader = new Reader($reflection->getName(), $propertyName, 'property');
+                $service = $docReader->getParameter('Service');
 
-                if (!empty($service) and $service != self::class)
-                {
+                if (!empty($service) and $service != self::class) {
                     $this->$propertyName = new EmptyService($service);
                 }
             }
         }
 
         /**
-         * Calls when its trying to get inaccessible property
+         * Calls when its trying to get inaccessible property.
          *
          * @param string $name Name of property
-         * @return mixed Value returned by getter
+         *
          * @throws MemberAccessException When is not defined getter or property doesn't exist
+         *
+         * @return mixed Value returned by getter
          */
         public function __get(string $name)
         {
-            if (isset($this->Reflection))
-            {
-                if ($this->Reflection->hasProperty($name))
-                {
-                    if ($this->Reflection->hasMethod("get" . ucfirst($name)))
-                    {
-                        return $this->Reflection->getMethod("get" . ucfirst($name))->invoke($this);
+            if (isset($this->Reflection)) {
+                if ($this->Reflection->hasProperty($name)) {
+                    if ($this->Reflection->hasMethod('get'.ucfirst($name))) {
+                        return $this->Reflection->getMethod('get'.ucfirst($name))->invoke($this);
+                    } else {
+                        throw new MemberAccessException("Property {$name} has not defined getter in class {".get_class($this).'}');
                     }
-                    else
-                    {
-                        throw new MemberAccessException("Property {$name} has not defined getter in class {" . get_class($this) . "}");
-                    }
+                } else {
+                    throw new MemberAccessException("Property {$name} does not exist in class {".get_class($this).'}');
                 }
-                else
-                {
-                    throw new MemberAccessException("Property {$name} does not exist in class {" . get_class($this) . "}");
-                }
-            }
-            else
-            {
-                throw new MemberAccessException("Reflection is not defined in instance of {" . get_class($this) . "} and properties can't be used");
+            } else {
+                throw new MemberAccessException('Reflection is not defined in instance of {'.get_class($this)."} and properties can't be used");
             }
         }
 
         /**
-         * Calls when its trying to set to inaccessible property
+         * Calls when its trying to set to inaccessible property.
          *
-         * @param string $name Name of property
-         * @param mixed $value Value to set
+         * @param string $name  Name of property
+         * @param mixed  $value Value to set
+         *
          * @throws MemberAccessException When is not defined setter or property doesn't exist
          */
         public function __set(string $name, $value)
         {
             // Implements extension methods
-            if ($name === "extend" and is_callable($value))
-            {
+            if ($name === 'extend' and is_callable($value)) {
                 $this->methods[$name] = $value;
             }
 
             // Implements setters
-            if (isset($this->Reflection))
-            {
-                if ($this->Reflection->hasProperty($name))
-                {
-                    if ($this->Reflection->hasMethod("set" . ucfirst($name)))
-                    {
-                        $this->Reflection->getMethod("set" . ucfirst($name))->invoke($this, $value);
+            if (isset($this->Reflection)) {
+                if ($this->Reflection->hasProperty($name)) {
+                    if ($this->Reflection->hasMethod('set'.ucfirst($name))) {
+                        $this->Reflection->getMethod('set'.ucfirst($name))->invoke($this, $value);
+                    } else {
+                        throw new MemberAccessException("Property {$name} has not defined setter in class {".get_class($this).'}');
                     }
-                    else
-                    {
-                        throw new MemberAccessException("Property {$name} has not defined setter in class {" . get_class($this) . "}");
-                    }
+                } else {
+                    throw new MemberAccessException("Property {$name} does not exist in class {".get_class($this).'}');
                 }
-                else
-                {
-                    throw new MemberAccessException("Property {$name} does not exist in class {" . get_class($this) . "}");
-                }
-            }
-            else
-            {
-                throw new MemberAccessException("Reflection is not defined in instance of {" . get_class($this) . "} and properties can't be used");
+            } else {
+                throw new MemberAccessException('Reflection is not defined in instance of {'.get_class($this)."} and properties can't be used");
             }
         }
 
         /**
-         * Calls when its trying to call inaccessible static method
+         * Calls when its trying to call inaccessible static method.
          *
-         * @param string $name Name of the method
-         * @param array $arguments Arguments of method
+         * @param string $name      Name of the method
+         * @param array  $arguments Arguments of method
+         *
          * @throws MemberAccessException Throws always
          */
         public static function __callStatic(string $name, array $arguments)
         {
-            throw new MemberAccessException("Static method {$name} does not exist in class {" . self::class . "}");
+            throw new MemberAccessException("Static method {$name} does not exist in class {".self::class.'}');
         }
 
         /**
-         * Calls when its trying to call inaccessible member method
+         * Calls when its trying to call inaccessible member method.
          *
          * First it checks if the method is defined in extension method list then it
          * tries if the name can be trigger of event and if the event exists
          *
-         * @param string $name Name of the method
-         * @param array $arguments Arguments of method
-         * @return mixed Method return value or null
+         * @param string $name      Name of the method
+         * @param array  $arguments Arguments of method
+         *
          * @throws MemberAccessException When method is not defined in class or in
-         * extension method list and its not trigger of event
+         *                               extension method list and its not trigger of event
+         *
+         * @return mixed Method return value or null
          */
         public function __call(string $name, array $arguments)
         {
-            if (isset($this->methods[$name]))
-            {
+            if (isset($this->methods[$name])) {
                 return $this->methods[$name](...$arguments);
-            }
-            elseif (isset($this->Reflection))
-            {
-                if (substr($name, 0, 2) === "on" and $this->Reflection->hasProperty(substr($name, 2) . "Event"))
-                {
-                    $event = substr($name, 2) . "Event";
-                    foreach ($this->$event as $event)
-                    {
+            } elseif (isset($this->Reflection)) {
+                if (substr($name, 0, 2) === 'on' and $this->Reflection->hasProperty(substr($name, 2).'Event')) {
+                    $event = substr($name, 2).'Event';
+                    foreach ($this->$event as $event) {
                         $event();
                     }
                 }
+            } else {
+                throw new MemberAccessException("Member method {$name} does not exist in class {".get_class($this).'}');
             }
-            else
-            {
-                throw new MemberAccessException("Member method {$name} does not exist in class {" . get_class($this) . "}");
-            }
-
-            return null;
         }
 
         public static function SetEnviroment(bool $callSetup = true)
@@ -221,11 +197,9 @@
 
         public function Event()
         {
-
         }
 
         public function AddEventCallback()
         {
-
         }
     }

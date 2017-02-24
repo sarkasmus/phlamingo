@@ -11,10 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang;
+namespace Phlamingo\Nebula\ExpLang;
 
-    use Phlamingo\Core\Object;
-
+use Phlamingo\Core\Object;
 
     /**
      * Parse macros to tokens by defined rules.
@@ -23,18 +22,20 @@
     {
         /**
          * List of defined tokens.
-         * @var array $tokens
+         *
+         * @var array
          */
         protected $tokens = [];
 
         /**
-         * List of callbacks to tokens
-         * @var array $callbacks
+         * List of callbacks to tokens.
+         *
+         * @var array
          */
         protected $callbacks;
 
         /**
-         * Defines tokens and callbacks to current lexer
+         * Defines tokens and callbacks to current lexer.
          *
          * @param array $tokens
          * @param array $callbacks
@@ -46,7 +47,7 @@
         }
 
         /**
-         * Parses expression by defined macros and callbacks
+         * Parses expression by defined macros and callbacks.
          */
         public function lex(string $macro)
         {
@@ -62,14 +63,10 @@
                     foreach ($fmatches[0] as $key => $fmatch) {
                         if ($this->callbacks[$token]($fmatch[0]) !== true) {
                             unset($fmatches[0][$key]);
-
                         }
-
                     }
-
                 }
                 $matches[$token] = $fmatches;
-
             }
 
             // Set format of matches to [offset] => [token, value] - offset is offset of match in string
@@ -81,9 +78,7 @@
 
                 foreach ($match[0] as $oneMatch) {
                     $results[$oneMatch[1]] = ['token' => $token, 'value' => $oneMatch[0]];
-
                 }
-
             }
 
             // Sort tokens to their right row by offset
@@ -95,7 +90,6 @@
             foreach ($results as $result) {
                 $newResults[$i] = $result;
                 $i++;
-
             }
 
             return $newResults;

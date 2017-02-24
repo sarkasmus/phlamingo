@@ -11,9 +11,9 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Nebula\ExpLang\Macros;
+namespace Phlamingo\Nebula\ExpLang\Macros;
 
-    use Phlamingo\Core\Object;
+use Phlamingo\Core\Object;
     use Phlamingo\Nebula\ExpLang\Compiler;
 
     /**
@@ -23,26 +23,29 @@
     {
         /**
          * Pattern which identificates macro first token.
+         *
          * @const array PATTERN
          */
         const PATTERN = [];
 
         /**
          * List of tokens of macro.
-         * @var array $macro
+         *
+         * @var array
          */
         public $macro = [];
 
         /**
          * [Unused].
-         * @var string $content
+         *
+         * @var string
          */
         public $content;
 
         /**
          * Constructor.
          *
-         * @param array $macroTokenRow
+         * @param array       $macroTokenRow
          * @param string|null $content
          */
         public function __construct(array $macroTokenRow, string $content = null)
@@ -53,19 +56,22 @@
         }
 
         /**
-         * Checks if syntax of macro is valid
+         * Checks if syntax of macro is valid.
          *
          * @param Compiler $compiler
+         *
          * @throws CompileException When syntax is not valid
+         *
          * @return true If syntax is valid
          */
-        public abstract function check(Compiler &$compiler);
+        abstract public function check(Compiler &$compiler);
 
         /**
-         * Compiles macro to native PHP
+         * Compiles macro to native PHP.
          *
          * @param Compiler $compiler
+         *
          * @return string Code
          */
-        public abstract function compile(Compiler &$compiler) : string;
+        abstract public function compile(Compiler &$compiler) : string;
     }

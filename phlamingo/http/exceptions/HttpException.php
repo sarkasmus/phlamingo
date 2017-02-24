@@ -1,5 +1,6 @@
-<?php    
-    
+<?php
+
+
     /**
      * @author Michal Doubek <michal@doubkovi.cz>
      * @license LGPL 3
@@ -10,11 +11,12 @@
      *
      * This source code is part of Phlamingo project
      */
-    
-    namespace Phlamingo\HTTP\Exceptions;
 
-    
-    /**
-     * {Description}
+namespace Phlamingo\HTTP\Exceptions;
+
+/**
+     * {Description}.
      */
-    class HttpException extends \Exception { }
+    class HttpException extends \Exception
+    {
+    }

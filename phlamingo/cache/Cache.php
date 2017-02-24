@@ -11,62 +11,63 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Cache;
+namespace Phlamingo\Cache;
 
-    use Doctrine\Instantiator\Exception\InvalidArgumentException;
+use Doctrine\Instantiator\Exception\InvalidArgumentException;
     use Phlamingo\Cache\Exceptions\CacheException;
     use Phlamingo\Cache\Storage\BaseStorageManager;
     use Phlamingo\Cache\Storage\FileStorageManager;
     use Phlamingo\Core\Object;
 
-
     /**
-     * {Description}
+     * {Description}.
      */
     class Cache extends Object
     {
         /**
-         * Name of the cache
-         * @var string $Name
+         * Name of the cache.
+         *
+         * @var string
          */
         protected $Name;
 
         /**
-         * Content of the cache
-         * @var string $Content
+         * Content of the cache.
+         *
+         * @var string
          */
         protected $Content;
 
         /**
-         * Is cache saved. If it is, content can't be changed
-         * @var bool $Saved
+         * Is cache saved. If it is, content can't be changed.
+         *
+         * @var bool
          */
         protected $Saved = false;
 
         /**
-         * Storage manager dependency
-         * @var BaseStorageManager $StorageManager
+         * Storage manager dependency.
+         *
+         * @var BaseStorageManager
          */
         protected $StorageManager;
 
         /**
-         * Constructor
+         * Constructor.
          *
-         * @param string $name Name of the cache
-         * @param string $content Content of the cache
+         * @param string             $name           Name of the cache
+         * @param string             $content        Content of the cache
          * @param BaseStorageManager $storageManager Storage manager
          */
-        public function __construct(string $name, string $content = "", BaseStorageManager $storageManager = null)
+        public function __construct(string $name, string $content = '', BaseStorageManager $storageManager = null)
         {
             parent::__construct();
-            if ($storageManager === null)
-            {
+            if ($storageManager === null) {
                 $storageManager = new FileStorageManager();
             }
             $this->StorageManager = $storageManager;
 
-            if (empty($name))
-            {
+            if (empty($name)) {
                 throw new InvalidArgumentException("Cache name can't be empty");
             }
 
@@ -77,18 +78,17 @@
         }
 
         /**
-         * Pulls saved content from storage manager to cache
+         * Pulls saved content from storage manager to cache.
          */
         public function pull()
         {
-            if ($this->StorageManager->IsPullable($this))
-            {
+            if ($this->StorageManager->IsPullable($this)) {
                 $this->Content = $this->StorageManager->Pull($this);
             }
         }
 
         /**
-         * Returns if cache has saved contrent in file
+         * Returns if cache has saved contrent in file.
          *
          * @return bool
          */
@@ -98,25 +98,22 @@
         }
 
         /**
-         * Saves content to file by storage manager
+         * Saves content to file by storage manager.
          *
          * @throws CacheException When content is empty
          */
         public function save()
         {
-            if (!empty($this->Content))
-            {
+            if (!empty($this->Content)) {
                 $this->StorageManager->Save($this);
                 $this->Saved = true;
-            }
-            else
-            {
+            } else {
                 throw new CacheException("Content of cache {$this->Name} is empty. Cache can't be saved");
             }
         }
 
         /**
-         * Clears all cache files
+         * Clears all cache files.
          */
         public static function clearCache()
         {
@@ -125,7 +122,7 @@
         }
 
         /**
-         * Getter for Name property
+         * Getter for Name property.
          *
          * @return string
          */
@@ -135,7 +132,7 @@
         }
 
         /**
-         * Getter for Content property
+         * Getter for Content property.
          *
          * @return string
          */
@@ -145,25 +142,23 @@
         }
 
         /**
-         * Setter for Content property
+         * Setter for Content property.
          *
          * @param string $content Content to set
+         *
          * @throws CacheException When cache was already saved and can't be changed
          */
         public function setContent(string $content)
         {
-            if ($this->Saved !== true)
-            {
+            if ($this->Saved !== true) {
                 $this->Content = $content;
-            }
-            else
-            {
+            } else {
                 throw new CacheException("Cache have been saved and can't be edited. Create new cache to overwrite current");
             }
         }
 
         /**
-         * Getter for storage manager
+         * Getter for storage manager.
          *
          * @return BaseStorageManager Storage manager
          */
@@ -173,7 +168,7 @@
         }
 
         /**
-         * Setter for storage manager
+         * Setter for storage manager.
          *
          * @param BaseStorageManager $storageManager
          */

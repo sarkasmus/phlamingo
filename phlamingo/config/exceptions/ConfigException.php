@@ -1,5 +1,6 @@
-<?php    
-    
+<?php
+
+
     /**
      * @author Michal Doubek <michal@doubkovi.cz>
      * @license LGPL 3
@@ -10,11 +11,12 @@
      *
      * This source code is part of Phlamingo project
      */
-    
-    namespace Phlamingo\Config\Exceptions;
 
-    
-    /**
-     * {Description}
+namespace Phlamingo\Config\Exceptions;
+
+/**
+     * {Description}.
      */
-    class ConfigException extends \Exception { }
+    class ConfigException extends \Exception
+    {
+    }

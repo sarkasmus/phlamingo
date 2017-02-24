@@ -11,33 +11,32 @@
      * This source code is part of Phlamingo project
      */
 
-    namespace Phlamingo\Cache\ApplicationCachers;
+namespace Phlamingo\Cache\ApplicationCachers;
 
-    use DocBlockReader\Reader;
+use DocBlockReader\Reader;
     use Phlamingo\Cache\Cache;
 
-
     /**
-     * {Description}
+     * {Description}.
      */
     class RouterCacher extends BaseApplicationCacher
     {
         /**
-         * Instance of cache with name ConfigCache
+         * Instance of cache with name ConfigCache.
          */
         protected $Cache;
 
         /**
-         * Constructor
+         * Constructor.
          */
         public function __construct()
         {
             parent::__construct();
-            $this->Cache = new Cache("RouterCache");
+            $this->Cache = new Cache('RouterCache');
         }
 
         /**
-         * Returns if config was already cached
+         * Returns if config was already cached.
          */
         public function cached() : bool
         {
@@ -46,48 +45,40 @@
 
         public  function cache()
         {
-            $roots = [PHLAMINGO . "/", APP . "/"];
+            $roots = [PHLAMINGO.'/', APP.'/'];
             $paths = [];
-            foreach ($roots as $root)
-            {
+            foreach ($roots as $root) {
                 $iter = new \RecursiveIteratorIterator(
                     new \RecursiveDirectoryIterator($root, \RecursiveDirectoryIterator::SKIP_DOTS),
                     \RecursiveIteratorIterator::SELF_FIRST,
                     \RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
                 );
 
-                foreach ($iter as $path => $dir)
-                {
-                    if ($dir->isFile() and $dir->getExtension() == "php" and empty(strpos($path, "tests")))
-                    {
+                foreach ($iter as $path => $dir) {
+                    if ($dir->isFile() and $dir->getExtension() == 'php' and empty(strpos($path, 'tests'))) {
                         $paths[] = $path;
                     }
                 }
             }
 
-            foreach ($paths as $path)
-            {
-                require_once($path);
+            foreach ($paths as $path) {
+                require_once $path;
             }
 
             $classes = get_declared_classes();
 
             $routes = [];
-            foreach ($classes as $class)
-            {
+            foreach ($classes as $class) {
                 $reflection = new \ReflectionClass($class);
                 $methods = $reflection->getMethods();
 
-                foreach ($methods as $method)
-                {
-                    if ($method->isPublic())
-                    {
-                        $reader = new Reader($class, $method->getName(), "method");
-                        $route = $reader->getParameter("Route");
+                foreach ($methods as $method) {
+                    if ($method->isPublic()) {
+                        $reader = new Reader($class, $method->getName(), 'method');
+                        $route = $reader->getParameter('Route');
 
-                        if (isset($route))
-                        {
-                            $routes[$route] = ["controller" => $class, "action" => $method->getName()];
+                        if (isset($route)) {
+                            $routes[$route] = ['controller' => $class, 'action' => $method->getName()];
                         }
                     }
                 }
@@ -98,11 +89,12 @@
         }
 
         /**
-         * Returns cached data
+         * Returns cached data.
          */
         public function get()
         {
             $content = $this->Cache->Content;
+
             return json_decode($content, true);
         }
     }
