@@ -1,3 +1,4 @@
+![](https://github.com/sarkasmus/Phlamingo/blob/master/flamingo-wallpaper.png)
 # Table of contents
 
 - [Introduction](https://github.com/sarkasmus/Phlamingo/wiki/Introduction)
