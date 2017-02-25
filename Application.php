@@ -28,7 +28,7 @@
          * @param string         $controllerAction Name of requested action
          * @param array|mixed    $params           Params of controller action
          */
-        public function Main(BaseController $controller, string $controllerAction, ...$params)
+        public function main(BaseController $controller, string $controllerAction, ...$params)
         {
             // Here write your code:
 
@@ -44,7 +44,7 @@
          *
          * @return Configurator Set config class
          */
-        public function Config(Configurator $config) : Configurator
+        public function config(Configurator $config) : Configurator
         {
             // Here setup your app:
             $configCacher = new \Phlamingo\Cache\ApplicationCachers\ConfigCacher();
@@ -76,7 +76,7 @@
             return $config;
         }
 
-        public function SetupDI(Container $container)
+        public function setupDI(Container $container)
         {
             $diCacher = new \Phlamingo\Cache\ApplicationCachers\DICacher();
 

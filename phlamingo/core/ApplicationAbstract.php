@@ -31,19 +31,19 @@ use Phlamingo\Config\Configurator;
          * @param string         $controllerAction Name of requested action
          * @param array|mixed    $params           Params of controller action
          */
-        abstract public function Main(BaseController $controller, string $controllerAction, ...$params);
+        abstract public function main(BaseController $controller, string $controllerAction, ...$params);
 
         /**
          * Routes URL and calls Main().
          *
          * @param Router $router Router
          */
-        final public function CallMain(Router $router)
+        final public function callMain(Router $router)
         {
             $container = ContainerSingleton::getContainer();
             $request = $container->get('Request');
             $event = $router->route($request);
-            $this->Main(new $event['controller'](), $event['action'], ...$event['params']);
+            $this->main(new $event['controller'](), $event['action'], ...$event['params']);
         }
 
         /**
@@ -53,16 +53,16 @@ use Phlamingo\Config\Configurator;
          *
          * @return Configurator Set config class
          */
-        abstract public function Config(Configurator $config) : Configurator;
+        abstract public function config(Configurator $config) : Configurator;
 
-        abstract public function SetupDI(Container $container);
+        abstract public function setupDI(Container $container);
 
         /**
          * Called before Config(), implements default configuration of application.
          *
          * @return Configurator Configuration class
          */
-        final public function AbstractConfig() : Configurator
+        final public function abstractConfig() : Configurator
         {
             return new Configurator();
         }

@@ -25,11 +25,11 @@
     $application = new Application();
 
     // Setup DI
-    $application->SetupDI(\Phlamingo\Di\ContainerSingleton::getContainer());
+    $application->setupDI(\Phlamingo\Di\ContainerSingleton::getContainer());
 
     // Configurate application
-    $config = $application->AbstractConfig();
-    $config = $application->Config($config);
+    $config = $application->abstractConfig();
+    $config = $application->config($config);
 
     // Run application
-    $application->CallMain(\Phlamingo\Di\ContainerSingleton::getContainer()->get('Router'));
+    $application->callMain(\Phlamingo\Di\ContainerSingleton::getContainer()->get('Router'));
