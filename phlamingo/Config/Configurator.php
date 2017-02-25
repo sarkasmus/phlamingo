@@ -18,19 +18,19 @@ namespace Phlamingo\Config;
     use Phlamingo\Core\Object;
 
     /**
-     * Configurator manages config of application.
+     * Configurator manages Config of application.
      */
     class Configurator extends Object implements \IteratorAggregate
     {
         /**
-         * List of config entries.
+         * List of Config entries.
          *
          * @var array|ConfigValue
          */
         protected $configValues = [];
 
         /**
-         * Inserts new config entry.
+         * Inserts new Config entry.
          *
          * @param string       $name         Name of the entry
          * @param string|mixed $value        Value
@@ -52,7 +52,7 @@ namespace Phlamingo\Config;
         }
 
         /**
-         * Sets config value.
+         * Sets Config value.
          *
          * @param string       $name     Name of the entry
          * @param string|mixed $value    Value
@@ -99,7 +99,7 @@ namespace Phlamingo\Config;
         }
 
         /**
-         * Clears all config entries, resets priority and sets value for default.
+         * Clears all Config entries, resets priority and sets value for default.
          */
         public function clearAllConfigurations()
         {
@@ -110,7 +110,7 @@ namespace Phlamingo\Config;
         }
 
         /**
-         * Clears config entry with name $name.
+         * Clears Config entry with name $name.
          *
          * @param string $name Name of entry
          *

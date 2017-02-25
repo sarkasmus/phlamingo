@@ -51,7 +51,7 @@ use Phlamingo\Config\Configurator;
          *
          * @param Configurator $config Config class
          *
-         * @return Configurator Set config class
+         * @return Configurator Set Config class
          */
         abstract public function config(Configurator $config) : Configurator;
 

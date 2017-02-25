@@ -19,10 +19,10 @@ use DocBlockReader\Reader;
     /**
      * {Description}.
      */
-    class DICacher extends BaseApplicationCacher
+    class RouterCacher extends BaseApplicationCacher
     {
         /**
-         * Instance of cache with name DICache.
+         * Instance of Cache with name ConfigCache.
          */
         protected $Cache;
 
@@ -32,21 +32,18 @@ use DocBlockReader\Reader;
         public function __construct()
         {
             parent::__construct();
-            $this->Cache = new Cache('DICache');
+            $this->Cache = new Cache('RouterCache');
         }
 
         /**
-         * Returns if DI was already cached.
+         * Returns if Config was already cached.
          */
         public function cached() : bool
         {
             return $this->Cache->isCacheDefined();
         }
 
-        /**
-         * Caches all classes with annotations @Factory and @Service.
-         */
-        public function cache()
+        public  function cache()
         {
             $roots = [PHLAMINGO.'/', APP.'/'];
             $paths = [];
@@ -70,29 +67,24 @@ use DocBlockReader\Reader;
 
             $classes = get_declared_classes();
 
-            $services = [];
-            $factories = [];
+            $routes = [];
             foreach ($classes as $class) {
-                $reader = new Reader($class);
-                $service = $reader->getParameter('Service');
-                $factory = $reader->getParameter('Factory');
+                $reflection = new \ReflectionClass($class);
+                $methods = $reflection->getMethods();
 
-                if (isset($service)) {
-                    $services[$service] = $class;
-                } elseif (isset($factory)) {
-                    $factories[$factory] = $class;
+                foreach ($methods as $method) {
+                    if ($method->isPublic()) {
+                        $reader = new Reader($class, $method->getName(), 'method');
+                        $route = $reader->getParameter('Route');
+
+                        if (isset($route)) {
+                            $routes[$route] = ['controller' => $class, 'action' => $method->getName()];
+                        }
+                    }
                 }
             }
 
-            $couples = [];
-            foreach ($services as $service => $class) {
-                if ($factory = array_key_exists($service, $factories) === true) {
-                    $couples[$service] = $factories[$service];
-                }
-            }
-
-            $cacheContent = json_encode($couples);
-            $this->Cache->Content = $cacheContent;
+            $this->Cache->Content = json_encode($routes);
             $this->Cache->save();
         }
 
@@ -103,6 +95,6 @@ use DocBlockReader\Reader;
         {
             $content = $this->Cache->Content;
 
-            return json_decode($content);
+            return json_decode($content, true);
         }
     }

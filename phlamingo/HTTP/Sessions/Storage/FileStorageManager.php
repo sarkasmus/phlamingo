@@ -36,13 +36,13 @@
 
             foreach ($sections as $key => $section)
             {
-                $name = $section->Name;
-                $locked = $section->IsLocked();
-                $variables = $section->Variables;
-                $lockedVariables = $section->LockedVariables;
-                $expiration = $section->Expiration;
-                $expirations = $section->Expirations;
-                $saveModes = $section->SaveModes;
+                $name = $section->name;
+                $locked = $section->isLocked();
+                $variables = $section->variables;
+                $lockedVariables = $section->lockedVariables;
+                $expiration = $section->expiration;
+                $expirations = $section->expirations;
+                $saveModes = $section->saveModes;
 
                 if (isset($saveModes))
                 {

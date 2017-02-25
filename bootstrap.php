@@ -18,7 +18,7 @@
     define('TEMP', PHLAMINGO.'/temp');
     define('DOMAIN', $_SERVER['HTTP_HOST']);
 
-    // clear the cache in development mode...
+    // clear the Cache in development mode...
     \Phlamingo\Cache\Cache::clearCache();
 
     // Create instance of Application

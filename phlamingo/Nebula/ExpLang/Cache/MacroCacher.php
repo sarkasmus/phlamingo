@@ -25,7 +25,7 @@ use DocBlockReader\Reader;
     class MacroCacher extends Object
     {
         /**
-         * Instance of cache with name MacroCache.
+         * Instance of Cache with name MacroCache.
          */
         protected $Cache;
 

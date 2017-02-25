@@ -39,7 +39,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
         protected $storageManager;
 
         /**
-         * List of sections in sessions.
+         * List of sections in Sessions.
          *
          * @var array
          */
@@ -90,7 +90,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
         }
 
         /**
-         * Pulls data from storage manager for current session relation (with session id).
+         * Pulls data from Storage manager for current session relation (with session id).
          */
         public function pull()
         {
@@ -120,10 +120,10 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
                     $name = $section['name'];
                     $this->addSection($name);
 
-                    $this->sections[$name]->Expiration($section['expiration']);
+                    $this->sections[$name]->expiration($section['expiration']);
 
                     if ($section['locked']) {
-                        $this->sections[$name]->Lock();
+                        $this->sections[$name]->lock();
                     }
 
                     foreach ($section['variables'] as $key => $variable) {
@@ -131,11 +131,11 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
                     }
 
                     foreach ($section['lockedVariables'] as $key => $variable) {
-                        $this->sections[$name]->Lock($key);
+                        $this->sections[$name]->lock($key);
                     }
 
                     foreach ($section['expirations'] as $key => $variable) {
-                        $this->sections[$name]->Expiration('key', $variable);
+                        $this->sections[$name]->expiration('key', $variable);
                     }
                 }
             } else {
@@ -195,7 +195,7 @@ use Phlamingo\HTTP\Sessions\Exceptions\SessionException;
         }
 
         /**
-         * Saves session relation by storage manager.
+         * Saves session relation by Storage manager.
          */
         public function save()
         {

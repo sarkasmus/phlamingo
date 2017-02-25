@@ -23,7 +23,7 @@ use Phlamingo\Core\Object;
     class Response extends Object
     {
         /**
-         * List of all http status codes and their status texts.
+         * List of all HTTP status codes and their status texts.
          *
          * @var array
          */
@@ -142,7 +142,7 @@ use Phlamingo\Core\Object;
          * @param string $charset    Charset which is used in response   [optional  =  "UTF-8"      ]
          * @param array  $headers    All other headers in response       [optional  =  empty array  ]
          *
-         * @throws HttpException When http status code doesn't exists (is not defined in http protocol)
+         * @throws HttpException When HTTP status code doesn't exists (is not defined in HTTP protocol)
          */
         public function __construct(string $content, string $version = '1.1', int $statusCode = 200, string $charset = 'UTF-8', array $headers = [])
         {
@@ -155,7 +155,7 @@ use Phlamingo\Core\Object;
             if ($version == '1.1' or $version == '1.0' or $version == '2') {
                 $this->version = $version;
             } else {
-                throw new HttpException();
+                throw new \InvalidArgumentException();
             }
 
             // Convert number code to text
@@ -182,7 +182,7 @@ use Phlamingo\Core\Object;
          *
          * @param int $code Status code
          *
-         * @throws HttpException When http status code doesn't exists (is not defined in http protocol)
+         * @throws HttpException When HTTP status code doesn't exists (is not defined in HTTP protocol)
          */
         public function setStatusCode(int $code)
         {

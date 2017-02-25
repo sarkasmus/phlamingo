@@ -23,19 +23,19 @@
     abstract class BaseStorageManager extends Object
     {
         /**
-         * Saves cache
+         * Saves Cache
          *
-         * @param Cache $cache Instance of cache to save
+         * @param Cache $cache Instance of Cache to save
          */
         public abstract function save(Cache $cache);
 
         /**
-         * Clears all cache files
+         * Clears all Cache files
          */
         public abstract function clearCache();
 
         /**
-         * Returns if cache is saved in file
+         * Returns if Cache is saved in file
          *
          * @param Cache $cache Cache
          * @return bool

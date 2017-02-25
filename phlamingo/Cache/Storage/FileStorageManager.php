@@ -23,9 +23,9 @@
     class FileStorageManager extends BaseStorageManager
     {
         /**
-         * Saves cache
+         * Saves Cache
          *
-         * @param Cache $cache Instance of cache to save
+         * @param Cache $cache Instance of Cache to save
          */
         public function save(Cache $cache)
         {
@@ -33,7 +33,7 @@
         }
 
         /**
-         * Clears all cache files
+         * Clears all Cache files
          */
         public function clearCache()
         {
@@ -44,7 +44,7 @@
         }
 
         /**
-         * Returns if cache is saved in file
+         * Returns if Cache is saved in file
          *
          * @param Cache $cache Cache
          * @return bool
@@ -66,7 +66,7 @@
          *
          * @param Cache $cache Cache to pull to
          * @return string Content
-         * @throws CacheException When cache is not saved and can't be pulled
+         * @throws CacheException When Cache is not saved and can't be pulled
          */
         public  function pull(Cache $cache): string
         {

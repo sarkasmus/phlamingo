@@ -58,10 +58,10 @@ use Phlamingo\Cache\Cache;
         {
             // Replace path characters
             $path = strtr($this->path, ['\\' => '_', '/' => '_', ':' => '_']);
-            // Create cache of template code
+            // Create Cache of template code
             $cache = new Cache("TemplatesCache_{$path}");
 
-            // If cache is defined it returns once compiled code
+            // If Cache is defined it returns once compiled code
             if ($cache->isCacheDefined() === true) {
                 extract($this->variables);
                 eval('?>'.$cache->Content.'<?php');
@@ -89,7 +89,7 @@ use Phlamingo\Cache\Cache;
                 $compiler->parseMacros();
                 $compiler->compileMacros();
 
-                // Save result to cache
+                // Save result to Cache
                 $cache->Content = $compiler->getCode();
                 $cache->save();
 

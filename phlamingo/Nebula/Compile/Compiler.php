@@ -63,7 +63,7 @@ use Phlamingo\Core\Object;
         }
 
         /**
-         * Parses macros - find macros in code and parses them into tokens.
+         * Parses Macros - find Macros in code and parses them into tokens.
          */
         public function parseMacros()
         {
@@ -72,7 +72,7 @@ use Phlamingo\Core\Object;
         }
 
         /**
-         * Compiles macros - replace macros for native php code.
+         * Compiles Macros - replace Macros for native php code.
          */
         public function compileMacros()
         {

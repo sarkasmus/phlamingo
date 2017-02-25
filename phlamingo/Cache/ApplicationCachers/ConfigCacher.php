@@ -23,7 +23,7 @@ use Phlamingo\Cache\Cache;
     class ConfigCacher extends BaseApplicationCacher
     {
         /**
-         * Instance of cache with name ConfigCache.
+         * Instance of Cache with name ConfigCache.
          */
         protected $Cache;
 
@@ -37,7 +37,7 @@ use Phlamingo\Cache\Cache;
         }
 
         /**
-         * Returns if config was already cached.
+         * Returns if Config was already cached.
          */
         public function cached() : bool
         {
@@ -47,7 +47,7 @@ use Phlamingo\Cache\Cache;
         public function cache()
         {
             // TODO IMPLEMENT OTHER EXTENSIONS (yml)
-            $defaultConfig = Yaml::parse(file_get_contents(PHLAMINGO.'/config.yaml'));
+            $defaultConfig = Yaml::parse(file_get_contents(PHLAMINGO.'/Config.yaml'));
             $appConfig = Yaml::parse(file_get_contents(APP.'/main/appconfig.yaml'));
 
             $json = json_encode([$defaultConfig, $appConfig]);

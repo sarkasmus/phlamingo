@@ -38,11 +38,11 @@
         }
 
         /**
-         * Here write your config code before app will start.
+         * Here write your Config code before app will start.
          *
          * @param Configurator $config Config class
          *
-         * @return Configurator Set config class
+         * @return Configurator Set Config class
          */
         public function config(Configurator $config) : Configurator
         {

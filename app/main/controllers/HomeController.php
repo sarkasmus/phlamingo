@@ -26,6 +26,15 @@ use Phlamingo\Core\MVC\BaseController;
          */
         public function DefaultAction()
         {
+            $this->session->var = new \ReflectionClass(new Response("hovno", "1.1"));
             return new Response('Hello world');
+        }
+
+        /**
+         * @Route /neco
+         */
+        public function NecoAction()
+        {
+            return $this->session->var;
         }
     }

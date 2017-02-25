@@ -25,21 +25,21 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
     class Cache extends Object
     {
         /**
-         * Name of the cache.
+         * Name of the Cache.
          *
          * @var string
          */
         protected $Name;
 
         /**
-         * Content of the cache.
+         * Content of the Cache.
          *
          * @var string
          */
         protected $Content;
 
         /**
-         * Is cache saved. If it is, content can't be changed.
+         * Is Cache saved. If it is, content can't be changed.
          *
          * @var bool
          */
@@ -55,8 +55,8 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
         /**
          * Constructor.
          *
-         * @param string             $name           Name of the cache
-         * @param string             $content        Content of the cache
+         * @param string             $name           Name of the Cache
+         * @param string             $content        Content of the Cache
          * @param BaseStorageManager $storageManager Storage manager
          */
         public function __construct(string $name, string $content = '', BaseStorageManager $storageManager = null)
@@ -78,7 +78,7 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
         }
 
         /**
-         * Pulls saved content from storage manager to cache.
+         * Pulls saved content from Storage manager to Cache.
          */
         public function pull()
         {
@@ -88,7 +88,7 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
         }
 
         /**
-         * Returns if cache has saved contrent in file.
+         * Returns if Cache has saved contrent in file.
          *
          * @return bool
          */
@@ -98,7 +98,7 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
         }
 
         /**
-         * Saves content to file by storage manager.
+         * Saves content to file by Storage manager.
          *
          * @throws CacheException When content is empty
          */
@@ -108,12 +108,12 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
                 $this->StorageManager->Save($this);
                 $this->Saved = true;
             } else {
-                throw new CacheException("Content of cache {$this->Name} is empty. Cache can't be saved");
+                throw new CacheException("Content of Cache {$this->Name} is empty. Cache can't be saved");
             }
         }
 
         /**
-         * Clears all cache files.
+         * Clears all Cache files.
          */
         public static function clearCache()
         {
@@ -146,19 +146,19 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
          *
          * @param string $content Content to set
          *
-         * @throws CacheException When cache was already saved and can't be changed
+         * @throws CacheException When Cache was already saved and can't be changed
          */
         public function setContent(string $content)
         {
             if ($this->Saved !== true) {
                 $this->Content = $content;
             } else {
-                throw new CacheException("Cache have been saved and can't be edited. Create new cache to overwrite current");
+                throw new CacheException("Cache have been saved and can't be edited. Create new Cache to overwrite current");
             }
         }
 
         /**
-         * Getter for storage manager.
+         * Getter for Storage manager.
          *
          * @return BaseStorageManager Storage manager
          */
@@ -168,7 +168,7 @@ use Doctrine\Instantiator\Exception\InvalidArgumentException;
         }
 
         /**
-         * Setter for storage manager.
+         * Setter for Storage manager.
          *
          * @param BaseStorageManager $storageManager
          */
