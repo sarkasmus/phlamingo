@@ -37,7 +37,7 @@ use Phlamingo\Di\BaseFactory;
     {
         public function make()
         {
-            $service = new TestingService($this->container->Get('service1'));
+            $service = new TestingService($this->container->get('service1'));
 
             return $service;
         }
@@ -45,24 +45,24 @@ use Phlamingo\Di\BaseFactory;
 
     class ContainerTest extends \PHPUnit_Framework_TestCase
     {
-        protected $Container;
+        protected $container;
 
         public function setUp()
         {
-            $this->Container = new Container();
-            $this->Container->addService('service1', function () {
+            $this->container = new Container();
+            $this->container->addService('service1', function () {
                 return new Dependency();
             });
-            $this->Container->addService('service2', new TestingServiceFactory());
+            $this->container->addService('service2', new TestingServiceFactory());
 
-            $this->Container->addAlias('service2', 'alias');
+            $this->container->addAlias('service2', 'alias');
         }
 
         public function testServices()
         {
-            $this->assertEquals(new Dependency(), $this->Container->Get('service1'));
-            $this->assertEquals(new TestingService(new Dependency()), $this->Container->Get('service2'));
+            $this->assertEquals(new Dependency(), $this->container->get('service1'));
+            $this->assertEquals(new TestingService(new Dependency()), $this->container->get('service2'));
 
-            $this->assertEquals(new TestingService(new Dependency()), $this->Container->Get('alias'));
+            $this->assertEquals(new TestingService(new Dependency()), $this->container->get('alias'));
         }
     }

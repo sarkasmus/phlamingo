@@ -24,15 +24,15 @@ use Phlamingo\HTTP\Exceptions\HttpException;
         /**
          * Tested class.
          */
-        private $Response;
+        private $response;
 
         /**
          * Instance the tested class.
          */
         public function setUp()
         {
-            $this->Response = new Response('Hello world', '1.1', 200, 'UTF-8', ['Content-Type: text/html']);
-            $this->Response->Reflection = new \ReflectionClass($this->Response);
+            $this->response = new Response('Hello world', '1.1', 200, 'UTF-8', ['Content-Type: text/html']);
+            $this->response->reflection = new \ReflectionClass($this->response);
         }
 
         /**
@@ -40,20 +40,20 @@ use Phlamingo\HTTP\Exceptions\HttpException;
          */
         public function testResponseProperties()
         {
-            $this->assertEquals('Hello world', $this->Response->Content);
-            $this->assertEquals('1.1', $this->Response->Version);
-            $this->assertEquals(200, $this->Response->StatusCode);
-            $this->assertEquals('OK', $this->Response->Status);
+            $this->assertEquals('Hello world', $this->response->content);
+            $this->assertEquals('1.1', $this->response->version);
+            $this->assertEquals(200, $this->response->statusCode);
+            $this->assertEquals('OK', $this->response->status);
 
-            $this->Response->StatusCode = 500;
-            $this->assertEquals(500, $this->Response->StatusCode);
-            $this->assertEquals('Internal Server Error', $this->Response->Status);
+            $this->response->statusCode = 500;
+            $this->assertEquals(500, $this->response->statusCode);
+            $this->assertEquals('Internal Server Error', $this->response->status);
 
-            $this->assertEquals('UTF-8', $this->Response->Charset);
-            $this->assertEquals(['Content-Type: text/html'], $this->Response->Headers);
+            $this->assertEquals('UTF-8', $this->response->charset);
+            $this->assertEquals(['Content-Type: text/html'], $this->response->headers);
 
-            $this->Response->AddHeader('Date: Tue, 15 Nov 1994 08:12:31 GMT');
-            $this->assertEquals(['Content-Type: text/html', 'Date: Tue, 15 Nov 1994 08:12:31 GMT'], $this->Response->Headers);
+            $this->response->addHeader('Date: Tue, 15 Nov 1994 08:12:31 GMT');
+            $this->assertEquals(['Content-Type: text/html', 'Date: Tue, 15 Nov 1994 08:12:31 GMT'], $this->response->headers);
         }
 
         /**
@@ -63,7 +63,7 @@ use Phlamingo\HTTP\Exceptions\HttpException;
         {
             try {
                 // setting invalid status code
-                $this->Response->StatusCode = 2156;
+                $this->response->statusCode = 2156;
                 $this->fail("exception wasn't thrown");
             } catch (HttpException $e) {
             }
