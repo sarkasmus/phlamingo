@@ -38,7 +38,6 @@ use Phlamingo\Di\BaseFactory;
         public function make()
         {
             $service = new TestingService($this->container->get('service1'));
-
             return $service;
         }
     }

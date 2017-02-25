@@ -34,7 +34,7 @@
 
             // Runs controller
             $response = $controller->run($controllerAction, ...$params);
-            $response->Send();
+            $response->send();
         }
 
         /**
@@ -55,7 +55,7 @@
                 foreach ($configCacher->get() as $key => $values)
                 {
                     if ($values !== null and $key !== null) {
-                        $config->Push($values, $key);
+                        $config->push($values, $key);
 
                     }
                 }
@@ -67,7 +67,7 @@
                 foreach ($configCacher->get() as $key => $values)
                 {
                     if ($values !== null and $key !== null) {
-                        $config->Push($values, $key);
+                        $config->push($values, $key);
 
                     }
                 }
@@ -86,7 +86,7 @@
                 foreach ($diCacher->get() as $service => $factory)
                 {
                     if ($service !== null and $factory !== null)
-                        $container->AddService($service, new $factory);
+                        $container->addService($service, new $factory);
                 }
             }
             else
@@ -95,7 +95,7 @@
                 foreach ($diCacher->get() as $service => $factory)
                 {
                     if ($service !== null and $factory !== null) {
-                        $container->AddService($service, new $factory);
+                        $container->addService($service, new $factory);
 
                     }
                 }
